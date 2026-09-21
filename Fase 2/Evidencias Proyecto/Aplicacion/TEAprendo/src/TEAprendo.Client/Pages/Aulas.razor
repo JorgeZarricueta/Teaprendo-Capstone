@@ -1,0 +1,513 @@
+@page "/aulas"
+
+@using System.Net.Http.Json
+@using TEAprendo.Client.Services
+@using TEAprendo.Contracts.Administracion.Aulas
+
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject SedeContextoService SedeContexto
+
+<PageTitle>Aulas - TEAprendo</PageTitle>
+
+<div class="aulas-page">
+
+    <div class="page-header">
+
+        <div>
+            <h1>Aulas</h1>
+
+            <p>
+                Gestiona las aulas de la sede seleccionada.
+            </p>
+        </div>
+
+        <button class="btn btn-primary"
+                @onclick="MostrarFormularioCrear">
+            + Nueva aula
+        </button>
+
+    </div>
+
+
+    @if (!string.IsNullOrWhiteSpace(_mensaje))
+    {
+        <div class="alert alert-success">
+            @_mensaje
+        </div>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(_error))
+    {
+        <div class="alert alert-danger">
+            @_error
+        </div>
+    }
+
+
+    @if (_mostrarFormularioCrear)
+    {
+        <div class="form-card">
+
+            <div class="form-header">
+                <h2>Nueva aula</h2>
+
+                <button class="cerrar-form"
+                        @onclick="CancelarCrear">
+                    ×
+                </button>
+            </div>
+
+            <EditForm Model="_nuevaAula"
+                      OnValidSubmit="CrearAula">
+
+                <div class="form-grid">
+
+                    <div>
+                        <label>Nombre del aula</label>
+
+                        <InputText class="form-control"
+                                   @bind-Value="_nuevaAula.Nombre" />
+                    </div>
+
+                    <div>
+                        <label>Año académico</label>
+
+                        <InputNumber class="form-control"
+                                     @bind-Value="_nuevaAula.AnioAcademico" />
+                    </div>
+
+                </div>
+
+                <div class="form-actions">
+
+                    <button type="button"
+                            class="btn btn-outline-secondary"
+                            @onclick="CancelarCrear">
+                        Cancelar
+                    </button>
+
+                    <button type="submit"
+                            class="btn btn-primary"
+                            disabled="@_guardando">
+
+                        @(_guardando
+                            ? "Guardando..."
+                            : "Crear aula")
+
+                    </button>
+
+                </div>
+
+            </EditForm>
+
+        </div>
+    }
+
+
+    @if (_aulaEditando is not null)
+    {
+        <div class="form-card">
+
+            <div class="form-header">
+                <h2>Editar aula</h2>
+
+                <button class="cerrar-form"
+                        @onclick="CancelarEdicion">
+                    ×
+                </button>
+            </div>
+
+            <EditForm Model="_editarAula"
+                      OnValidSubmit="GuardarEdicion">
+
+                <div class="form-grid">
+
+                    <div>
+                        <label>Nombre del aula</label>
+
+                        <InputText class="form-control"
+                                   @bind-Value="_editarAula.Nombre" />
+                    </div>
+
+                    <div>
+                        <label>Año académico</label>
+
+                        <InputNumber class="form-control"
+                                     @bind-Value="_editarAula.AnioAcademico" />
+                    </div>
+
+                </div>
+
+                <div class="form-actions">
+
+                    <button type="button"
+                            class="btn btn-outline-secondary"
+                            @onclick="CancelarEdicion">
+                        Cancelar
+                    </button>
+
+                    <button type="submit"
+                            class="btn btn-primary"
+                            disabled="@_guardando">
+
+                        @(_guardando
+                            ? "Guardando..."
+                            : "Guardar cambios")
+
+                    </button>
+
+                </div>
+
+            </EditForm>
+
+        </div>
+    }
+
+
+    @if (_cargando)
+    {
+        <p>Cargando aulas...</p>
+    }
+    else if (_aulas.Count == 0)
+    {
+        <div class="empty-state">
+
+            <h3>No hay aulas registradas</h3>
+
+            <p>
+                Crea la primera aula de esta sede.
+            </p>
+
+        </div>
+    }
+    else
+    {
+        <div class="aulas-grid">
+
+            @foreach (var aula in _aulas)
+            {
+                <div class="aula-card">
+
+                    <div class="aula-card-header">
+
+                        <div>
+                            <h3>@aula.Nombre</h3>
+
+                            <p>
+                                Año académico
+                                @aula.AnioAcademico
+                            </p>
+                        </div>
+
+                        <span class="estado @(aula.Activa ? "activa" : "inactiva")">
+                            @(aula.Activa
+                                ? "Activa"
+                                : "Inactiva")
+                        </span>
+
+                    </div>
+
+
+                    <div class="aula-actions">
+
+                        <button class="btn btn-outline-primary"
+                                @onclick="() => PrepararEdicion(aula)">
+                            Editar
+                        </button>
+
+                        @if (aula.Activa)
+                        {
+                            <button class="btn btn-outline-danger"
+                                    @onclick="() => CambiarEstado(aula, false)">
+                                Desactivar
+                            </button>
+                        }
+                        else
+                        {
+                            <button class="btn btn-outline-success"
+                                    @onclick="() => CambiarEstado(aula, true)">
+                                Activar
+                            </button>
+                        }
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    }
+
+</div>
+
+
+@code
+{
+    private List<AulaDto> _aulas = new();
+
+    private bool _cargando = true;
+
+    private bool _guardando;
+
+    private bool _mostrarFormularioCrear;
+
+    private string _mensaje = string.Empty;
+
+    private string _error = string.Empty;
+
+    private AulaDto? _aulaEditando;
+
+
+    private CrearAulaRequest _nuevaAula = new()
+    {
+        AnioAcademico = DateTime.Now.Year
+    };
+
+
+    private ActualizarAulaRequest _editarAula = new();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Obliga a seleccionar una sede.
+        if (SedeContexto.SedeActual is null)
+        {
+            Navigation.NavigateTo(
+                "/seleccionar-sede");
+
+            return;
+        }
+
+        await CargarAulas();
+    }
+
+
+    // Obtiene las aulas de la sede actual.
+    private async Task CargarAulas()
+    {
+        _cargando = true;
+
+        try
+        {
+            var sedeId =
+                SedeContexto.SedeActual!.Id;
+
+            var aulas =
+                await Http.GetFromJsonAsync<List<AulaDto>>(
+                    $"api/aulas/sede/{sedeId}");
+
+            _aulas = aulas ?? new();
+        }
+        catch
+        {
+            _error =
+                "No fue posible cargar las aulas.";
+        }
+        finally
+        {
+            _cargando = false;
+        }
+    }
+
+
+    // Muestra el formulario de creación.
+    private void MostrarFormularioCrear()
+    {
+        _mensaje = string.Empty;
+        _error = string.Empty;
+
+        _aulaEditando = null;
+
+        _nuevaAula = new CrearAulaRequest
+        {
+            SedeId = SedeContexto.SedeActual!.Id,
+            AnioAcademico = DateTime.Now.Year
+        };
+
+        _mostrarFormularioCrear = true;
+    }
+
+
+    // Cancela la creación.
+    private void CancelarCrear()
+    {
+        _mostrarFormularioCrear = false;
+    }
+
+
+    // Crea una nueva aula.
+    private async Task CrearAula()
+    {
+        _guardando = true;
+        _mensaje = string.Empty;
+        _error = string.Empty;
+
+        try
+        {
+            _nuevaAula.SedeId =
+                SedeContexto.SedeActual!.Id;
+
+            var respuesta =
+                await Http.PostAsJsonAsync(
+                    "api/aulas",
+                    _nuevaAula);
+
+            if (!respuesta.IsSuccessStatusCode)
+            {
+                var error =
+                    await respuesta.Content
+                        .ReadFromJsonAsync<MensajeApi>();
+
+                _error =
+                    error?.Mensaje ??
+                    "No fue posible crear el aula.";
+
+                return;
+            }
+
+            _mensaje =
+                "Aula creada correctamente.";
+
+            _mostrarFormularioCrear = false;
+
+            await CargarAulas();
+        }
+        catch
+        {
+            _error =
+                "Ocurrió un error al crear el aula.";
+        }
+        finally
+        {
+            _guardando = false;
+        }
+    }
+
+
+    // Prepara un aula para editar.
+    private void PrepararEdicion(AulaDto aula)
+    {
+        _mensaje = string.Empty;
+        _error = string.Empty;
+
+        _mostrarFormularioCrear = false;
+
+        _aulaEditando = aula;
+
+        _editarAula = new ActualizarAulaRequest
+        {
+            Nombre = aula.Nombre,
+            AnioAcademico = aula.AnioAcademico
+        };
+    }
+
+
+    // Cancela la edición.
+    private void CancelarEdicion()
+    {
+        _aulaEditando = null;
+    }
+
+
+    // Guarda los cambios del aula.
+    private async Task GuardarEdicion()
+    {
+        if (_aulaEditando is null)
+        {
+            return;
+        }
+
+        _guardando = true;
+        _mensaje = string.Empty;
+        _error = string.Empty;
+
+        try
+        {
+            var respuesta =
+                await Http.PutAsJsonAsync(
+                    $"api/aulas/{_aulaEditando.Id}",
+                    _editarAula);
+
+            if (!respuesta.IsSuccessStatusCode)
+            {
+                var error =
+                    await respuesta.Content
+                        .ReadFromJsonAsync<MensajeApi>();
+
+                _error =
+                    error?.Mensaje ??
+                    "No fue posible actualizar el aula.";
+
+                return;
+            }
+
+            _mensaje =
+                "Aula actualizada correctamente.";
+
+            _aulaEditando = null;
+
+            await CargarAulas();
+        }
+        catch
+        {
+            _error =
+                "Ocurrió un error al actualizar el aula.";
+        }
+        finally
+        {
+            _guardando = false;
+        }
+    }
+
+
+    // Activa o desactiva un aula.
+    private async Task CambiarEstado(
+        AulaDto aula,
+        bool activa)
+    {
+        _mensaje = string.Empty;
+        _error = string.Empty;
+
+        try
+        {
+            var request =
+                new CambiarEstadoAulaRequest
+                {
+                    Activa = activa
+                };
+
+            var respuesta =
+                await Http.PatchAsJsonAsync(
+                    $"api/aulas/{aula.Id}/estado",
+                    request);
+
+            if (!respuesta.IsSuccessStatusCode)
+            {
+                _error =
+                    "No fue posible cambiar el estado.";
+
+                return;
+            }
+
+            _mensaje = activa
+                ? "Aula activada correctamente."
+                : "Aula desactivada correctamente.";
+
+            await CargarAulas();
+        }
+        catch
+        {
+            _error =
+                "Ocurrió un error al cambiar el estado.";
+        }
+    }
+
+
+    // Modelo simple para mensajes de la API.
+    private class MensajeApi
+    {
+        public string Mensaje { get; set; }
+            = string.Empty;
+    }
+}

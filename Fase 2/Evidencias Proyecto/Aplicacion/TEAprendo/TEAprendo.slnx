@@ -1,0 +1,16 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/TEAprendo.Api/TEAprendo.Api.csproj" />
+    <Project Path="src/TEAprendo.Client/TEAprendo.Client.csproj" />
+    <Project Path="src/TEAprendo.Contracts/TEAprendo.Contracts.csproj" />
+    <Project Path="src/TEAprendo.Domain/TEAprendo.Domain.csproj" />
+    <Project Path="src/TEAprendo.Infrastructure/TEAprendo.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/src/TEAprendo.Application/">
+    <Project Path="src/TEAprendo.Application/TEAprendo.application.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/TEAprendo.IntegrationTests/TEAprendo.IntegrationTests.csproj" />
+    <Project Path="tests/TEAprendo.UnitTests/TEAprendo.UnitTests.csproj" />
+  </Folder>
+</Solution>

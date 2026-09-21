@@ -1,0 +1,120 @@
+@page "/seleccionar-sede"
+@layout TEAprendo.Client.Layout.PublicLayout
+
+@using System.Net.Http.Json
+@using TEAprendo.Contracts.Administracion.Directores
+@using TEAprendo.Client.Services
+
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject SedeContextoService SedeContexto
+
+<PageTitle>Seleccionar sede - TEAprendo</PageTitle>
+
+<div class="sede-container">
+
+    <div class="sede-header">
+        <h1>TEAprendo</h1>
+
+        <h2>Selecciona tu sede</h2>
+
+        <p>
+            Elige la sede con la que deseas trabajar.
+        </p>
+    </div>
+
+    @if (_cargando)
+    {
+        <div class="text-center">
+            <p>Cargando sedes...</p>
+        </div>
+    }
+    else if (!string.IsNullOrWhiteSpace(_mensajeError))
+    {
+        <div class="alert alert-danger">
+            @_mensajeError
+        </div>
+    }
+    else if (_sedes.Count == 0)
+    {
+        <div class="alert alert-warning">
+            No tienes sedes disponibles.
+        </div>
+    }
+    else
+    {
+        <div class="sedes-grid">
+
+            @foreach (var sede in _sedes)
+            {
+                <div class="sede-card">
+
+                    <div class="sede-icon">
+                        🏫
+                    </div>
+
+                    <h3>@sede.Nombre</h3>
+
+                    <p>
+                        @sede.InstitucionNombre
+                    </p>
+
+                    <button class="btn btn-primary"
+                        @onclick="() => EntrarSede(sede)">
+                        Entrar
+                    </button>
+
+                </div>
+            }
+
+        </div>
+    }
+
+</div>
+
+@code
+{
+    private List<SedeAsignadaDto> _sedes = new();
+
+    private bool _cargando = true;
+
+    private string _mensajeError = string.Empty;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarSedes();
+    }
+
+
+    // Obtiene las sedes autorizadas del usuario.
+    private async Task CargarSedes()
+    {
+        try
+        {
+            var sedes =
+                await Http.GetFromJsonAsync<List<SedeAsignadaDto>>(
+                    "api/mi-contexto/sedes");
+
+            _sedes = sedes ?? new();
+        }
+        catch
+        {
+            _mensajeError =
+                "No fue posible cargar las sedes.";
+        }
+        finally
+        {
+            _cargando = false;
+        }
+    }
+
+
+    // Guarda la sede seleccionada y abre el CRM.
+    private void EntrarSede(SedeAsignadaDto sede)
+    {
+        SedeContexto.SeleccionarSede(sede);
+
+        Navigation.NavigateTo("/dashboard");
+    }
+}

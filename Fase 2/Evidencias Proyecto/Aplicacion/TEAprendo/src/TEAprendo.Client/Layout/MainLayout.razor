@@ -1,0 +1,175 @@
+﻿@inherits LayoutComponentBase
+
+@using System.Net.Http.Json
+@using TEAprendo.Client.Services
+@using TEAprendo.Contracts.Autenticacion
+
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject SedeContextoService SedeContexto
+
+<div class="crm-layout">
+
+    <aside class="sidebar">
+
+        <div class="sidebar-brand">
+            <h2>TEAprendo</h2>
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <NavLink href="/dashboard"
+                     class="nav-item">
+                <span>⌂</span>
+                Dashboard
+            </NavLink>
+
+            <NavLink href="/aulas"
+                     class="nav-item">
+                <span>🏫</span>
+                Aulas
+            </NavLink>
+
+            <NavLink href="/alumnos"
+                     class="nav-item">
+                <span>🎓</span>
+                Alumnos
+            </NavLink>
+
+            <NavLink href="/usuarios"
+                     class="nav-item">
+                <span>👥</span>
+                Usuarios
+            </NavLink>
+
+        </nav>
+
+        <div class="sidebar-footer">
+
+            <button class="logout-button"
+                    @onclick="CerrarSesion">
+                Cerrar sesión
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <div class="crm-main">
+
+        <header class="topbar">
+
+            <div class="sede-actual">
+
+                @if (SedeContexto.SedeActual is not null)
+                {
+                    <strong>
+                        @SedeContexto.SedeActual.Nombre
+                    </strong>
+
+                    <span>
+                        @SedeContexto.SedeActual.InstitucionNombre
+                    </span>
+                }
+
+            </div>
+
+
+            <div class="usuario-actual">
+
+                @if (_usuario is not null)
+                {
+                    <div>
+                        <strong>
+                            @_usuario.Nombre @_usuario.Apellido
+                        </strong>
+
+                        <span>
+                            @ObtenerRol()
+                        </span>
+                    </div>
+
+                    <div class="avatar">
+                        @ObtenerInicial()
+                    </div>
+                }
+
+            </div>
+
+        </header>
+
+
+        <main class="crm-content">
+            @Body
+        </main>
+
+    </div>
+
+</div>
+
+@code
+{
+    private UsuarioActualDto? _usuario;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarUsuario();
+    }
+
+
+    // Obtiene el usuario autenticado.
+    private async Task CargarUsuario()
+    {
+        try
+        {
+            _usuario =
+                await Http.GetFromJsonAsync<UsuarioActualDto>(
+                    "api/autenticacion/usuario-actual");
+        }
+        catch
+        {
+            Navigation.NavigateTo("/login");
+        }
+    }
+
+
+    // Devuelve el rol principal.
+    private string ObtenerRol()
+    {
+        if (_usuario is null ||
+            _usuario.Roles.Count == 0)
+        {
+            return string.Empty;
+        }
+
+        return _usuario.Roles[0];
+    }
+
+
+    // Obtiene la inicial del usuario.
+    private string ObtenerInicial()
+    {
+        if (_usuario is null ||
+            string.IsNullOrWhiteSpace(_usuario.Nombre))
+        {
+            return "?";
+        }
+
+        return _usuario.Nombre[..1].ToUpper();
+    }
+
+
+    // Cierra la sesión actual.
+    private async Task CerrarSesion()
+    {
+        await Http.PostAsync(
+            "api/autenticacion/logout",
+            null);
+
+        SedeContexto.Limpiar();
+
+        Navigation.NavigateTo("/login");
+    }
+}

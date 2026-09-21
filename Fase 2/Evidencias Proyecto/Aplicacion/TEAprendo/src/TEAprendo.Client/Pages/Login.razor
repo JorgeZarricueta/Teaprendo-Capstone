@@ -1,0 +1,103 @@
+@page "/login"
+@layout TEAprendo.Client.Layout.PublicLayout
+
+@using System.Net.Http.Json
+@using TEAprendo.Contracts.Autenticacion
+
+@inject HttpClient Http
+@inject NavigationManager Navigation
+
+<PageTitle>Iniciar sesión - TEAprendo</PageTitle>
+
+<div class="login-container">
+
+    <div class="login-card">
+
+        <h1>TEAprendo</h1>
+
+        <p>Ingresa a tu cuenta</p>
+
+        <EditForm Model="_login" OnValidSubmit="IniciarSesion">
+
+            <div class="mb-3">
+                <label>Correo electrónico</label>
+
+                <InputText class="form-control"
+                           @bind-Value="_login.Correo" />
+            </div>
+
+            <div class="mb-3">
+                <label>Contraseña</label>
+
+                <InputText class="form-control"
+                           type="password"
+                           @bind-Value="_login.Password" />
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(_mensaje))
+            {
+                <div class="alert alert-danger">
+                    @_mensaje
+                </div>
+            }
+
+            <button class="btn btn-primary w-100"
+                    type="submit"
+                    disabled="@_cargando">
+
+                @(_cargando
+                    ? "Ingresando..."
+                    : "Iniciar sesión")
+
+            </button>
+
+        </EditForm>
+
+    </div>
+
+</div>
+
+@code
+{
+    private LoginRequest _login = new();
+
+    private string _mensaje = string.Empty;
+
+    private bool _cargando;
+
+
+    // Envía las credenciales a la API.
+    private async Task IniciarSesion()
+    {
+        _cargando = true;
+        _mensaje = string.Empty;
+
+        try
+        {
+            var respuesta =
+                await Http.PostAsJsonAsync(
+                    "api/autenticacion/login",
+                    _login);
+
+            if (respuesta.IsSuccessStatusCode)
+            {
+                Navigation.NavigateTo(
+                    "/seleccionar-sede");
+
+                return;
+            }
+
+            _mensaje =
+                "Correo o contraseña incorrectos.";
+        }
+        catch
+        {
+            _mensaje =
+                "No fue posible conectar con TEAprendo.";
+        }
+        finally
+        {
+            _cargando = false;
+        }
+    }
+}
