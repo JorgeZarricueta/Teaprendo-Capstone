@@ -1,0 +1,608 @@
+@page "/profesional"
+
+
+@layout TEAprendo.Client.Layout.ProfesionalLayout
+
+@using System.Net.Http.Json
+@using TEAprendo.Contracts.Profesional
+
+@inject HttpClient Http
+@inject NavigationManager Navigation
+<PageTitle>Mi espacio - TEAprendo</PageTitle>
+
+
+@if (_cargando)
+{
+    <div class="loading-state">
+
+        <div class="loading-circle"></div>
+
+        <span>
+            Preparando tu espacio...
+        </span>
+
+    </div>
+}
+else if (!string.IsNullOrWhiteSpace(_error))
+{
+    <div class="error-panel">
+
+        <strong>
+            No pudimos cargar tu información
+        </strong>
+
+        <span>
+            @_error
+        </span>
+
+        <button class="btn btn-outline-secondary"
+                @onclick="CargarResumen">
+
+            Reintentar
+
+        </button>
+
+    </div>
+}
+else if (_resumen is not null)
+{
+    <div class="professional-dashboard">
+
+
+        @* =========================
+           Bienvenida
+           ========================= *@
+
+        <section class="welcome-card">
+
+            <div class="welcome-content">
+
+                <span class="welcome-role">
+                    @ObtenerNombreRol()
+                </span>
+
+                <h1>
+                    Hola, @_resumen.Nombre
+                </h1>
+
+                <p>
+                    @ObtenerMensajeBienvenida()
+                </p>
+
+            </div>
+
+
+            <div class="welcome-visual">
+
+                <div class="visual-circle visual-circle-one"></div>
+
+                <div class="visual-circle visual-circle-two"></div>
+
+                <div class="welcome-symbol">
+                    ✦
+                </div>
+
+            </div>
+
+        </section>
+
+
+        @* =========================
+           Resumen
+           ========================= *@
+
+        <section class="stats-grid">
+
+            @if (_resumen.Rol == "Docente")
+            {
+                <article class="stat-card">
+
+                    <div class="stat-icon aulas-icon">
+                        ▦
+                    </div>
+
+                    <div class="stat-content">
+
+                        <span>
+                            Mis aulas
+                        </span>
+
+                        <strong>
+                            @_resumen.CantidadAulas
+                        </strong>
+
+                        <small>
+                            Aulas asignadas
+                        </small>
+
+                    </div>
+
+                </article>
+            }
+
+
+            <article class="stat-card">
+
+                <div class="stat-icon alumnos-icon">
+                    ◎
+                </div>
+
+                <div class="stat-content">
+
+                    <span>
+                        Mis alumnos
+                    </span>
+
+                    <strong>
+                        @_resumen.CantidadAlumnos
+                    </strong>
+
+                    <small>
+                        @ObtenerTextoCantidadAlumnos()
+                    </small>
+
+                </div>
+
+            </article>
+
+
+            <article class="stat-card">
+
+                <div class="stat-icon seguimiento-icon">
+                    ✓
+                </div>
+
+                <div class="stat-content">
+
+                    <span>
+                        Seguimiento
+                    </span>
+
+                    <strong class="estado-normal">
+                        Disponible
+                    </strong>
+
+                    <small>
+                        Espacio profesional activo
+                    </small>
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+        @* =========================
+           Aulas del Docente
+           ========================= *@
+
+        @if (_resumen.Rol == "Docente")
+        {
+            <section class="dashboard-section">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <span class="section-eyebrow">
+                            Organización
+                        </span>
+
+                        <h2>
+                            Mis aulas
+                        </h2>
+
+                        <p>
+                            Aulas que el Director te ha asignado.
+                        </p>
+
+                    </div>
+
+                    <span class="section-count">
+                        @_resumen.CantidadAulas
+                    </span>
+
+                </div>
+
+
+                @if (_resumen.Aulas.Count == 0)
+                {
+                    <div class="empty-state">
+
+                        <div class="empty-icon">
+                            ▦
+                        </div>
+
+                        <strong>
+                            Aún no tienes aulas asignadas
+                        </strong>
+
+                        <p>
+                            Cuando el Director te asigne un aula,
+                            aparecerá automáticamente aquí.
+                        </p>
+
+                    </div>
+                }
+                else
+                {
+                    <div class="aulas-grid">
+
+                        @foreach (var aula in _resumen.Aulas)
+                        {
+                            <button class="aula-card"
+                                @onclick="() => AbrirAula(aula.Id)">
+
+                                <div class="aula-top">
+
+                                    <div class="aula-icon">
+                                        ▦
+                                    </div>
+
+                                    <span class="aula-year">
+                                        @aula.AnioAcademico
+                                    </span>
+
+                                </div>
+
+
+                                <div class="aula-info">
+
+                                    <h3>
+                                        @aula.Nombre
+                                    </h3>
+
+                                    <span>
+                                        @aula.SedeNombre
+                                    </span>
+
+                                </div>
+
+
+                                <div class="aula-footer">
+
+                                    <span>
+                                        @ObtenerCantidadAlumnosAula(aula.Id)
+                                        estudiantes
+                                    </span>
+
+                                </div>
+
+                            </button>
+                        }
+
+                    </div>
+                }
+
+            </section>
+        }
+
+
+        @* =========================
+           Alumnos
+           ========================= *@
+
+        <section class="dashboard-section">
+
+            <div class="section-header">
+
+                <div>
+
+                    <span class="section-eyebrow">
+                        Seguimiento
+                    </span>
+
+                    <h2>
+                        Mis alumnos
+                    </h2>
+
+                    <p>
+                        @ObtenerDescripcionAlumnos()
+                    </p>
+
+                </div>
+
+                <span class="section-count">
+                    @_resumen.CantidadAlumnos
+                </span>
+
+            </div>
+
+
+            @if (_resumen.Alumnos.Count == 0)
+            {
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+                        ◎
+                    </div>
+
+                    <strong>
+                        No tienes alumnos disponibles
+                    </strong>
+
+                    <p>
+                        @ObtenerMensajeSinAlumnos()
+                    </p>
+
+                </div>
+            }
+            else
+            {
+                <div class="alumnos-grid">
+
+                    @foreach (var alumno in _resumen.Alumnos)
+                    {
+                        <article class="alumno-card">
+
+                            <div class="alumno-avatar">
+                                @ObtenerInicial(alumno.Nombre)
+                            </div>
+
+
+                            <div class="alumno-info">
+
+                                <h3>
+                                    @alumno.Nombre
+                                    @alumno.Apellido
+                                </h3>
+
+                                <span class="alumno-aula">
+                                    @alumno.AulaNombre
+                                </span>
+
+                                <small>
+                                    @alumno.SedeNombre
+                                </small>
+
+                            </div>
+
+
+                           <button class="alumno-arrow"
+                                @onclick="() => AbrirAlumno(alumno.Id)"
+                                title="Abrir perfil">
+                            ›
+
+                        </button>
+
+                        </article>
+                    }
+
+                </div>
+            }
+
+        </section>
+
+
+        @* =========================
+           Funciones próximas
+           ========================= *@
+
+        <section class="dashboard-section">
+
+            <div class="section-header">
+
+                <div>
+
+                    <span class="section-eyebrow">
+                        Herramientas
+                    </span>
+
+                    <h2>
+                        Seguimiento del estudiante
+                    </h2>
+
+                    <p>
+                        Funciones que estarán disponibles
+                        desde el perfil de cada alumno.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="tools-grid">
+
+                <article class="tool-card">
+
+                    <div class="tool-icon">
+                        ✎
+                    </div>
+
+                    <div>
+                        <strong>
+                            Observaciones
+                        </strong>
+
+                        <span>
+                            Registrar información relevante
+                            del estudiante.
+                        </span>
+                    </div>
+
+                </article>
+
+
+                <article class="tool-card">
+
+                    <div class="tool-icon">
+                        ◫
+                    </div>
+
+                    <div>
+                        <strong>
+                            Informes
+                        </strong>
+
+                        <span>
+                            Consultar y generar seguimientos.
+                        </span>
+                    </div>
+
+                </article>
+
+
+                <article class="tool-card">
+
+                    <div class="tool-icon">
+                        ◌
+                    </div>
+
+                    <div>
+                        <strong>
+                            Eventos
+                        </strong>
+
+                        <span>
+                            Registrar situaciones importantes.
+                        </span>
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+    </div>
+}
+
+
+@code
+{
+    private ResumenProfesionalDto? _resumen;
+
+    private bool _cargando = true;
+
+    private string _error = string.Empty;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarResumen();
+    }
+
+
+    // Obtiene la información autorizada del profesional.
+    private async Task CargarResumen()
+    {
+        _cargando = true;
+        _error = string.Empty;
+
+        try
+        {
+            _resumen =
+                await Http.GetFromJsonAsync<ResumenProfesionalDto>(
+                    "api/profesional/resumen");
+
+            if (_resumen is null)
+            {
+                _error =
+                    "La API no devolvió información del usuario.";
+            }
+        }
+        catch
+        {
+            _error =
+                "No fue posible conectarse con el servidor.";
+        }
+        finally
+        {
+            _cargando = false;
+        }
+    }
+
+
+    private string ObtenerNombreRol()
+    {
+        return _resumen?.Rol == "Docente"
+            ? "Educador"
+            : "Profesional";
+    }
+
+
+    private string ObtenerMensajeBienvenida()
+    {
+        if (_resumen?.Rol == "Docente")
+        {
+            return
+                "Revisa tus aulas y los estudiantes que tienes a cargo.";
+        }
+
+        return
+            "Revisa los estudiantes que tienes asignados y accede a su seguimiento.";
+    }
+
+
+    private string ObtenerDescripcionAlumnos()
+    {
+        if (_resumen?.Rol == "Docente")
+        {
+            return
+                "Estudiantes matriculados actualmente en tus aulas.";
+        }
+
+        return
+            "Estudiantes que han sido asignados directamente a tu perfil profesional.";
+    }
+
+
+    private string ObtenerMensajeSinAlumnos()
+    {
+        if (_resumen?.Rol == "Docente")
+        {
+            return
+                "Los alumnos aparecerán cuando tengas aulas asignadas con matrículas activas.";
+        }
+
+        return
+            "El Director debe asignarte estudiantes para que aparezcan aquí.";
+    }
+
+
+    private string ObtenerTextoCantidadAlumnos()
+    {
+        if (_resumen?.CantidadAlumnos == 1)
+        {
+            return "Estudiante disponible";
+        }
+
+        return "Estudiantes disponibles";
+    }
+
+
+    private int ObtenerCantidadAlumnosAula(
+        Guid aulaId)
+    {
+        return _resumen?.Alumnos.Count(x =>
+            x.AulaId == aulaId) ?? 0;
+    }
+
+
+    private string ObtenerInicial(
+        string nombre)
+    {
+        if (string.IsNullOrWhiteSpace(nombre))
+        {
+            return "?";
+        }
+
+        return nombre[..1].ToUpper();
+    }
+
+    // Abre el perfil autorizado del alumno.
+    private void AbrirAlumno(Guid alumnoId)
+    {
+        Navigation.NavigateTo(
+            $"/profesional/alumnos/{alumnoId}");
+    }
+
+    // Abre un aula asignada al Docente.
+    private void AbrirAula(Guid aulaId)
+    {
+        Navigation.NavigateTo(
+            $"/profesional/aulas/{aulaId}");
+    }
+}

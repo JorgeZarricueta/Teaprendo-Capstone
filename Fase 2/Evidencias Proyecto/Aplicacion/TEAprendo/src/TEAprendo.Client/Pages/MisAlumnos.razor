@@ -1,0 +1,241 @@
+@page "/profesional/alumnos"
+
+@layout TEAprendo.Client.Layout.ProfesionalLayout
+
+@using System.Net.Http.Json
+@using TEAprendo.Contracts.Profesional
+
+@inject HttpClient Http
+@inject NavigationManager Navigation
+
+<PageTitle>Mis alumnos - TEAprendo</PageTitle>
+
+
+<div class="mis-alumnos-page">
+
+    <div class="page-heading">
+
+        <div>
+
+            <span class="page-eyebrow">
+                Mi trabajo
+            </span>
+
+            <h1>
+                Mis alumnos
+            </h1>
+
+            <p>
+                Consulta los estudiantes que tienes
+                actualmente autorizados.
+            </p>
+
+        </div>
+
+        @if (!_cargando)
+        {
+            <div class="total-alumnos">
+
+                <strong>
+                    @_alumnos.Count
+                </strong>
+
+                <span>
+                    estudiantes
+                </span>
+
+            </div>
+        }
+
+    </div>
+
+
+    @if (_cargando)
+    {
+        <div class="loading-panel">
+            Cargando alumnos...
+        </div>
+    }
+    else if (!string.IsNullOrWhiteSpace(_error))
+    {
+        <div class="alert alert-danger">
+            @_error
+        </div>
+    }
+    else
+    {
+        <div class="search-panel">
+
+            <span class="search-icon">
+                ⌕
+            </span>
+
+            <input type="text"
+                   placeholder="Buscar por nombre o aula..."
+                   @bind="_busqueda"
+                   @bind:event="oninput" />
+
+        </div>
+
+
+        @if (AlumnosFiltrados.Count == 0)
+        {
+            <div class="empty-state">
+
+                <div class="empty-icon">
+                    ◎
+                </div>
+
+                <strong>
+                    No encontramos alumnos
+                </strong>
+
+                <p>
+                    @(_alumnos.Count == 0
+                        ? "Todavía no tienes estudiantes asignados."
+                        : "Prueba con otro término de búsqueda.")
+                </p>
+
+            </div>
+        }
+        else
+        {
+            <div class="students-grid">
+
+                @foreach (var alumno in AlumnosFiltrados)
+                {
+                    <button class="student-card"
+                            @onclick="() => AbrirAlumno(alumno.Id)">
+
+                        <div class="student-avatar">
+                            @ObtenerInicial(alumno.Nombre)
+                        </div>
+
+                        <div class="student-info">
+
+                            <h2>
+                                @alumno.Nombre
+                                @alumno.Apellido
+                            </h2>
+
+                            <div class="student-meta">
+
+                                <span>
+                                    @alumno.AulaNombre
+                                </span>
+
+                                <span class="meta-separator">
+                                    •
+                                </span>
+
+                                <span>
+                                    @alumno.SedeNombre
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        <div class="student-open">
+                            ›
+                        </div>
+
+                    </button>
+                }
+
+            </div>
+        }
+    }
+
+</div>
+
+
+@code
+{
+    private List<AlumnoProfesionalDto> _alumnos = new();
+
+    private bool _cargando = true;
+
+    private string _error = string.Empty;
+
+    private string _busqueda = string.Empty;
+
+
+    private List<AlumnoProfesionalDto> AlumnosFiltrados
+    {
+        get
+        {
+            if (string.IsNullOrWhiteSpace(_busqueda))
+            {
+                return _alumnos;
+            }
+
+            var texto =
+                _busqueda.Trim();
+
+            return _alumnos
+                .Where(x =>
+                    $"{x.Nombre} {x.Apellido}"
+                        .Contains(
+                            texto,
+                            StringComparison.OrdinalIgnoreCase) ||
+                    x.AulaNombre.Contains(
+                        texto,
+                        StringComparison.OrdinalIgnoreCase))
+                .ToList();
+        }
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarAlumnos();
+    }
+
+
+    // Obtiene únicamente los alumnos autorizados.
+    private async Task CargarAlumnos()
+    {
+        _cargando = true;
+        _error = string.Empty;
+
+        try
+        {
+            var alumnos =
+                await Http.GetFromJsonAsync<
+                    List<AlumnoProfesionalDto>>(
+                    "api/profesional/alumnos");
+
+            _alumnos =
+                alumnos?
+                    .OrderBy(x => x.Nombre)
+                    .ThenBy(x => x.Apellido)
+                    .ToList()
+                ?? new();
+        }
+        catch
+        {
+            _error =
+                "No fue posible cargar tus alumnos.";
+        }
+        finally
+        {
+            _cargando = false;
+        }
+    }
+
+
+    private void AbrirAlumno(Guid alumnoId)
+    {
+        Navigation.NavigateTo(
+            $"/profesional/alumnos/{alumnoId}");
+    }
+
+
+    private string ObtenerInicial(string nombre)
+    {
+        return string.IsNullOrWhiteSpace(nombre)
+            ? "?"
+            : nombre[..1].ToUpper();
+    }
+}

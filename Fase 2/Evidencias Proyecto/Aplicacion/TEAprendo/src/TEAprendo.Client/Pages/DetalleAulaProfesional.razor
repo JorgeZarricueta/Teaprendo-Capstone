@@ -1,0 +1,283 @@
+@page "/profesional/aulas/{AulaId:guid}"
+
+@layout TEAprendo.Client.Layout.ProfesionalLayout
+
+@using System.Net.Http.Json
+@using TEAprendo.Contracts.Profesional
+
+@inject HttpClient Http
+@inject NavigationManager Navigation
+
+<PageTitle>Aula - TEAprendo</PageTitle>
+
+
+@if (_cargando)
+{
+    <div class="loading-panel">
+        Cargando aula...
+    </div>
+}
+else if (!string.IsNullOrWhiteSpace(_error))
+{
+    <div class="error-panel">
+
+        <strong>
+            No fue posible abrir el aula.
+        </strong>
+
+        <p>
+            @_error
+        </p>
+
+        <button class="btn btn-outline-secondary"
+                @onclick="Volver">
+            Volver
+        </button>
+
+    </div>
+}
+else if (_aula is not null)
+{
+    <div class="aula-detail-page">
+
+        <button class="back-button"
+                @onclick="Volver">
+
+            ‹ Volver a mis aulas
+
+        </button>
+
+
+        <section class="aula-hero">
+
+            <div class="hero-icon">
+                ▦
+            </div>
+
+            <div>
+
+                <span class="hero-label">
+                    Aula asignada
+                </span>
+
+                <h1>
+                    @_aula.Nombre
+                </h1>
+
+                <p>
+                    @_aula.SedeNombre
+                    ·
+                    Año académico @_aula.AnioAcademico
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <section class="aula-summary">
+
+            <article>
+
+                <span>
+                    Estudiantes
+                </span>
+
+                <strong>
+                    @_aula.Alumnos.Count
+                </strong>
+
+            </article>
+
+            <article>
+
+                <span>
+                    Año académico
+                </span>
+
+                <strong>
+                    @_aula.AnioAcademico
+                </strong>
+
+            </article>
+
+        </section>
+
+
+        <section class="students-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span>
+                        Estudiantes
+                    </span>
+
+                    <h2>
+                        Alumnos del aula
+                    </h2>
+
+                    <p>
+                        Estudiantes con matrícula activa
+                        en esta aula.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            @if (_aula.Alumnos.Count == 0)
+            {
+                <div class="empty-state">
+
+                    <strong>
+                        No hay alumnos matriculados
+                    </strong>
+
+                    <p>
+                        Los estudiantes aparecerán
+                        automáticamente cuando exista
+                        una matrícula activa.
+                    </p>
+
+                </div>
+            }
+            else
+            {
+                <div class="students-grid">
+
+                    @foreach (var alumno in _aula.Alumnos)
+                    {
+                        <button class="student-card"
+                                @onclick="() => AbrirAlumno(alumno.Id)">
+
+                            <div class="student-avatar">
+                                @ObtenerInicial(alumno.Nombre)
+                            </div>
+
+                            <div class="student-info">
+
+                                <h3>
+                                    @alumno.Nombre
+                                    @alumno.Apellido
+                                </h3>
+
+                                <span>
+                                    @alumno.AulaNombre
+                                </span>
+
+                            </div>
+
+                            <div class="student-arrow">
+                                ›
+                            </div>
+
+                        </button>
+                    }
+
+                </div>
+            }
+
+        </section>
+
+    </div>
+}
+
+
+@code
+{
+    [Parameter]
+    public Guid AulaId { get; set; }
+
+
+    private DetalleAulaProfesionalDto? _aula;
+
+    private bool _cargando = true;
+
+    private string _error = string.Empty;
+
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await CargarAula();
+    }
+
+
+    // Obtiene el aula únicamente si pertenece al Docente.
+    private async Task CargarAula()
+    {
+        _cargando = true;
+        _error = string.Empty;
+
+        try
+        {
+            var respuesta =
+                await Http.GetAsync(
+                    $"api/profesional/aulas/{AulaId}");
+
+            if (respuesta.StatusCode ==
+                System.Net.HttpStatusCode.Forbidden)
+            {
+                _error =
+                    "No tienes autorización para acceder a esta aula.";
+
+                return;
+            }
+
+            if (respuesta.StatusCode ==
+                System.Net.HttpStatusCode.NotFound)
+            {
+                _error =
+                    "El aula no fue encontrada.";
+
+                return;
+            }
+
+            if (!respuesta.IsSuccessStatusCode)
+            {
+                _error =
+                    "No fue posible obtener la información.";
+
+                return;
+            }
+
+            _aula =
+                await respuesta.Content
+                    .ReadFromJsonAsync<
+                        DetalleAulaProfesionalDto>();
+        }
+        catch
+        {
+            _error =
+                "No fue posible conectar con el servidor.";
+        }
+        finally
+        {
+            _cargando = false;
+        }
+    }
+
+
+    private void AbrirAlumno(Guid alumnoId)
+    {
+        Navigation.NavigateTo(
+            $"/profesional/alumnos/{alumnoId}");
+    }
+
+
+    private void Volver()
+    {
+        Navigation.NavigateTo(
+            "/profesional/aulas");
+    }
+
+
+    private string ObtenerInicial(string nombre)
+    {
+        return string.IsNullOrWhiteSpace(nombre)
+            ? "?"
+            : nombre[..1].ToUpper();
+    }
+}

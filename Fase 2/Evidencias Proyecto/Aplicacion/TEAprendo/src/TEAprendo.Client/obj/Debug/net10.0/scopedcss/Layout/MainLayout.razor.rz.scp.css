@@ -1,0 +1,176 @@
+.crm-layout[b-w0v6ikhmuk] {
+    min-height: 100vh;
+    display: flex;
+    background: #f6f7fb;
+}
+
+
+/* Menú lateral */
+
+.sidebar[b-w0v6ikhmuk] {
+    width: 245px;
+    min-height: 100vh;
+    background: white;
+    border-right: 1px solid #e9ecef;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-brand[b-w0v6ikhmuk] {
+    padding: 28px 24px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.sidebar-brand h2[b-w0v6ikhmuk] {
+    margin: 0;
+    font-size: 26px;
+}
+
+.sidebar-nav[b-w0v6ikhmuk] {
+    flex: 1;
+    padding: 20px 14px;
+}
+
+.nav-item[b-w0v6ikhmuk] {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    margin-bottom: 6px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #495057;
+    transition: 0.2s;
+}
+
+.nav-item:hover[b-w0v6ikhmuk] {
+    background: #f3f5f7;
+    color: #212529;
+}
+
+.nav-item.active[b-w0v6ikhmuk] {
+    background: #e8f2ff;
+    color: #0d6efd;
+    font-weight: 600;
+}
+
+.sidebar-footer[b-w0v6ikhmuk] {
+    padding: 20px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.logout-button[b-w0v6ikhmuk] {
+    width: 100%;
+    border: none;
+    background: transparent;
+    color: #dc3545;
+    padding: 10px;
+    text-align: left;
+}
+
+
+/* Zona principal */
+
+.crm-main[b-w0v6ikhmuk] {
+    flex: 1;
+    min-width: 0;
+}
+
+
+/* Barra superior */
+
+.topbar[b-w0v6ikhmuk] {
+    height: 76px;
+    background: white;
+    border-bottom: 1px solid #e9ecef;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+}
+
+.sede-actual[b-w0v6ikhmuk] {
+    display: flex;
+    flex-direction: column;
+}
+
+.sede-actual strong[b-w0v6ikhmuk] {
+    font-size: 16px;
+}
+
+.sede-actual span[b-w0v6ikhmuk] {
+    font-size: 13px;
+    color: #6c757d;
+}
+
+
+/* Usuario */
+
+.usuario-actual[b-w0v6ikhmuk] {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-align: right;
+}
+
+.usuario-actual div:first-child[b-w0v6ikhmuk] {
+    display: flex;
+    flex-direction: column;
+}
+
+.usuario-actual span[b-w0v6ikhmuk] {
+    font-size: 12px;
+    color: #6c757d;
+}
+
+.avatar[b-w0v6ikhmuk] {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #e8f2ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: #0d6efd;
+}
+
+
+/* Contenido */
+
+.crm-content[b-w0v6ikhmuk] {
+    padding: 30px;
+}
+
+
+@media (max-width: 768px) {
+
+    .sidebar[b-w0v6ikhmuk] {
+        width: 75px;
+    }
+
+    .sidebar-brand h2[b-w0v6ikhmuk] {
+        font-size: 0;
+    }
+
+    .sidebar-brand h2[b-w0v6ikhmuk]::after {
+        content: "TE";
+        font-size: 22px;
+    }
+
+    .nav-item[b-w0v6ikhmuk] {
+        justify-content: center;
+    }
+
+    .nav-item[b-w0v6ikhmuk] {
+        font-size: 0;
+    }
+
+    .nav-item span[b-w0v6ikhmuk] {
+        font-size: 22px;
+    }
+
+    .crm-content[b-w0v6ikhmuk] {
+        padding: 18px;
+    }
+}

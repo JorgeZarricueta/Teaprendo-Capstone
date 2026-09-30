@@ -1,0 +1,768 @@
+@page "/alumnos"
+
+@using System.Net.Http.Json
+@using TEAprendo.Client.Services
+@using TEAprendo.Contracts.Administracion.Alumnos
+@using TEAprendo.Contracts.Administracion.Aulas
+
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject SedeContextoService SedeContexto
+
+<PageTitle>Alumnos - TEAprendo</PageTitle>
+
+<div class="alumnos-page">
+
+    <div class="page-header">
+
+        <div>
+            <h1>Alumnos</h1>
+
+            <p>
+                Gestiona los alumnos de la sede seleccionada.
+            </p>
+        </div>
+
+        <button class="btn btn-primary"
+                @onclick="MostrarFormularioCrear">
+            + Nuevo alumno
+        </button>
+
+    </div>
+
+
+    @if (!string.IsNullOrWhiteSpace(_mensaje))
+    {
+        <div class="alert alert-success">
+            @_mensaje
+        </div>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(_error))
+    {
+        <div class="alert alert-danger">
+            @_error
+        </div>
+    }
+
+
+    @if (_mostrarFormularioCrear)
+    {
+        <div class="form-card">
+
+            <div class="form-header">
+                <h2>Nuevo alumno</h2>
+
+                <button class="cerrar-form"
+                        @onclick="CancelarCrear">
+                    ×
+                </button>
+            </div>
+
+            <EditForm Model="_nuevoAlumno"
+                      OnValidSubmit="CrearAlumno">
+
+                <div class="form-grid">
+
+                    <div>
+                        <label>Nombre</label>
+
+                        <InputText class="form-control"
+                                   @bind-Value="_nuevoAlumno.Nombre" />
+                    </div>
+
+                    <div>
+                        <label>Apellido</label>
+
+                        <InputText class="form-control"
+                                   @bind-Value="_nuevoAlumno.Apellido" />
+                    </div>
+
+                    <div>
+                        <label>Fecha de nacimiento</label>
+
+                        <InputDate class="form-control"
+                                   @bind-Value="_nuevoAlumno.FechaNacimiento" />
+                    </div>
+
+                    <div>
+                        <label>Aula</label>
+
+                        <InputSelect class="form-select"
+                                     @bind-Value="_nuevoAlumno.AulaId">
+
+                            <option value="@Guid.Empty">
+                                Selecciona un aula
+                            </option>
+
+                            @foreach (var aula in _aulas.Where(x => x.Activa))
+                            {
+                                <option value="@aula.Id">
+                                    @aula.Nombre
+                                </option>
+                            }
+
+                        </InputSelect>
+                    </div>
+
+                </div>
+
+                <div class="form-actions">
+
+                    <button type="button"
+                            class="btn btn-outline-secondary"
+                            @onclick="CancelarCrear">
+                        Cancelar
+                    </button>
+
+                    <button type="submit"
+                            class="btn btn-primary"
+                            disabled="@_guardando">
+
+                        @(_guardando
+                            ? "Guardando..."
+                            : "Crear alumno")
+
+                    </button>
+
+                </div>
+
+            </EditForm>
+
+        </div>
+    }
+
+
+    @if (_alumnoEditando is not null)
+    {
+        <div class="form-card">
+
+            <div class="form-header">
+
+                <h2>
+                    Editar alumno
+                </h2>
+
+                <button class="cerrar-form"
+                        @onclick="CancelarEdicion">
+                    ×
+                </button>
+
+            </div>
+
+            <EditForm Model="_editarAlumno"
+                      OnValidSubmit="GuardarEdicion">
+
+                <div class="form-grid">
+
+                    <div>
+                        <label>Nombre</label>
+
+                        <InputText class="form-control"
+                                   @bind-Value="_editarAlumno.Nombre" />
+                    </div>
+
+                    <div>
+                        <label>Apellido</label>
+
+                        <InputText class="form-control"
+                                   @bind-Value="_editarAlumno.Apellido" />
+                    </div>
+
+                    <div>
+                        <label>Fecha de nacimiento</label>
+
+                        <InputDate class="form-control"
+                                   @bind-Value="_editarAlumno.FechaNacimiento" />
+                    </div>
+
+                </div>
+
+                <div class="form-actions">
+
+                    <button type="button"
+                            class="btn btn-outline-secondary"
+                            @onclick="CancelarEdicion">
+                        Cancelar
+                    </button>
+
+                    <button type="submit"
+                            class="btn btn-primary"
+                            disabled="@_guardando">
+
+                        @(_guardando
+                            ? "Guardando..."
+                            : "Guardar cambios")
+
+                    </button>
+
+                </div>
+
+            </EditForm>
+
+        </div>
+    }
+
+
+    @if (_alumnoCambiandoAula is not null)
+    {
+        <div class="form-card">
+
+            <div class="form-header">
+
+                <h2>
+                    Cambiar aula
+                </h2>
+
+                <button class="cerrar-form"
+                        @onclick="CancelarCambioAula">
+                    ×
+                </button>
+
+            </div>
+
+            <p>
+                Alumno:
+                <strong>
+                    @_alumnoCambiandoAula.Nombre
+                    @_alumnoCambiandoAula.Apellido
+                </strong>
+            </p>
+
+            <div>
+
+                <label>Nueva aula</label>
+
+                <InputSelect class="form-select"
+                             @bind-Value="_cambioAula.AulaId">
+
+                    <option value="@Guid.Empty">
+                        Selecciona un aula
+                    </option>
+
+                    @foreach (var aula in _aulas.Where(x =>
+                        x.Activa &&
+                        x.Id != _alumnoCambiandoAula.AulaId))
+                    {
+                        <option value="@aula.Id">
+                            @aula.Nombre
+                        </option>
+                    }
+
+                </InputSelect>
+
+            </div>
+
+            <div class="form-actions">
+
+                <button type="button"
+                        class="btn btn-outline-secondary"
+                        @onclick="CancelarCambioAula">
+                    Cancelar
+                </button>
+
+                <button type="button"
+                        class="btn btn-primary"
+                        @onclick="GuardarCambioAula"
+                        disabled="@_guardando">
+                    Cambiar aula
+                </button>
+
+            </div>
+
+        </div>
+    }
+
+
+    @if (_cargando)
+    {
+        <p>Cargando alumnos...</p>
+    }
+    else if (_alumnos.Count == 0)
+    {
+        <div class="empty-state">
+
+            <h3>No hay alumnos registrados</h3>
+
+            <p>
+                Registra el primer alumno de esta sede.
+            </p>
+
+        </div>
+    }
+    else
+    {
+        <div class="alumnos-grid">
+
+            @foreach (var alumno in _alumnos)
+            {
+                <div class="alumno-card">
+
+                    <div class="alumno-header">
+
+                        <div class="alumno-avatar">
+                            @ObtenerInicial(alumno)
+                        </div>
+
+                        <div class="alumno-info">
+
+                            <h3>
+                                @alumno.Nombre
+                                @alumno.Apellido
+                            </h3>
+
+                            <p>
+                                @alumno.AulaNombre
+                            </p>
+
+                        </div>
+
+                        <span class="estado @(alumno.Activo ? "activo" : "inactivo")">
+
+                            @(alumno.Activo
+                                ? "Activo"
+                                : "Inactivo")
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="alumno-datos">
+
+                        <div>
+                            <span>Fecha de nacimiento</span>
+
+                            <strong>
+                                @alumno.FechaNacimiento.ToString("dd/MM/yyyy")
+                            </strong>
+                        </div>
+
+                        <div>
+                            <span>Sede</span>
+
+                            <strong>
+                                @alumno.SedeNombre
+                            </strong>
+                        </div>
+
+                    </div>
+
+
+                    <div class="alumno-actions">
+
+                        <button class="btn btn-outline-primary"
+                                @onclick="() => PrepararEdicion(alumno)">
+                            Editar
+                        </button>
+
+                        <button class="btn btn-outline-secondary"
+                                @onclick="() => PrepararCambioAula(alumno)">
+                            Cambiar aula
+                        </button>
+
+                        @if (alumno.Activo)
+                        {
+                            <button class="btn btn-outline-danger"
+                                    @onclick="() => CambiarEstado(alumno, false)">
+                                Desactivar
+                            </button>
+                        }
+                        else
+                        {
+                            <button class="btn btn-outline-success"
+                                    @onclick="() => CambiarEstado(alumno, true)">
+                                Activar
+                            </button>
+                        }
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    }
+
+</div>
+
+
+@code
+{
+    private List<AlumnoDto> _alumnos = new();
+
+    private List<AulaDto> _aulas = new();
+
+    private bool _cargando = true;
+
+    private bool _guardando;
+
+    private bool _mostrarFormularioCrear;
+
+    private string _mensaje = string.Empty;
+
+    private string _error = string.Empty;
+
+    private AlumnoDto? _alumnoEditando;
+
+    private AlumnoDto? _alumnoCambiandoAula;
+
+
+    private CrearAlumnoRequest _nuevoAlumno = new();
+
+    private ActualizarAlumnoRequest _editarAlumno = new();
+
+    private CambiarAulaAlumnoRequest _cambioAula = new();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Obliga a seleccionar una sede.
+        if (SedeContexto.SedeActual is null)
+        {
+            Navigation.NavigateTo(
+                "/seleccionar-sede");
+
+            return;
+        }
+
+        await CargarDatos();
+    }
+
+
+    // Carga alumnos y aulas de la sede.
+    private async Task CargarDatos()
+    {
+        _cargando = true;
+        _error = string.Empty;
+
+        try
+        {
+            var sedeId =
+                SedeContexto.SedeActual!.Id;
+
+            var alumnos =
+                await Http.GetFromJsonAsync<List<AlumnoDto>>(
+                    $"api/alumnos/sede/{sedeId}");
+
+            var aulas =
+                await Http.GetFromJsonAsync<List<AulaDto>>(
+                    $"api/aulas/sede/{sedeId}");
+
+            _alumnos = alumnos ?? new();
+
+            _aulas = aulas ?? new();
+        }
+        catch
+        {
+            _error =
+                "No fue posible cargar la información.";
+        }
+        finally
+        {
+            _cargando = false;
+        }
+    }
+
+
+    // Abre el formulario de creación.
+    private void MostrarFormularioCrear()
+    {
+        _mensaje = string.Empty;
+        _error = string.Empty;
+
+        _alumnoEditando = null;
+        _alumnoCambiandoAula = null;
+
+        _nuevoAlumno = new CrearAlumnoRequest
+        {
+            FechaNacimiento =
+                DateTime.Today.AddYears(-8)
+        };
+
+        _mostrarFormularioCrear = true;
+    }
+
+
+    private void CancelarCrear()
+    {
+        _mostrarFormularioCrear = false;
+    }
+
+
+    // Crea un alumno y su matrícula.
+    private async Task CrearAlumno()
+    {
+        if (_nuevoAlumno.AulaId == Guid.Empty)
+        {
+            _error =
+                "Debes seleccionar un aula.";
+
+            return;
+        }
+
+        _guardando = true;
+        _mensaje = string.Empty;
+        _error = string.Empty;
+
+        try
+        {
+            var respuesta =
+                await Http.PostAsJsonAsync(
+                    "api/alumnos",
+                    _nuevoAlumno);
+
+            if (!respuesta.IsSuccessStatusCode)
+            {
+                var error =
+                    await respuesta.Content
+                        .ReadFromJsonAsync<MensajeApi>();
+
+                _error =
+                    error?.Mensaje ??
+                    "No fue posible crear el alumno.";
+
+                return;
+            }
+
+            _mensaje =
+                "Alumno creado correctamente.";
+
+            _mostrarFormularioCrear = false;
+
+            await CargarDatos();
+        }
+        catch
+        {
+            _error =
+                "Ocurrió un error al crear el alumno.";
+        }
+        finally
+        {
+            _guardando = false;
+        }
+    }
+
+
+    // Prepara los datos para editar.
+    private void PrepararEdicion(AlumnoDto alumno)
+    {
+        _mensaje = string.Empty;
+        _error = string.Empty;
+
+        _mostrarFormularioCrear = false;
+        _alumnoCambiandoAula = null;
+
+        _alumnoEditando = alumno;
+
+        _editarAlumno =
+            new ActualizarAlumnoRequest
+            {
+                Nombre = alumno.Nombre,
+                Apellido = alumno.Apellido,
+                FechaNacimiento =
+                    alumno.FechaNacimiento
+            };
+    }
+
+
+    private void CancelarEdicion()
+    {
+        _alumnoEditando = null;
+    }
+
+
+    // Guarda los datos personales.
+    private async Task GuardarEdicion()
+    {
+        if (_alumnoEditando is null)
+        {
+            return;
+        }
+
+        _guardando = true;
+        _mensaje = string.Empty;
+        _error = string.Empty;
+
+        try
+        {
+            var respuesta =
+                await Http.PutAsJsonAsync(
+                    $"api/alumnos/{_alumnoEditando.Id}",
+                    _editarAlumno);
+
+            if (!respuesta.IsSuccessStatusCode)
+            {
+                var error =
+                    await respuesta.Content
+                        .ReadFromJsonAsync<MensajeApi>();
+
+                _error =
+                    error?.Mensaje ??
+                    "No fue posible actualizar el alumno.";
+
+                return;
+            }
+
+            _mensaje =
+                "Alumno actualizado correctamente.";
+
+            _alumnoEditando = null;
+
+            await CargarDatos();
+        }
+        catch
+        {
+            _error =
+                "Ocurrió un error al actualizar el alumno.";
+        }
+        finally
+        {
+            _guardando = false;
+        }
+    }
+
+
+    // Abre el formulario de cambio de aula.
+    private void PrepararCambioAula(AlumnoDto alumno)
+    {
+        _mensaje = string.Empty;
+        _error = string.Empty;
+
+        _mostrarFormularioCrear = false;
+        _alumnoEditando = null;
+
+        _alumnoCambiandoAula = alumno;
+
+        _cambioAula =
+            new CambiarAulaAlumnoRequest();
+    }
+
+
+    private void CancelarCambioAula()
+    {
+        _alumnoCambiandoAula = null;
+    }
+
+
+    // Cambia al alumno de aula.
+    private async Task GuardarCambioAula()
+    {
+        if (_alumnoCambiandoAula is null)
+        {
+            return;
+        }
+
+        if (_cambioAula.AulaId == Guid.Empty)
+        {
+            _error =
+                "Debes seleccionar una nueva aula.";
+
+            return;
+        }
+
+        _guardando = true;
+        _mensaje = string.Empty;
+        _error = string.Empty;
+
+        try
+        {
+            var respuesta =
+                await Http.PutAsJsonAsync(
+                    $"api/alumnos/{_alumnoCambiandoAula.Id}/aula",
+                    _cambioAula);
+
+            if (!respuesta.IsSuccessStatusCode)
+            {
+                var error =
+                    await respuesta.Content
+                        .ReadFromJsonAsync<MensajeApi>();
+
+                _error =
+                    error?.Mensaje ??
+                    "No fue posible cambiar el aula.";
+
+                return;
+            }
+
+            _mensaje =
+                "Alumno cambiado de aula correctamente.";
+
+            _alumnoCambiandoAula = null;
+
+            await CargarDatos();
+        }
+        catch
+        {
+            _error =
+                "Ocurrió un error al cambiar el aula.";
+        }
+        finally
+        {
+            _guardando = false;
+        }
+    }
+
+
+    // Activa o desactiva un alumno.
+    private async Task CambiarEstado(
+        AlumnoDto alumno,
+        bool activo)
+    {
+        _mensaje = string.Empty;
+        _error = string.Empty;
+
+        var request =
+            new CambiarEstadoAlumnoRequest
+            {
+                Activo = activo
+            };
+
+        try
+        {
+            var respuesta =
+                await Http.PatchAsJsonAsync(
+                    $"api/alumnos/{alumno.Id}/estado",
+                    request);
+
+            if (!respuesta.IsSuccessStatusCode)
+            {
+                _error =
+                    "No fue posible cambiar el estado.";
+
+                return;
+            }
+
+            _mensaje = activo
+                ? "Alumno activado correctamente."
+                : "Alumno desactivado correctamente.";
+
+            await CargarDatos();
+        }
+        catch
+        {
+            _error =
+                "Ocurrió un error al cambiar el estado.";
+        }
+    }
+
+
+    // Obtiene la inicial para el avatar.
+    private string ObtenerInicial(AlumnoDto alumno)
+    {
+        if (string.IsNullOrWhiteSpace(alumno.Nombre))
+        {
+            return "?";
+        }
+
+        return alumno.Nombre[..1].ToUpper();
+    }
+
+
+    // Modelo para mensajes enviados por la API.
+    private class MensajeApi
+    {
+        public string Mensaje { get; set; }
+            = string.Empty;
+    }
+}

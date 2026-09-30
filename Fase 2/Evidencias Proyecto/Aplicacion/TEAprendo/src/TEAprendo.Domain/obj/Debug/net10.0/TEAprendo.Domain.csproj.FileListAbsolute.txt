@@ -1,0 +1,11 @@
+C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Domain\bin\Debug\net10.0\TEAprendo.Domain.deps.json
+C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Domain\bin\Debug\net10.0\TEAprendo.Domain.dll
+C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Domain\bin\Debug\net10.0\TEAprendo.Domain.pdb
+C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Domain\obj\Debug\net10.0\TEAprendo.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Domain\obj\Debug\net10.0\TEAprendo.Domain.AssemblyInfoInputs.cache
+C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Domain\obj\Debug\net10.0\TEAprendo.Domain.AssemblyInfo.cs
+C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Domain\obj\Debug\net10.0\TEAprendo.Domain.csproj.CoreCompileInputs.cache
+C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Domain\obj\Debug\net10.0\TEAprendo.Domain.dll
+C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Domain\obj\Debug\net10.0\refint\TEAprendo.Domain.dll
+C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Domain\obj\Debug\net10.0\TEAprendo.Domain.pdb
+C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Domain\obj\Debug\net10.0\ref\TEAprendo.Domain.dll

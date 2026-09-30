@@ -3,6 +3,8 @@
 @using System.Net.Http.Json
 @using TEAprendo.Client.Services
 @using TEAprendo.Contracts.Administracion.Aulas
+@using TEAprendo.Contracts.Administracion.Alumnos
+@using TEAprendo.Contracts.Administracion.Usuarios
 
 @inject HttpClient Http
 @inject NavigationManager Navigation
@@ -45,7 +47,7 @@
 
             <div>
                 <span>Alumnos</span>
-                <strong>--</strong>
+                <strong>@_cantidadAlumnos</strong>
             </div>
 
         </div>
@@ -59,7 +61,7 @@
 
             <div>
                 <span>Usuarios</span>
-                <strong>--</strong>
+                <strong>@_cantidadUsuarios</strong>
             </div>
 
         </div>
@@ -121,8 +123,12 @@
 @code
 {
     private List<AulaDto> _aulas = new();
+    
+    private int _cantidadAlumnos;
 
     private bool _cargando = true;
+
+    private int _cantidadUsuarios;
 
 
     protected override async Task OnInitializedAsync()
@@ -137,8 +143,10 @@
         }
 
         await CargarAulas();
+        await CargarAlumnos();
+        await CargarUsuarios();
     }
-
+    
 
     // Obtiene las aulas de la sede actual.
     private async Task CargarAulas()
@@ -159,4 +167,33 @@
             _cargando = false;
         }
     }
+
+    // Obtiene la cantidad de alumnos de la sede.
+    private async Task CargarAlumnos()
+    {
+        var sedeId =
+            SedeContexto.SedeActual!.Id;
+
+        var alumnos =
+            await Http.GetFromJsonAsync<List<AlumnoDto>>(
+                $"api/alumnos/sede/{sedeId}");
+
+        _cantidadAlumnos =
+            alumnos?.Count ?? 0;
+    }
+
+    // Obtiene la cantidad de usuarios de la sede.
+private async Task CargarUsuarios()
+{
+    var sedeId =
+        SedeContexto.SedeActual!.Id;
+
+    var usuarios =
+        await Http.GetFromJsonAsync<List<UsuarioSedeDto>>(
+            $"api/usuarios/sede/{sedeId}");
+
+    _cantidadUsuarios =
+        usuarios?.Count ?? 0;
+}
+    
 }

@@ -1,0 +1,1687 @@
+@page "/usuarios"
+
+@using System.Net.Http.Json
+@using TEAprendo.Client.Services
+@using TEAprendo.Contracts.Administracion.Usuarios
+@using TEAprendo.Contracts.Administracion.Docentes
+@using TEAprendo.Contracts.Administracion.Aulas
+@using TEAprendo.Contracts.Administracion.Apoderados
+@using TEAprendo.Contracts.Administracion.Alumnos
+@using TEAprendo.Contracts.Administracion.Terapeutas
+
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject SedeContextoService SedeContexto
+
+<PageTitle>Usuarios - TEAprendo</PageTitle>
+
+<div class="usuarios-page">
+
+    <div class="page-header">
+
+        <div>
+            <h1>Usuarios</h1>
+
+            <p>
+                Gestiona los usuarios asociados a la sede seleccionada.
+            </p>
+        </div>
+
+        <button class="btn btn-primary"
+                @onclick="MostrarFormularioCrear">
+            + Nuevo usuario
+        </button>
+
+    </div>
+
+
+    @if (!string.IsNullOrWhiteSpace(_mensaje))
+    {
+        <div class="alert alert-success">
+            @_mensaje
+        </div>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(_error))
+    {
+        <div class="alert alert-danger">
+            @_error
+        </div>
+    }
+
+
+    @if (_mostrarFormularioCrear)
+    {
+        <div class="form-card">
+
+            <div class="form-header">
+
+                <h2>Nuevo usuario</h2>
+
+                <button class="cerrar-form"
+                        @onclick="CancelarCrear">
+                    ×
+                </button>
+
+            </div>
+
+            <EditForm Model="_nuevoUsuario"
+                      OnValidSubmit="CrearUsuario">
+
+                <div class="form-grid">
+
+                    <div>
+                        <label>Nombre</label>
+
+                        <InputText class="form-control"
+                                   @bind-Value="_nuevoUsuario.Nombre" />
+                    </div>
+
+                    <div>
+                        <label>Apellido</label>
+
+                        <InputText class="form-control"
+                                   @bind-Value="_nuevoUsuario.Apellido" />
+                    </div>
+
+                    <div>
+                        <label>Correo electrónico</label>
+
+                        <InputText class="form-control"
+                                   type="email"
+                                   @bind-Value="_nuevoUsuario.Correo" />
+                    </div>
+
+                    <div>
+                        <label>Contraseña inicial</label>
+
+                        <InputText class="form-control"
+                                   type="password"
+                                   @bind-Value="_nuevoUsuario.Password" />
+                    </div>
+
+                    <div>
+                        <label>Rol</label>
+
+                        <InputSelect class="form-select"
+                                     @bind-Value="_nuevoUsuario.Rol">
+
+                            <option value="">
+                                Selecciona un rol
+                            </option>
+
+                            <option value="Docente">
+                                Docente
+                            </option>
+
+                            <option value="Terapeuta">
+                                Terapeuta
+                            </option>
+
+                            <option value="Apoderado">
+                                Apoderado
+                            </option>
+
+                        </InputSelect>
+                    </div>
+
+                </div>
+
+                <div class="form-help">
+                    El Director solamente puede crear usuarios
+                    Docente, Terapeuta y Apoderado.
+                </div>
+
+                <div class="form-actions">
+
+                    <button type="button"
+                            class="btn btn-outline-secondary"
+                            @onclick="CancelarCrear">
+                        Cancelar
+                    </button>
+
+                    <button type="submit"
+                            class="btn btn-primary"
+                            disabled="@_guardando">
+
+                        @(_guardando
+                            ? "Guardando..."
+                            : "Crear usuario")
+
+                    </button>
+
+                </div>
+
+            </EditForm>
+
+        </div>
+    }
+
+
+    @if (_usuarioEditando is not null)
+    {
+        <div class="form-card">
+
+            <div class="form-header">
+
+                <div>
+                    <h2>Editar usuario</h2>
+
+                    <span class="usuario-edicion-correo">
+                        @_usuarioEditando.Correo
+                    </span>
+                </div>
+
+                <button class="cerrar-form"
+                        @onclick="CancelarEdicion">
+                    ×
+                </button>
+
+            </div>
+
+            <EditForm Model="_editarUsuario"
+                      OnValidSubmit="GuardarEdicion">
+
+                <div class="form-grid">
+
+                    <div>
+                        <label>Nombre</label>
+
+                        <InputText class="form-control"
+                                   @bind-Value="_editarUsuario.Nombre" />
+                    </div>
+
+                    <div>
+                        <label>Apellido</label>
+
+                        <InputText class="form-control"
+                                   @bind-Value="_editarUsuario.Apellido" />
+                    </div>
+
+                </div>
+
+                <div class="form-actions">
+
+                    <button type="button"
+                            class="btn btn-outline-secondary"
+                            @onclick="CancelarEdicion">
+                        Cancelar
+                    </button>
+
+                    <button type="submit"
+                            class="btn btn-primary"
+                            disabled="@_guardando">
+
+                        @(_guardando
+                            ? "Guardando..."
+                            : "Guardar cambios")
+
+                    </button>
+
+                </div>
+
+            </EditForm>
+
+        </div>
+    }
+
+    @if (_docenteAsignando is not null)
+    {
+        <div class="form-card">
+
+            <div class="form-header">
+
+                <div>
+                    <h2>Asignar aulas</h2>
+
+                    <span class="usuario-edicion-correo">
+                        @_docenteAsignando.Nombre
+                        @_docenteAsignando.Apellido
+                    </span>
+                </div>
+
+                <button class="cerrar-form"
+                        @onclick="CancelarAsignacionAulas">
+                    ×
+                </button>
+
+            </div>
+
+            <p class="asignacion-descripcion">
+                Selecciona las aulas que estarán a cargo de este docente.
+            </p>
+
+
+            @if (_cargandoAsignacion)
+            {
+                <p>Cargando aulas...</p>
+            }
+            else if (_aulasAsignacion.Count == 0)
+            {
+                <div class="empty-asignacion">
+                    No existen aulas activas disponibles en esta sede.
+                </div>
+            }
+            else
+            {
+                <div class="aulas-seleccion">
+
+                    @foreach (var aula in _aulasAsignacion)
+                    {
+                        <label class="aula-check-card">
+
+                            <input type="checkbox"
+                                @bind="aula.Seleccionada" />
+
+                            <div>
+                                <strong>
+                                    @aula.Nombre
+                                </strong>
+
+                                <span>
+                                    Año académico:
+                                    @aula.AnioAcademico
+                                </span>
+                            </div>
+
+                        </label>
+                    }
+
+                </div>
+            }
+
+
+            <div class="form-help">
+
+                Un docente puede estar a cargo de una o más aulas.
+                Los alumnos que vea posteriormente dependerán de
+                las matrículas activas de estas aulas.
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <button type="button"
+                        class="btn btn-outline-secondary"
+                        @onclick="CancelarAsignacionAulas">
+
+                    Cancelar
+
+                </button>
+
+                <button type="button"
+                        class="btn btn-primary"
+                        @onclick="GuardarAsignacionAulas"
+                        disabled="@(_guardandoAsignacion || _cargandoAsignacion)">
+
+                    @(_guardandoAsignacion
+                        ? "Guardando..."
+                        : "Guardar asignación")
+
+                </button>
+
+            </div>
+
+        </div>
+    }
+
+    @if (_apoderadoAsignando is not null)
+    {
+        <div class="form-card">
+
+            <div class="form-header">
+
+                <div>
+                    <h2>Asignar alumnos</h2>
+
+                    <span class="usuario-edicion-correo">
+                        @_apoderadoAsignando.Nombre
+                        @_apoderadoAsignando.Apellido
+                    </span>
+                </div>
+
+                <button class="cerrar-form"
+                        @onclick="CancelarAsignacionAlumnos">
+                    ×
+                </button>
+
+            </div>
+
+            <p class="asignacion-descripcion">
+                Selecciona los alumnos que estarán vinculados
+                a este apoderado.
+            </p>
+
+            @if (_cargandoAsignacionAlumnos)
+            {
+                <p>Cargando alumnos...</p>
+            }
+            else if (_alumnosAsignacion.Count == 0)
+            {
+                <div class="empty-asignacion">
+                    No existen alumnos activos en esta sede.
+                </div>
+            }
+            else
+            {
+                <div class="aulas-seleccion">
+
+                    @foreach (var alumno in _alumnosAsignacion)
+                    {
+                        <label class="aula-check-card">
+
+                            <input type="checkbox"
+                                @bind="alumno.Seleccionado" />
+
+                            <div>
+                                <strong>
+                                    @alumno.Nombre
+                                    @alumno.Apellido
+                                </strong>
+
+                                <span>
+                                    Aula:
+                                    @alumno.AulaNombre
+                                </span>
+                            </div>
+
+                        </label>
+                    }
+
+                </div>
+            }
+
+            <div class="form-help">
+                Un apoderado puede estar vinculado a uno o más
+                alumnos de la sede.
+            </div>
+
+            <div class="form-actions">
+
+                <button type="button"
+                        class="btn btn-outline-secondary"
+                        @onclick="CancelarAsignacionAlumnos">
+
+                    Cancelar
+
+                </button>
+
+                <button type="button"
+                        class="btn btn-primary"
+                        @onclick="GuardarAsignacionAlumnos"
+                        disabled="@(_guardandoAsignacionAlumnos || _cargandoAsignacionAlumnos)">
+
+                    @(_guardandoAsignacionAlumnos
+                        ? "Guardando..."
+                        : "Guardar asignación")
+
+                </button>
+
+            </div>
+
+        </div>
+    }
+    @if (_terapeutaAsignando is not null)
+    {
+        <div class="form-card">
+
+            <div class="form-header">
+
+                <div>
+                    <h2>Asignar alumnos</h2>
+
+                    <span class="usuario-edicion-correo">
+                        @_terapeutaAsignando.Nombre
+                        @_terapeutaAsignando.Apellido
+                    </span>
+                </div>
+
+                <button class="cerrar-form"
+                        @onclick="CancelarAsignacionTerapeuta">
+                    ×
+                </button>
+
+            </div>
+
+
+            <p class="asignacion-descripcion">
+                Selecciona los alumnos que estarán
+                asignados a este profesional.
+            </p>
+
+
+            @if (_cargandoAsignacionTerapeuta)
+            {
+                <p>Cargando alumnos...</p>
+            }
+            else if (_alumnosTerapeutaAsignacion.Count == 0)
+            {
+                <div class="empty-asignacion">
+
+                    No existen alumnos activos en esta sede.
+
+                </div>
+            }
+            else
+            {
+                <div class="aulas-seleccion">
+
+                    @foreach (var alumno in _alumnosTerapeutaAsignacion)
+                    {
+                        <label class="aula-check-card">
+
+                            <input type="checkbox"
+                                @bind="alumno.Seleccionado" />
+
+                            <div>
+
+                                <strong>
+                                    @alumno.Nombre
+                                    @alumno.Apellido
+                                </strong>
+
+                                <span>
+                                    @alumno.AulaNombre
+                                </span>
+
+                            </div>
+
+                        </label>
+                    }
+
+                </div>
+            }
+
+
+            <div class="form-help">
+
+                El profesional solo podrá acceder posteriormente
+                a los alumnos que tenga asignados.
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <button type="button"
+                        class="btn btn-outline-secondary"
+                        @onclick="CancelarAsignacionTerapeuta">
+
+                    Cancelar
+
+                </button>
+
+                <button type="button"
+                        class="btn btn-primary"
+                        @onclick="GuardarAsignacionTerapeuta"
+                        disabled="@(_guardandoAsignacionTerapeuta || _cargandoAsignacionTerapeuta)">
+
+                    @(_guardandoAsignacionTerapeuta
+                        ? "Guardando..."
+                        : "Guardar asignación")
+
+                </button>
+
+            </div>
+
+        </div>
+    }
+    @if (_cargando)
+{
+    <p>Cargando usuarios...</p>
+}
+else if (_usuarios.Count == 0)
+{
+    <div class="empty-state">
+
+        <h3>No hay usuarios registrados</h3>
+
+        <p>
+            Crea el primer usuario de esta sede.
+        </p>
+
+    </div>
+}
+else
+{
+    <div class="usuarios-clasificados">
+
+        @foreach (var grupo in _gruposUsuarios)
+        {
+            var usuariosGrupo =
+                _usuarios
+                    .Where(x => x.Rol == grupo.Rol)
+                    .ToList();
+
+            if (usuariosGrupo.Count == 0)
+            {
+                continue;
+            }
+
+            <details class="usuarios-seccion @grupo.Clase" open>
+
+                <summary class="usuarios-seccion-header">
+
+                    <div class="seccion-titulo">
+
+                        <span class="seccion-flecha">
+                            ›
+                        </span>
+
+                        <span class="seccion-icono">
+                         @grupo.Icono
+                        </span>
+                        
+                        <strong>
+                            @grupo.Titulo
+                        </strong>
+
+                        <span class="seccion-contador">
+                            @usuariosGrupo.Count
+                        </span>
+
+                    </div>
+
+                </summary>
+
+
+                <div class="usuarios-seccion-contenido">
+
+                    <div class="usuarios-grid">
+
+                        @foreach (var usuario in usuariosGrupo)
+                        {
+                            <div class="usuario-card">
+
+                                <div class="usuario-header">
+
+                                    <div class="usuario-avatar">
+                                        @ObtenerInicial(usuario)
+                                    </div>
+
+                                    <div class="usuario-info">
+
+                                        <h3>
+                                            @usuario.Nombre
+                                            @usuario.Apellido
+                                        </h3>
+
+                                        <p>
+                                            @usuario.Correo
+                                        </p>
+
+                                    </div>
+
+                                    <span class="estado @(usuario.Activo ? "activo" : "inactivo")">
+
+                                        @(usuario.Activo
+                                            ? "Activo"
+                                            : "Inactivo")
+
+                                    </span>
+
+                                </div>
+
+
+                                <div class="usuario-datos">
+
+                                    <div>
+                                        <span>Rol</span>
+
+                                        <strong>
+                                            @usuario.Rol
+                                        </strong>
+                                    </div>
+
+                                    <div>
+                                        <span>Sede</span>
+
+                                        <strong>
+                                            @usuario.SedeNombre
+                                        </strong>
+                                    </div>
+
+
+                                    @if (usuario.Rol == "Docente")
+                                    {
+                                        <div class="docente-aulas-resumen">
+
+                                            <span>Aulas a cargo</span>
+
+                                            <strong>
+                                                @ObtenerAulasDocente(usuario.Id)
+                                            </strong>
+
+                                        </div>
+                                    }
+
+
+                                    @if (usuario.Rol == "Apoderado")
+                                    {
+                                        <div class="docente-aulas-resumen">
+
+                                            <span>Alumnos vinculados</span>
+
+                                            <strong>
+                                                @ObtenerAlumnosApoderado(usuario.Id)
+                                            </strong>
+
+                                        </div>
+                                    }
+
+                                    @if (usuario.Rol == "Terapeuta")
+                                    {
+                                        <div class="docente-aulas-resumen">
+
+                                            <span>Alumnos asignados</span>
+
+                                            <strong>
+                                                @ObtenerAlumnosTerapeuta(usuario.Id)
+                                            </strong>
+
+                                        </div>
+                                    }
+
+                                </div>
+
+
+                                @if (EsGestionable(usuario))
+                                {
+                                    <div class="usuario-actions">
+
+                                        @if (usuario.Rol == "Docente")
+                                        {
+                                            <button class="btn btn-outline-secondary"
+                                                    @onclick="() => PrepararAsignacionAulas(usuario)">
+
+                                                Aulas a cargo
+
+                                            </button>
+                                        }
+
+
+                                        @if (usuario.Rol == "Apoderado")
+                                        {
+                                            <button class="btn btn-outline-secondary"
+                                                    @onclick="() => PrepararAsignacionAlumnos(usuario)">
+
+                                                Alumnos vinculados
+
+                                            </button>
+                                        }
+
+                                        @if (usuario.Rol == "Terapeuta")
+                                        {
+                                            <button class="btn btn-outline-secondary"
+                                                    @onclick="() => PrepararAsignacionTerapeuta(usuario)">
+
+                                                Alumnos asignados
+
+                                            </button>
+                                        }
+
+
+                                        <button class="btn btn-outline-primary"
+                                                @onclick="() => PrepararEdicion(usuario)">
+
+                                            Editar
+
+                                        </button>
+
+
+                                        @if (usuario.Activo)
+                                        {
+                                            <button class="btn btn-outline-danger"
+                                                    @onclick="() => CambiarEstado(usuario, false)">
+
+                                                Desactivar
+
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <button class="btn btn-outline-success"
+                                                    @onclick="() => CambiarEstado(usuario, true)">
+
+                                                Activar
+
+                                            </button>
+                                        }
+
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="usuario-protegido">
+
+                                        Usuario administrativo protegido
+
+                                    </div>
+                                }
+
+                            </div>
+                        }
+
+                    </div>
+
+                </div>
+
+            </details>
+        }
+
+    </div>
+}
+
+</div>
+
+
+@code
+{
+    private List<UsuarioSedeDto> _usuarios = new();
+    private List<DocenteDto> _docentes = new();
+    private List<AulaSeleccionViewModel> _aulasAsignacion = new();
+    private UsuarioSedeDto? _docenteAsignando;
+
+    private bool _cargandoAsignacion;
+    private bool _guardandoAsignacion;  
+    private bool _cargando = true;
+    private bool _guardando;
+    private bool _mostrarFormularioCrear;
+    private string _mensaje = string.Empty;
+    private string _error = string.Empty;
+    private List<ApoderadoDto> _apoderados = new();
+    private List<AlumnoSeleccionViewModel> _alumnosAsignacion = new();
+    private UsuarioSedeDto? _apoderadoAsignando;
+    private bool _cargandoAsignacionAlumnos;
+    private bool _guardandoAsignacionAlumnos;
+
+    private UsuarioSedeDto? _usuarioEditando;
+    private CrearUsuarioSedeRequest _nuevoUsuario = new();
+    private ActualizarUsuarioRequest _editarUsuario = new();
+
+    private List<TerapeutaDto> _terapeutas = new();
+
+    private List<AlumnoSeleccionViewModel> _alumnosTerapeutaAsignacion
+        = new();
+
+    private UsuarioSedeDto? _terapeutaAsignando;
+
+    private bool _cargandoAsignacionTerapeuta;
+
+    private bool _guardandoAsignacionTerapeuta;
+
+    // Define las categorías visibles en la gestión de usuarios.
+    private readonly List<GrupoUsuarioViewModel> _gruposUsuarios =
+    [
+        new()
+        {
+            Rol = "Director",
+            Titulo = "Directores",
+            Icono = "🏢",
+            Clase = "grupo-director"
+        },
+        new()
+        {
+            Rol = "Docente",
+            Titulo = "Docentes",
+            Icono = "📚",
+            Clase = "grupo-docente"
+        },
+        new()
+        {
+            Rol = "Terapeuta",
+            Titulo = "Terapeutas",
+            Icono = "🧩",
+            Clase = "grupo-terapeuta"
+        },
+        new()
+        {
+            Rol = "Apoderado",
+            Titulo = "Apoderados",
+            Icono = "👨‍👩‍👧",
+            Clase = "grupo-apoderado"
+        }
+    ];
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Obliga a seleccionar una sede.
+        if (SedeContexto.SedeActual is null)
+        {
+            Navigation.NavigateTo(
+                "/seleccionar-sede");
+
+            return;
+        }
+
+        await CargarUsuarios();
+    }
+
+
+    // Carga los usuarios asociados a la sede.
+    private async Task CargarUsuarios()
+    {
+        _cargando = true;
+        _error = string.Empty;
+
+        try
+        {
+            var sedeId =
+                SedeContexto.SedeActual!.Id;
+
+            var usuarios =
+                await Http.GetFromJsonAsync<List<UsuarioSedeDto>>(
+                    $"api/usuarios/sede/{sedeId}");
+
+            var docentes =
+                 await Http.GetFromJsonAsync<List<DocenteDto>>(
+                    $"api/docentes/sede/{sedeId}");
+
+            var apoderados =
+                await Http.GetFromJsonAsync<List<ApoderadoDto>>(
+                    $"api/apoderados/sede/{sedeId}");
+            
+            var terapeutas =
+                await Http.GetFromJsonAsync<List<TerapeutaDto>>(
+                    $"api/terapeutas/sede/{sedeId}");
+
+            _usuarios =
+                usuarios?
+                    .OrderBy(x => OrdenRol(x.Rol))
+                    .ThenBy(x => x.Nombre)
+                    .ThenBy(x => x.Apellido)
+                    .ToList()
+                ?? new();
+
+            _docentes = docentes ?? new();
+            _apoderados = apoderados ?? new();
+            _terapeutas =terapeutas ?? new();
+        }
+        catch
+        {
+            _error =
+                "No fue posible cargar los usuarios.";
+        }
+        finally
+        {
+            _cargando = false;
+        }
+    }
+
+
+    // Abre el formulario de creación.
+    private void MostrarFormularioCrear()
+    {
+        _mensaje = string.Empty;
+        _error = string.Empty;
+
+        _usuarioEditando = null;
+
+        _nuevoUsuario =
+            new CrearUsuarioSedeRequest
+            {
+                SedeId =
+                    SedeContexto.SedeActual!.Id
+            };
+
+        _mostrarFormularioCrear = true;
+    }
+
+
+    private void CancelarCrear()
+    {
+        _mostrarFormularioCrear = false;
+    }
+
+
+    // Crea el usuario en la sede seleccionada.
+    private async Task CrearUsuario()
+    {
+        if (string.IsNullOrWhiteSpace(_nuevoUsuario.Rol))
+        {
+            _error =
+                "Debes seleccionar un rol.";
+
+            return;
+        }
+
+        _nuevoUsuario.SedeId =
+            SedeContexto.SedeActual!.Id;
+
+        _guardando = true;
+        _mensaje = string.Empty;
+        _error = string.Empty;
+
+        try
+        {
+            var respuesta =
+                await Http.PostAsJsonAsync(
+                    "api/usuarios",
+                    _nuevoUsuario);
+
+            if (!respuesta.IsSuccessStatusCode)
+            {
+                var error =
+                    await respuesta.Content
+                        .ReadFromJsonAsync<MensajeApi>();
+
+                _error =
+                    error?.Mensaje ??
+                    "No fue posible crear el usuario.";
+
+                return;
+            }
+
+            _mensaje =
+                "Usuario creado correctamente.";
+
+            _mostrarFormularioCrear = false;
+
+            await CargarUsuarios();
+        }
+        catch
+        {
+            _error =
+                "Ocurrió un error al crear el usuario.";
+        }
+        finally
+        {
+            _guardando = false;
+        }
+    }
+
+
+    // Prepara un usuario para editar.
+    private void PrepararEdicion(
+        UsuarioSedeDto usuario)
+    {
+        if (!EsGestionable(usuario))
+        {
+            return;
+        }
+
+        _mensaje = string.Empty;
+        _error = string.Empty;
+
+        _mostrarFormularioCrear = false;
+
+        _usuarioEditando = usuario;
+
+        _editarUsuario =
+            new ActualizarUsuarioRequest
+            {
+                Nombre = usuario.Nombre,
+                Apellido = usuario.Apellido
+            };
+    }
+
+
+    private void CancelarEdicion()
+    {
+        _usuarioEditando = null;
+    }
+
+
+    // Guarda los cambios del usuario.
+    private async Task GuardarEdicion()
+    {
+        if (_usuarioEditando is null)
+        {
+            return;
+        }
+
+        _guardando = true;
+        _mensaje = string.Empty;
+        _error = string.Empty;
+
+        try
+        {
+            var respuesta =
+                await Http.PutAsJsonAsync(
+                    $"api/usuarios/{_usuarioEditando.Id}/sede/{_usuarioEditando.SedeId}",
+                    _editarUsuario);
+
+            if (!respuesta.IsSuccessStatusCode)
+            {
+                var error =
+                    await respuesta.Content
+                        .ReadFromJsonAsync<MensajeApi>();
+
+                _error =
+                    error?.Mensaje ??
+                    "No fue posible actualizar el usuario.";
+
+                return;
+            }
+
+            _mensaje =
+                "Usuario actualizado correctamente.";
+
+            _usuarioEditando = null;
+
+            await CargarUsuarios();
+        }
+        catch
+        {
+            _error =
+                "Ocurrió un error al actualizar el usuario.";
+        }
+        finally
+        {
+            _guardando = false;
+        }
+    }
+
+
+    // Activa o desactiva un usuario.
+    private async Task CambiarEstado(
+        UsuarioSedeDto usuario,
+        bool activo)
+    {
+        if (!EsGestionable(usuario))
+        {
+            return;
+        }
+
+        _mensaje = string.Empty;
+        _error = string.Empty;
+
+        var request =
+            new CambiarEstadoUsuarioRequest
+            {
+                Activo = activo
+            };
+
+        try
+        {
+            var respuesta =
+                await Http.PatchAsJsonAsync(
+                    $"api/usuarios/{usuario.Id}/sede/{usuario.SedeId}/estado",
+                    request);
+
+            if (!respuesta.IsSuccessStatusCode)
+            {
+                var error =
+                    await respuesta.Content
+                        .ReadFromJsonAsync<MensajeApi>();
+
+                _error =
+                    error?.Mensaje ??
+                    "No fue posible cambiar el estado.";
+
+                return;
+            }
+
+            _mensaje = activo
+                ? "Usuario activado correctamente."
+                : "Usuario desactivado correctamente.";
+
+            await CargarUsuarios();
+        }
+        catch
+        {
+            _error =
+                "Ocurrió un error al cambiar el estado.";
+        }
+    }
+
+
+    // Define qué roles puede administrar el Director.
+    private bool EsGestionable(
+        UsuarioSedeDto usuario)
+    {
+        return usuario.Rol is
+            "Docente" or
+            "Terapeuta" or
+            "Apoderado";
+    }
+
+
+    // Ordena los usuarios por rol.
+    private int OrdenRol(string rol)
+    {
+        return rol switch
+        {
+            "Director" => 1,
+            "Docente" => 2,
+            "Terapeuta" => 3,
+            "Apoderado" => 4,
+            _ => 5
+        };
+    }
+
+
+    // Obtiene la inicial para el avatar.
+    private string ObtenerInicial(
+        UsuarioSedeDto usuario)
+    {
+        if (string.IsNullOrWhiteSpace(usuario.Nombre))
+        {
+            return "?";
+        }
+
+        return usuario.Nombre[..1].ToUpper();
+    }
+
+
+    // Modelo para mensajes enviados por la API.
+    private class MensajeApi
+    {
+        public string Mensaje { get; set; }
+            = string.Empty;
+    }
+
+    // Muestra las aulas actualmente asignadas al docente.
+    private string ObtenerAulasDocente(Guid docenteId)
+{
+        var docente =
+            _docentes.FirstOrDefault(x =>
+                x.Id == docenteId);
+
+        if (docente is null ||
+            docente.Aulas.Count == 0)
+        {
+            return "Sin aulas asignadas";
+        }
+
+        return string.Join(
+            ", ",
+            docente.Aulas.Select(x => x.Nombre));
+    }
+
+    // Muestra los alumnos asignados al terapeuta.
+    private string ObtenerAlumnosTerapeuta(
+        Guid terapeutaId)
+    {
+        var terapeuta =
+            _terapeutas.FirstOrDefault(x =>
+                x.Id == terapeutaId);
+
+        if (terapeuta is null ||
+            terapeuta.Alumnos.Count == 0)
+        {
+            return "Sin alumnos asignados";
+        }
+
+        return string.Join(
+            ", ",
+            terapeuta.Alumnos.Select(x =>
+                $"{x.Nombre} {x.Apellido}"));
+    }
+
+    // Prepara la asignación de alumnos al terapeuta.
+    private async Task PrepararAsignacionTerapeuta(
+        UsuarioSedeDto terapeuta)
+    {
+        _mensaje = string.Empty;
+        _error = string.Empty;
+
+        _mostrarFormularioCrear = false;
+        _usuarioEditando = null;
+
+        _docenteAsignando = null;
+        _apoderadoAsignando = null;
+
+        _terapeutaAsignando = terapeuta;
+
+        _cargandoAsignacionTerapeuta = true;
+
+        try
+        {
+            var sedeId =
+                SedeContexto.SedeActual!.Id;
+
+            var alumnos =
+                await Http.GetFromJsonAsync<List<AlumnoDto>>(
+                    $"api/alumnos/sede/{sedeId}");
+
+            var terapeutaActual =
+                _terapeutas.FirstOrDefault(x =>
+                    x.Id == terapeuta.Id);
+
+            var asignados =
+                terapeutaActual?.Alumnos
+                    .Select(x => x.Id)
+                    .ToHashSet()
+                ?? new HashSet<Guid>();
+
+            _alumnosTerapeutaAsignacion =
+                alumnos?
+                    .Where(x => x.Activo)
+                    .OrderBy(x => x.Nombre)
+                    .ThenBy(x => x.Apellido)
+                    .Select(x =>
+                        new AlumnoSeleccionViewModel
+                        {
+                            Id = x.Id,
+                            Nombre = x.Nombre,
+                            Apellido = x.Apellido,
+                            AulaNombre = x.AulaNombre,
+                            Seleccionado =
+                                asignados.Contains(x.Id)
+                        })
+                    .ToList()
+                ?? new();
+        }
+        catch
+        {
+            _error =
+                "No fue posible cargar los alumnos.";
+
+            _terapeutaAsignando = null;
+        }
+        finally
+        {
+            _cargandoAsignacionTerapeuta = false;
+        }
+    }
+
+    // Guarda los alumnos asignados al terapeuta.
+    private async Task GuardarAsignacionTerapeuta()
+    {
+        if (_terapeutaAsignando is null)
+        {
+            return;
+        }
+
+        _guardandoAsignacionTerapeuta = true;
+        _mensaje = string.Empty;
+        _error = string.Empty;
+
+        try
+        {
+            var sedeId =
+                SedeContexto.SedeActual!.Id;
+
+            var request =
+                new AsignarAlumnosTerapeutaRequest
+                {
+                    AlumnoIds =
+                        _alumnosTerapeutaAsignacion
+                            .Where(x => x.Seleccionado)
+                            .Select(x => x.Id)
+                            .ToList()
+                };
+
+            var respuesta =
+                await Http.PutAsJsonAsync(
+                    $"api/terapeutas/{_terapeutaAsignando.Id}/sede/{sedeId}/alumnos",
+                    request);
+
+            if (!respuesta.IsSuccessStatusCode)
+            {
+                var error =
+                    await respuesta.Content
+                        .ReadFromJsonAsync<MensajeApi>();
+
+                _error =
+                    error?.Mensaje ??
+                    "No fue posible guardar la asignación.";
+
+                return;
+            }
+
+            _mensaje =
+                "Alumnos del terapeuta actualizados correctamente.";
+
+            _terapeutaAsignando = null;
+
+            _alumnosTerapeutaAsignacion.Clear();
+
+            await CargarUsuarios();
+        }
+        catch
+        {
+            _error =
+                "Ocurrió un error al guardar la asignación.";
+        }
+        finally
+        {
+            _guardandoAsignacionTerapeuta = false;
+        }
+    }
+
+    private void CancelarAsignacionTerapeuta()
+    {
+        _terapeutaAsignando = null;
+
+        _alumnosTerapeutaAsignacion.Clear();
+    }
+
+    // Prepara la asignación de aulas del docente.
+    private async Task PrepararAsignacionAulas(
+        UsuarioSedeDto docente)
+    {
+        _mensaje = string.Empty;
+        _error = string.Empty;
+
+        _mostrarFormularioCrear = false;
+        _usuarioEditando = null;
+
+        _docenteAsignando = docente;
+
+        _cargandoAsignacion = true;
+
+        try
+        {
+            var sedeId =
+                SedeContexto.SedeActual!.Id;
+
+            var aulas =
+                await Http.GetFromJsonAsync<List<AulaDto>>(
+                    $"api/aulas/sede/{sedeId}");
+
+            var docenteActual =
+                _docentes.FirstOrDefault(x =>
+                    x.Id == docente.Id);
+
+            var aulasAsignadas =
+                docenteActual?.Aulas
+                    .Select(x => x.Id)
+                    .ToHashSet()
+                ?? new HashSet<Guid>();
+
+            _aulasAsignacion =
+                aulas?
+                    .Where(x => x.Activa)
+                    .OrderBy(x => x.Nombre)
+                    .Select(x =>
+                        new AulaSeleccionViewModel
+                        {
+                            Id = x.Id,
+                            Nombre = x.Nombre,
+                            AnioAcademico =
+                                x.AnioAcademico,
+                            Seleccionada =
+                                aulasAsignadas.Contains(x.Id)
+                        })
+                    .ToList()
+                ?? new();
+        }
+        catch
+        {
+            _error =
+                "No fue posible cargar las aulas.";
+
+            _docenteAsignando = null;
+        }
+        finally
+        {
+            _cargandoAsignacion = false;
+        }
+    }
+
+    // Guarda las aulas que tendrá a cargo el docente.
+    private async Task GuardarAsignacionAulas()
+    {
+        if (_docenteAsignando is null)
+        {
+            return;
+        }
+
+        _guardandoAsignacion = true;
+        _mensaje = string.Empty;
+        _error = string.Empty;
+
+        try
+        {
+            var sedeId =
+                SedeContexto.SedeActual!.Id;
+
+            var request =
+                new AsignarAulasDocenteRequest
+                {
+                    AulaIds =
+                        _aulasAsignacion
+                            .Where(x => x.Seleccionada)
+                            .Select(x => x.Id)
+                            .ToList()
+                };
+
+            var respuesta =
+                await Http.PutAsJsonAsync(
+                    $"api/docentes/{_docenteAsignando.Id}/sede/{sedeId}/aulas",
+                    request);
+
+            if (!respuesta.IsSuccessStatusCode)
+            {
+                var error =
+                    await respuesta.Content
+                        .ReadFromJsonAsync<MensajeApi>();
+
+                _error =
+                    error?.Mensaje ??
+                    "No fue posible guardar las aulas.";
+
+                return;
+            }
+
+            _mensaje =
+                "Aulas del docente actualizadas correctamente.";
+
+            _docenteAsignando = null;
+
+            _aulasAsignacion.Clear();
+
+            await CargarUsuarios();
+        }
+        catch
+        {
+            _error =
+                "Ocurrió un error al guardar las aulas.";
+        }
+        finally
+        {
+            _guardandoAsignacion = false;
+        }
+    }
+
+        private void CancelarAsignacionAulas()
+    {
+        _docenteAsignando = null;
+
+        _aulasAsignacion.Clear();
+    }
+
+    // Representa un aula seleccionable en el formulario.
+    private class AulaSeleccionViewModel
+    {
+        public Guid Id { get; set; }
+
+        public string Nombre { get; set; }
+            = string.Empty;
+
+        public int AnioAcademico { get; set; }
+
+        public bool Seleccionada { get; set; }
+    }
+    // Muestra los alumnos vinculados al apoderado.
+    private string ObtenerAlumnosApoderado(Guid apoderadoId)
+    {
+        var apoderado =
+            _apoderados.FirstOrDefault(x =>
+                x.Id == apoderadoId);
+
+        if (apoderado is null ||
+            apoderado.Alumnos.Count == 0)
+        {
+            return "Sin alumnos vinculados";
+        }
+
+        return string.Join(
+            ", ",
+            apoderado.Alumnos.Select(x =>
+                $"{x.Nombre} {x.Apellido}"));
+    }
+
+    // Prepara la asignación de alumnos al apoderado.
+    private async Task PrepararAsignacionAlumnos(
+        UsuarioSedeDto apoderado)
+    {
+        _mensaje = string.Empty;
+        _error = string.Empty;
+
+        _mostrarFormularioCrear = false;
+        _usuarioEditando = null;
+        _docenteAsignando = null;
+
+        _apoderadoAsignando = apoderado;
+
+        _cargandoAsignacionAlumnos = true;
+
+        try
+        {
+            var sedeId =
+                SedeContexto.SedeActual!.Id;
+
+            var alumnos =
+                await Http.GetFromJsonAsync<List<AlumnoDto>>(
+                    $"api/alumnos/sede/{sedeId}");
+
+            var apoderadoActual =
+                _apoderados.FirstOrDefault(x =>
+                    x.Id == apoderado.Id);
+
+            var alumnosAsignados =
+                apoderadoActual?.Alumnos
+                    .Select(x => x.Id)
+                    .ToHashSet()
+                ?? new HashSet<Guid>();
+
+            _alumnosAsignacion =
+                alumnos?
+                    .Where(x => x.Activo)
+                    .OrderBy(x => x.Nombre)
+                    .ThenBy(x => x.Apellido)
+                    .Select(x =>
+                        new AlumnoSeleccionViewModel
+                        {
+                            Id = x.Id,
+                            Nombre = x.Nombre,
+                            Apellido = x.Apellido,
+                            AulaNombre = x.AulaNombre,
+                            Seleccionado =
+                                alumnosAsignados.Contains(x.Id)
+                        })
+                    .ToList()
+                ?? new();
+        }
+        catch
+        {
+            _error =
+                "No fue posible cargar los alumnos.";
+
+            _apoderadoAsignando = null;
+        }
+        finally
+        {
+            _cargandoAsignacionAlumnos = false;
+        }
+    }
+
+    // Guarda los alumnos vinculados al apoderado.
+    private async Task GuardarAsignacionAlumnos()
+    {
+        if (_apoderadoAsignando is null)
+        {
+            return;
+        }
+
+        _guardandoAsignacionAlumnos = true;
+        _mensaje = string.Empty;
+        _error = string.Empty;
+
+        try
+        {
+            var sedeId =
+                SedeContexto.SedeActual!.Id;
+
+            var request =
+                new AsignarAlumnosApoderadoRequest
+                {
+                    AlumnoIds =
+                        _alumnosAsignacion
+                            .Where(x => x.Seleccionado)
+                            .Select(x => x.Id)
+                            .ToList()
+                };
+
+            var respuesta =
+                await Http.PutAsJsonAsync(
+                    $"api/apoderados/{_apoderadoAsignando.Id}/sede/{sedeId}/alumnos",
+                    request);
+
+            if (!respuesta.IsSuccessStatusCode)
+            {
+                var error =
+                    await respuesta.Content
+                        .ReadFromJsonAsync<MensajeApi>();
+
+                _error =
+                    error?.Mensaje ??
+                    "No fue posible guardar los alumnos.";
+
+                return;
+            }
+
+            _mensaje =
+                "Alumnos del apoderado actualizados correctamente.";
+
+            _apoderadoAsignando = null;
+
+            _alumnosAsignacion.Clear();
+
+            await CargarUsuarios();
+        }
+        catch
+        {
+            _error =
+                "Ocurrió un error al guardar los alumnos.";
+        }
+        finally
+        {
+            _guardandoAsignacionAlumnos = false;
+        }
+    }
+
+    private void CancelarAsignacionAlumnos()
+    {
+        _apoderadoAsignando = null;
+
+        _alumnosAsignacion.Clear();
+    }
+
+    // Representa un alumno seleccionable.
+    private class AlumnoSeleccionViewModel
+    {
+        public Guid Id { get; set; }
+
+        public string Nombre { get; set; }
+            = string.Empty;
+
+        public string Apellido { get; set; }
+            = string.Empty;
+
+        public string AulaNombre { get; set; }
+            = string.Empty;
+
+        public bool Seleccionado { get; set; }
+    }
+
+    // Representa una clasificación de usuarios.
+    private class GrupoUsuarioViewModel
+    {
+        public string Rol { get; set; }
+            = string.Empty;
+
+        public string Titulo { get; set; }
+            = string.Empty;
+
+        public string Icono { get; set; }
+    = string.Empty;
+
+        public string Clase { get; set; }
+            = string.Empty;
+    }
+}

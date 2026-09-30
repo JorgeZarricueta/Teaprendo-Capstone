@@ -34,4 +34,6 @@ builder.Services.AddScoped(sp =>
 // Mantiene la sede seleccionada en el frontend.
 builder.Services.AddScoped<SedeContextoService>();
 
+builder.Services.AddScoped<SesionService>();
+
 await builder.Build().RunAsync();

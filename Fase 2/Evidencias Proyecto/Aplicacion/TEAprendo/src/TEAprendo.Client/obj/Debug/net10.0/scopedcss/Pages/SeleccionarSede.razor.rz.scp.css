@@ -1,0 +1,105 @@
+.sede-container[b-idk4d83226] {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 50px 24px;
+}
+
+.sede-header[b-idk4d83226] {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.sede-header h1[b-idk4d83226] {
+    font-size: 42px;
+    margin-bottom: 10px;
+}
+
+.sede-header h2[b-idk4d83226] {
+    font-size: 26px;
+    margin-bottom: 8px;
+}
+
+.sede-header p[b-idk4d83226] {
+    color: #6c757d;
+}
+
+.sedes-grid[b-idk4d83226] {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+}
+
+.sede-card[b-idk4d83226] {
+    background: white;
+    padding: 30px;
+    border-radius: 18px;
+    text-align: center;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease;
+}
+
+.sede-card:hover[b-idk4d83226] {
+    transform: translateY(-4px);
+}
+
+.sede-icon[b-idk4d83226] {
+    font-size: 45px;
+    margin-bottom: 15px;
+}
+
+.sede-card h3[b-idk4d83226] {
+    margin-bottom: 8px;
+}
+
+.sede-card p[b-idk4d83226] {
+    color: #6c757d;
+    margin-bottom: 24px;
+}
+
+.sede-card button[b-idk4d83226] {
+    width: 100%;
+}
+
+/* Identidad visual por tipo de usuario */
+
+.seccion-icono[b-idk4d83226] {
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9px;
+    background: #f5f6f8;
+    font-size: 16px;
+}
+
+.grupo-director .usuarios-seccion-header[b-idk4d83226] {
+    border-left: 4px solid #59636e;
+}
+
+.grupo-docente .usuarios-seccion-header[b-idk4d83226] {
+    border-left: 4px solid #6f8fb7;
+}
+
+.grupo-terapeuta .usuarios-seccion-header[b-idk4d83226] {
+    border-left: 4px solid #8877a8;
+}
+
+.grupo-apoderado .usuarios-seccion-header[b-idk4d83226] {
+    border-left: 4px solid #7c9b86;
+}
+
+.usuarios-seccion-header:hover[b-idk4d83226] {
+    background: #fafbfc;
+}
+
+.usuario-card[b-idk4d83226] {
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.usuario-card:hover[b-idk4d83226] {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+}

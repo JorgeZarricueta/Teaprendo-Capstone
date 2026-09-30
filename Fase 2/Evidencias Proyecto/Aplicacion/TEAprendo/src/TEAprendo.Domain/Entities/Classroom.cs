@@ -15,4 +15,8 @@ public class Classroom
     public DateTime CreatedAtUtc { get; set; } = DateTime.UtcNow;
 
     public Site Site { get; set; } = null!;
+
+    // Matrículas asociadas al aula.
+    public ICollection<Enrollment> Enrollments { get; set; }
+    = new List<Enrollment>();
 }

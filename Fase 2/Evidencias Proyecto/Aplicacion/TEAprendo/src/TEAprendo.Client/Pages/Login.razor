@@ -3,9 +3,11 @@
 
 @using System.Net.Http.Json
 @using TEAprendo.Contracts.Autenticacion
+@using TEAprendo.Client.Services
 
 @inject HttpClient Http
 @inject NavigationManager Navigation
+@inject SesionService Sesion
 
 <PageTitle>Iniciar sesión - TEAprendo</PageTitle>
 
@@ -17,22 +19,28 @@
 
         <p>Ingresa a tu cuenta</p>
 
-        <EditForm Model="_login" OnValidSubmit="IniciarSesion">
+        <EditForm Model="_login"
+                  OnValidSubmit="IniciarSesion">
 
             <div class="mb-3">
+
                 <label>Correo electrónico</label>
 
                 <InputText class="form-control"
                            @bind-Value="_login.Correo" />
+
             </div>
 
             <div class="mb-3">
+
                 <label>Contraseña</label>
 
                 <InputText class="form-control"
                            type="password"
                            @bind-Value="_login.Password" />
+
             </div>
+
 
             @if (!string.IsNullOrWhiteSpace(_mensaje))
             {
@@ -40,6 +48,7 @@
                     @_mensaje
                 </div>
             }
+
 
             <button class="btn btn-primary w-100"
                     type="submit"
@@ -56,6 +65,7 @@
     </div>
 
 </div>
+
 
 @code
 {
@@ -79,16 +89,36 @@
                     "api/autenticacion/login",
                     _login);
 
-            if (respuesta.IsSuccessStatusCode)
+
+            if (!respuesta.IsSuccessStatusCode)
             {
-                Navigation.NavigateTo(
-                    "/seleccionar-sede");
+                var error =
+                    await respuesta.Content
+                        .ReadFromJsonAsync<MensajeApi>();
+
+                _mensaje =
+                    error?.Mensaje ??
+                    "Correo o contraseña incorrectos.";
 
                 return;
             }
 
-            _mensaje =
-                "Correo o contraseña incorrectos.";
+
+            // Carga el usuario autenticado y sus roles.
+            var usuario =
+                await Sesion.CargarAsync();
+
+            if (usuario is null)
+            {
+                _mensaje =
+                    "No fue posible obtener los datos de la sesión.";
+
+                return;
+            }
+
+
+            RedirigirSegunRol(
+                usuario.Roles);
         }
         catch
         {
@@ -99,5 +129,54 @@
         {
             _cargando = false;
         }
+    }
+
+
+    // Envía al usuario a la interfaz correspondiente.
+    private void RedirigirSegunRol(
+        List<string> roles)
+    {
+        if (roles.Contains("AdministradorGeneral"))
+        {
+            Navigation.NavigateTo(
+                "/seleccionar-sede");
+
+            return;
+        }
+
+        if (roles.Contains("Director"))
+        {
+            Navigation.NavigateTo(
+                "/seleccionar-sede");
+
+            return;
+        }
+
+        if (roles.Contains("Docente") ||
+            roles.Contains("Terapeuta"))
+        {
+            Navigation.NavigateTo(
+                "/profesional");
+
+            return;
+        }
+
+        if (roles.Contains("Apoderado"))
+        {
+            Navigation.NavigateTo(
+                "/apoderado");
+
+            return;
+        }
+
+        Navigation.NavigateTo("/login");
+    }
+
+
+    // Representa los mensajes enviados por la API.
+    private class MensajeApi
+    {
+        public string Mensaje { get; set; }
+            = string.Empty;
     }
 }

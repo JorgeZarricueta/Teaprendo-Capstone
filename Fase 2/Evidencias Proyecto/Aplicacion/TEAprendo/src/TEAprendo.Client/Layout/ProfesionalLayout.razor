@@ -1,0 +1,253 @@
+@inherits LayoutComponentBase
+
+@using TEAprendo.Client.Services
+
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject SesionService Sesion
+@inject SedeContextoService SedeContexto
+
+
+<div class="professional-layout">
+
+    <aside class="professional-sidebar">
+
+        <div class="sidebar-brand">
+
+            <div class="brand-icon">
+                T
+            </div>
+
+            <div>
+                <strong>TEAprendo</strong>
+                <span>Espacio profesional</span>
+            </div>
+
+        </div>
+
+
+        <nav class="professional-nav">
+
+            <NavLink href="/profesional"
+                     Match="NavLinkMatch.All"
+                     class="professional-nav-link">
+
+                <span class="nav-icon">⌂</span>
+
+                <span>Inicio</span>
+
+            </NavLink>
+
+
+            <NavLink href="/profesional/agenda"
+                    class="professional-nav-link">
+
+                <span class="nav-icon">◷</span>
+
+                <span>Agenda</span>
+
+            </NavLink>
+
+
+            <NavLink href="/profesional/alumnos"
+                    class="professional-nav-link">
+
+                <span class="nav-icon">◎</span>
+
+                <span>Mis alumnos</span>
+
+            </NavLink>
+
+
+            @if (_esDocente)
+            {
+                <NavLink href="/profesional/aulas"
+                        class="professional-nav-link">
+
+                    <span class="nav-icon">▦</span>
+
+                    <span>Mis aulas</span>
+
+                </NavLink>
+            }
+
+
+            <div class="nav-section-title">
+                Próximamente
+            </div>
+
+
+            <div class="professional-nav-link nav-disabled">
+
+                <span class="nav-icon">✎</span>
+
+                <span>Observaciones</span>
+
+            </div>
+
+            <div class="professional-nav-link nav-disabled">
+
+                <span class="nav-icon">◫</span>
+
+                <span>Informes</span>
+
+            </div>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <button class="logout-button"
+                    @onclick="CerrarSesion">
+
+                <span>↪</span>
+
+                Cerrar sesión
+
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <main class="professional-main">
+
+        <header class="professional-topbar">
+
+            <div>
+
+                <span class="topbar-context">
+                    @ObtenerTituloRol()
+                </span>
+
+            </div>
+
+
+            <div class="professional-user">
+
+                <div class="user-text">
+
+                    <strong>
+                        @_nombreUsuario
+                    </strong>
+
+                    <span>
+                        @_rolUsuario
+                    </span>
+
+                </div>
+
+                <div class="user-avatar">
+                    @_inicial
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <section class="professional-content">
+            @Body
+        </section>
+
+    </main>
+
+</div>
+
+
+@code
+{
+    private string _nombreUsuario =
+        "Usuario";
+
+    private string _rolUsuario =
+        string.Empty;
+
+    private string _inicial =
+        "?";
+
+    private bool _esDocente;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var usuario =
+            Sesion.UsuarioActual ??
+            await Sesion.CargarAsync();
+
+        if (usuario is null)
+        {
+            Navigation.NavigateTo(
+                "/login",
+                true);
+
+            return;
+        }
+
+        var esDocente =
+            usuario.Roles.Contains("Docente");
+
+        var esTerapeuta =
+            usuario.Roles.Contains("Terapeuta");
+
+        if (!esDocente &&
+            !esTerapeuta)
+        {
+            Navigation.NavigateTo(
+                "/seleccionar-sede");
+
+            return;
+        }
+
+        _esDocente = esDocente;
+
+        _rolUsuario =
+            esDocente
+                ? "Docente"
+                : "Terapeuta";
+
+        _nombreUsuario =
+            $"{usuario.Nombre} {usuario.Apellido}";
+
+        if (!string.IsNullOrWhiteSpace(
+            usuario.Nombre))
+        {
+            _inicial =
+                usuario.Nombre[..1]
+                    .ToUpper();
+        }
+    }
+
+
+    private string ObtenerTituloRol()
+    {
+        return _esDocente
+            ? "Panel del Educador"
+            : "Panel Profesional";
+    }
+
+
+    private async Task CerrarSesion()
+    {
+        try
+        {
+            await Http.PostAsync(
+                "api/autenticacion/logout",
+                null);
+        }
+        catch
+        {
+            // La sesión local se limpia igualmente.
+        }
+
+        Sesion.Limpiar();
+
+        SedeContexto.Limpiar();
+
+        Navigation.NavigateTo(
+            "/login",
+            true);
+    }
+}

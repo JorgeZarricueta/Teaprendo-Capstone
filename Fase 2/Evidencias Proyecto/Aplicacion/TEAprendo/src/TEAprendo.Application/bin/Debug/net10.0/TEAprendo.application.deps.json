@@ -1,0 +1,39 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {
+      "TEAprendo.application/1.0.0": {
+        "dependencies": {
+          "TEAprendo.Domain": "1.0.0"
+        },
+        "runtime": {
+          "TEAprendo.application.dll": {}
+        }
+      },
+      "TEAprendo.Domain/1.0.0": {
+        "runtime": {
+          "TEAprendo.Domain.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "TEAprendo.application/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "TEAprendo.Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

@@ -152,6 +152,61 @@ namespace TEAprendo.Infrastructure.Persistence.Migrations
                     b.ToTable("usuarios_tokens", (string)null);
                 });
 
+            modelBuilder.Entity("TEAprendo.Domain.Entities.Activity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("fecha_creacion_utc");
+
+                    b.Property<Guid>("CreatedByUserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("creado_por_usuario_id");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)")
+                        .HasColumnName("descripcion");
+
+                    b.Property<DateTime?>("EndDateTime")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("fecha_hora_fin");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean")
+                        .HasColumnName("activa");
+
+                    b.Property<DateTime>("StartDateTime")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("fecha_hora_inicio");
+
+                    b.Property<Guid>("StudentId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("alumno_id");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
+                        .HasColumnName("titulo");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("tipo");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("actividades", (string)null);
+                });
+
             modelBuilder.Entity("TEAprendo.Domain.Entities.Classroom", b =>
                 {
                     b.Property<Guid>("Id")
@@ -186,6 +241,46 @@ namespace TEAprendo.Infrastructure.Persistence.Migrations
                     b.HasIndex("SiteId");
 
                     b.ToTable("aulas", (string)null);
+                });
+
+            modelBuilder.Entity("TEAprendo.Domain.Entities.Enrollment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<Guid>("ClassroomId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("aula_id");
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("fecha_creacion_utc");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("date")
+                        .HasColumnName("fecha_fin");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean")
+                        .HasColumnName("activa");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("date")
+                        .HasColumnName("fecha_inicio");
+
+                    b.Property<Guid>("StudentId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("alumno_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClassroomId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("matriculas", (string)null);
                 });
 
             modelBuilder.Entity("TEAprendo.Domain.Entities.Institution", b =>
@@ -248,6 +343,59 @@ namespace TEAprendo.Infrastructure.Persistence.Migrations
                     b.HasIndex("InstitutionId");
 
                     b.ToTable("sedes", (string)null);
+                });
+
+            modelBuilder.Entity("TEAprendo.Domain.Entities.Student", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("date")
+                        .HasColumnName("fecha_nacimiento");
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("fecha_creacion_utc");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("nombre");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean")
+                        .HasColumnName("activo");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("apellido");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("alumnos", (string)null);
+                });
+
+            modelBuilder.Entity("TEAprendo.Infrastructure.Identity.ApoderadoAlumno", b =>
+                {
+                    b.Property<Guid>("UsuarioId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("usuario_id");
+
+                    b.Property<Guid>("AlumnoId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("alumno_id");
+
+                    b.HasKey("UsuarioId", "AlumnoId");
+
+                    b.HasIndex("AlumnoId");
+
+                    b.ToTable("apoderados_alumnos", (string)null);
                 });
 
             modelBuilder.Entity("TEAprendo.Infrastructure.Identity.ApplicationUser", b =>
@@ -329,6 +477,40 @@ namespace TEAprendo.Infrastructure.Persistence.Migrations
                     b.ToTable("usuarios", (string)null);
                 });
 
+            modelBuilder.Entity("TEAprendo.Infrastructure.Identity.DocenteAula", b =>
+                {
+                    b.Property<Guid>("UsuarioId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("usuario_id");
+
+                    b.Property<Guid>("AulaId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("aula_id");
+
+                    b.HasKey("UsuarioId", "AulaId");
+
+                    b.HasIndex("AulaId");
+
+                    b.ToTable("docentes_aulas", (string)null);
+                });
+
+            modelBuilder.Entity("TEAprendo.Infrastructure.Identity.TerapeutaAlumno", b =>
+                {
+                    b.Property<Guid>("UsuarioId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("usuario_id");
+
+                    b.Property<Guid>("AlumnoId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("alumno_id");
+
+                    b.HasKey("UsuarioId", "AlumnoId");
+
+                    b.HasIndex("AlumnoId");
+
+                    b.ToTable("terapeutas_alumnos", (string)null);
+                });
+
             modelBuilder.Entity("TEAprendo.Infrastructure.Identity.UsuarioSede", b =>
                 {
                     b.Property<Guid>("UsuarioId")
@@ -397,6 +579,17 @@ namespace TEAprendo.Infrastructure.Persistence.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("TEAprendo.Domain.Entities.Activity", b =>
+                {
+                    b.HasOne("TEAprendo.Domain.Entities.Student", "Student")
+                        .WithMany("Activities")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Student");
+                });
+
             modelBuilder.Entity("TEAprendo.Domain.Entities.Classroom", b =>
                 {
                     b.HasOne("TEAprendo.Domain.Entities.Site", "Site")
@@ -408,6 +601,25 @@ namespace TEAprendo.Infrastructure.Persistence.Migrations
                     b.Navigation("Site");
                 });
 
+            modelBuilder.Entity("TEAprendo.Domain.Entities.Enrollment", b =>
+                {
+                    b.HasOne("TEAprendo.Domain.Entities.Classroom", "Classroom")
+                        .WithMany("Enrollments")
+                        .HasForeignKey("ClassroomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TEAprendo.Domain.Entities.Student", "Student")
+                        .WithMany("Enrollments")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Classroom");
+
+                    b.Navigation("Student");
+                });
+
             modelBuilder.Entity("TEAprendo.Domain.Entities.Site", b =>
                 {
                     b.HasOne("TEAprendo.Domain.Entities.Institution", "Institution")
@@ -417,6 +629,63 @@ namespace TEAprendo.Infrastructure.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Institution");
+                });
+
+            modelBuilder.Entity("TEAprendo.Infrastructure.Identity.ApoderadoAlumno", b =>
+                {
+                    b.HasOne("TEAprendo.Domain.Entities.Student", "Alumno")
+                        .WithMany()
+                        .HasForeignKey("AlumnoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TEAprendo.Infrastructure.Identity.ApplicationUser", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Alumno");
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("TEAprendo.Infrastructure.Identity.DocenteAula", b =>
+                {
+                    b.HasOne("TEAprendo.Domain.Entities.Classroom", "Aula")
+                        .WithMany()
+                        .HasForeignKey("AulaId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TEAprendo.Infrastructure.Identity.ApplicationUser", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Aula");
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("TEAprendo.Infrastructure.Identity.TerapeutaAlumno", b =>
+                {
+                    b.HasOne("TEAprendo.Domain.Entities.Student", "Alumno")
+                        .WithMany()
+                        .HasForeignKey("AlumnoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TEAprendo.Infrastructure.Identity.ApplicationUser", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Alumno");
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("TEAprendo.Infrastructure.Identity.UsuarioSede", b =>
@@ -438,6 +707,11 @@ namespace TEAprendo.Infrastructure.Persistence.Migrations
                     b.Navigation("Usuario");
                 });
 
+            modelBuilder.Entity("TEAprendo.Domain.Entities.Classroom", b =>
+                {
+                    b.Navigation("Enrollments");
+                });
+
             modelBuilder.Entity("TEAprendo.Domain.Entities.Institution", b =>
                 {
                     b.Navigation("Sites");
@@ -446,6 +720,13 @@ namespace TEAprendo.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("TEAprendo.Domain.Entities.Site", b =>
                 {
                     b.Navigation("Classrooms");
+                });
+
+            modelBuilder.Entity("TEAprendo.Domain.Entities.Student", b =>
+                {
+                    b.Navigation("Activities");
+
+                    b.Navigation("Enrollments");
                 });
 #pragma warning restore 612, 618
         }

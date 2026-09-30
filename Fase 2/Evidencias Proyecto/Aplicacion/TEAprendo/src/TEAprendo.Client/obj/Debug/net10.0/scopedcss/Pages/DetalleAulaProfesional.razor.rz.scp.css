@@ -1,0 +1,225 @@
+.aula-detail-page[b-vybs3z3ppj] {
+    width: 100%;
+    max-width: 1250px;
+    margin: 0 auto;
+}
+
+.back-button[b-vybs3z3ppj] {
+    margin-bottom: 20px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #7c8290;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.aula-hero[b-vybs3z3ppj] {
+    display: flex;
+    align-items: center;
+    gap: 19px;
+    padding: 28px;
+    border: 1px solid #e6e9ef;
+    border-radius: 21px;
+    background:
+        linear-gradient(
+            135deg,
+            #eef3f8,
+            #f6f6fa
+        );
+}
+
+.hero-icon[b-vybs3z3ppj] {
+    width: 69px;
+    height: 69px;
+    min-width: 69px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 18px;
+    background: #e5edf6;
+    color: #6680a2;
+    font-size: 27px;
+}
+
+.hero-label[b-vybs3z3ppj] {
+    color: #7c89a1;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+}
+
+.aula-hero h1[b-vybs3z3ppj] {
+    margin: 3px 0;
+    color: #373b44;
+    font-size: 28px;
+}
+
+.aula-hero p[b-vybs3z3ppj] {
+    margin: 0;
+    color: #828894;
+    font-size: 13px;
+}
+
+
+/* Resumen */
+
+.aula-summary[b-vybs3z3ppj] {
+    display: grid;
+    grid-template-columns:
+        repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
+    margin-top: 17px;
+}
+
+.aula-summary article[b-vybs3z3ppj] {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border: 1px solid #e9eaf0;
+    border-radius: 16px;
+    background: white;
+}
+
+.aula-summary span[b-vybs3z3ppj] {
+    color: #969ba5;
+    font-size: 11px;
+}
+
+.aula-summary strong[b-vybs3z3ppj] {
+    margin-top: 4px;
+    color: #3e424b;
+    font-size: 22px;
+}
+
+
+/* Estudiantes */
+
+.students-section[b-vybs3z3ppj] {
+    margin-top: 35px;
+}
+
+.section-heading span[b-vybs3z3ppj] {
+    color: #979ca7;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+}
+
+.section-heading h2[b-vybs3z3ppj] {
+    margin: 4px 0 0;
+    color: #363a43;
+    font-size: 21px;
+}
+
+.section-heading p[b-vybs3z3ppj] {
+    margin: 5px 0 17px;
+    color: #8d929d;
+    font-size: 13px;
+}
+
+.students-grid[b-vybs3z3ppj] {
+    display: grid;
+    grid-template-columns:
+        repeat(auto-fit, minmax(290px, 1fr));
+    gap: 14px;
+}
+
+.student-card[b-vybs3z3ppj] {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 17px;
+    border: 1px solid #e9eaf0;
+    border-radius: 16px;
+    background: white;
+    text-align: left;
+    cursor: pointer;
+    transition: 0.15s;
+}
+
+.student-card:hover[b-vybs3z3ppj] {
+    transform: translateY(-2px);
+    box-shadow:
+        0 8px 24px
+        rgba(35, 40, 55, 0.05);
+}
+
+.student-avatar[b-vybs3z3ppj] {
+    width: 47px;
+    height: 47px;
+    min-width: 47px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #eeeff9;
+    color: #656d9e;
+    font-weight: 700;
+}
+
+.student-info[b-vybs3z3ppj] {
+    flex: 1;
+}
+
+.student-info h3[b-vybs3z3ppj] {
+    margin: 0;
+    color: #3d414a;
+    font-size: 15px;
+}
+
+.student-info span[b-vybs3z3ppj] {
+    color: #8c919b;
+    font-size: 12px;
+}
+
+.student-arrow[b-vybs3z3ppj] {
+    color: #999ea8;
+    font-size: 22px;
+}
+
+
+/* Estados */
+
+.loading-panel[b-vybs3z3ppj],
+.error-panel[b-vybs3z3ppj],
+.empty-state[b-vybs3z3ppj] {
+    min-height: 210px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 30px;
+    border: 1px dashed #d9dbe2;
+    border-radius: 18px;
+    background: white;
+    text-align: center;
+}
+
+.error-panel p[b-vybs3z3ppj],
+.empty-state p[b-vybs3z3ppj] {
+    color: #969ba5;
+    font-size: 13px;
+}
+
+
+@media (max-width: 650px) {
+
+    .aula-hero[b-vybs3z3ppj] {
+        padding: 22px;
+    }
+
+    .hero-icon[b-vybs3z3ppj] {
+        width: 55px;
+        height: 55px;
+        min-width: 55px;
+    }
+
+    .students-grid[b-vybs3z3ppj] {
+        grid-template-columns: 1fr;
+    }
+}

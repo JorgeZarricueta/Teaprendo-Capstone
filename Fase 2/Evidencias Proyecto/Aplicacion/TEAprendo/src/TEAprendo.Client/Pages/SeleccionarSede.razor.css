@@ -59,3 +59,47 @@
 .sede-card button {
     width: 100%;
 }
+
+/* Identidad visual por tipo de usuario */
+
+.seccion-icono {
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9px;
+    background: #f5f6f8;
+    font-size: 16px;
+}
+
+.grupo-director .usuarios-seccion-header {
+    border-left: 4px solid #59636e;
+}
+
+.grupo-docente .usuarios-seccion-header {
+    border-left: 4px solid #6f8fb7;
+}
+
+.grupo-terapeuta .usuarios-seccion-header {
+    border-left: 4px solid #8877a8;
+}
+
+.grupo-apoderado .usuarios-seccion-header {
+    border-left: 4px solid #7c9b86;
+}
+
+.usuarios-seccion-header:hover {
+    background: #fafbfc;
+}
+
+.usuario-card {
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.usuario-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+}

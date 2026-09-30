@@ -1,0 +1,1435 @@
+@page "/profesional/agenda"
+
+@layout TEAprendo.Client.Layout.ProfesionalLayout
+
+@using System.Globalization
+@using System.Net.Http.Json
+@using TEAprendo.Contracts.Agenda
+@using TEAprendo.Contracts.Profesional
+
+@inject HttpClient Http
+
+<PageTitle>Agenda - TEAprendo</PageTitle>
+
+
+<div class="container py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h1>Agenda</h1>
+
+            <p class="text-muted">
+                Programa actividades para tus estudiantes.
+            </p>
+        </div>
+
+        <button type="button"
+                class="btn btn-primary"
+                @onclick="NuevaActividad">
+
+            + Nueva actividad
+
+        </button>
+
+    </div>
+
+
+    @if (!string.IsNullOrWhiteSpace(_mensaje))
+    {
+        <div class="alert alert-success">
+            @_mensaje
+        </div>
+    }
+
+
+    @if (!string.IsNullOrWhiteSpace(_error))
+    {
+        <div class="alert alert-danger">
+            @_error
+        </div>
+    }
+
+
+    @if (_mostrarFormulario)
+    {
+        <div class="card shadow-sm">
+
+            <div class="card-body">
+
+                <div class="d-flex justify-content-between mb-4">
+
+                <h2 class="h4">
+                    @(_editando
+                        ? "Editar actividad"
+                        : "Nueva actividad")
+                </h2>
+
+                    <button type="button"
+                            class="btn-close"
+                            @onclick="CerrarFormulario">
+                    </button>
+
+                </div>
+
+
+                <div class="row g-3">
+
+                    @* Alumno *@
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+                            Alumno
+                        </label>
+
+                        <select class="form-select"
+                                @bind="_form.AlumnoId"
+                                disabled="@_editando">
+
+                            <option value="@Guid.Empty">
+                                Selecciona un estudiante
+                            </option>
+
+                            @foreach (var alumno in _alumnos)
+                            {
+                                <option value="@alumno.Id">
+                                    @alumno.Nombre
+                                    @alumno.Apellido
+                                    ·
+                                    @alumno.AulaNombre
+                                </option>
+                            }
+
+                        </select>
+
+                    </div>
+
+
+                    @* Tipo *@
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+                            Tipo
+                        </label>
+
+                        <select class="form-select"
+                                @bind="_form.Tipo">
+
+                            @foreach (var tipo in _tipos)
+                            {
+                                <option value="@tipo">
+                                    @tipo
+                                </option>
+                            }
+
+                        </select>
+
+                    </div>
+
+
+                    @* Título *@
+                    <div class="col-12">
+
+                        <label class="form-label">
+                            Título
+                        </label>
+
+                        <input type="text"
+                               class="form-control"
+                               @bind="_form.Titulo" />
+
+                    </div>
+
+
+                    @* Descripción *@
+                    <div class="col-12">
+
+                        <label class="form-label">
+                            Descripción
+                        </label>
+
+                        <textarea class="form-control"
+                                  rows="3"
+                                  @bind="_form.Descripcion">
+                        </textarea>
+
+                    </div>
+
+
+                    @* FECHA INICIO *@
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+                            Fecha y hora de inicio
+                        </label>
+
+                        <input type="datetime-local"
+                               class="form-control"
+                               value="@_form.InicioTexto"
+                               @onchange="CambiarInicio" />
+
+                        <small class="text-muted">
+                            Valor seleccionado:
+                            @_form.InicioTexto
+                        </small>
+
+                    </div>
+
+
+                    @* FECHA FIN *@
+                    <div class="col-md-6">
+
+                        <label class="form-label">
+                            Fecha y hora de término
+                        </label>
+
+                        <input type="datetime-local"
+                               class="form-control"
+                               value="@_form.FinTexto"
+                               @onchange="CambiarFin" />
+
+                        <small class="text-muted">
+                            Valor seleccionado:
+                            @_form.FinTexto
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="d-flex justify-content-end gap-2 mt-4">
+
+                    <button type="button"
+                            class="btn btn-outline-secondary"
+                            @onclick="CerrarFormulario">
+
+                        Cancelar
+
+                    </button>
+
+                    <button type="button"
+                            class="btn btn-primary"
+                            disabled="@_guardando"
+                            @onclick="GuardarActividad">
+
+                        @(_guardando
+                            ? "Guardando..."
+                            : _editando
+                                ? "Guardar cambios"
+                                : "Guardar actividad")
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+    }
+
+    <div class="row g-3 mt-4">
+
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+
+                <small class="text-muted">
+                    Próximas
+                </small>
+
+                <div class="fs-3 fw-bold">
+                    @ActividadesProximas.Count
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+
+                <small class="text-muted">
+                    Hoy
+                </small>
+
+                <div class="fs-3 fw-bold">
+                    @ActividadesHoy.Count
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+
+                <small class="text-muted">
+                    Canceladas
+                </small>
+
+                <div class="fs-3 fw-bold">
+                    @ActividadesCanceladas.Count
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<section class="mt-5">
+
+    <div class="mb-3">
+
+        <h2 class="h4">
+            Próximas actividades
+        </h2>
+
+        <p class="text-muted">
+            Actividades programadas para tus estudiantes.
+        </p>
+
+    </div>
+
+
+    @if (ActividadesProximas.Count == 0)
+    {
+        <div class="alert alert-light border">
+
+            No existen actividades próximas.
+
+        </div>
+    }
+    else
+    {
+        <div class="d-flex flex-column gap-3">
+
+            @foreach (var actividad in ActividadesProximas)
+            {
+                <div class="card shadow-sm">
+
+                    <div class="card-body">
+
+                        <div class="d-flex
+                                    justify-content-between
+                                    align-items-start
+                                    gap-3">
+
+                            <div>
+
+                                <small class="text-muted">
+
+                                    @(actividad.FechaHoraInicio
+                                        .ToString(
+                                            "dd/MM/yyyy · HH:mm"))
+
+                                    @if (actividad.FechaHoraFin.HasValue)
+                                    {
+                                        <span>
+                                            -
+                                            @(actividad.FechaHoraFin.Value
+                                                .ToString("HH:mm"))
+                                        </span>
+                                    }
+
+                                </small>
+
+                                <h3 class="h5 mt-1 mb-2">
+                                    @actividad.Titulo
+                                </h3>
+
+                                <div>
+                                    <strong>
+                                        @actividad.AlumnoNombre
+                                    </strong>
+
+                                    <span class="text-muted">
+                                        · @actividad.AulaNombre
+                                    </span>
+                                </div>
+
+                            </div>
+
+
+                            <span class="badge text-bg-light">
+                                @actividad.Tipo
+                            </span>
+
+                        </div>
+
+
+                        @if (!string.IsNullOrWhiteSpace(
+                            actividad.Descripcion))
+                        {
+                            <p class="text-muted mt-3 mb-0">
+                                @actividad.Descripcion
+                            </p>
+                        }
+
+
+                        <div class="d-flex gap-2 mt-3">
+
+                            <button type="button"
+                                    class="btn btn-sm btn-outline-primary"
+                                    @onclick="() => EditarActividad(actividad)">
+
+                                Editar
+
+                            </button>
+
+                            <button type="button"
+                                    class="btn btn-sm btn-outline-danger"
+                                    @onclick="() => CambiarEstado(actividad, false)">
+
+                                Cancelar actividad
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    }
+
+    @if (ActividadesCanceladas.Count > 0)
+{
+    <section class="mt-5">
+
+        <h2 class="h4 mb-3">
+            Actividades canceladas
+        </h2>
+
+
+        <div class="d-flex flex-column gap-2">
+
+            @foreach (var actividad in ActividadesCanceladas)
+            {
+                <div class="card">
+
+                    <div class="card-body
+                                d-flex
+                                justify-content-between
+                                align-items-center">
+
+                        <div>
+
+                            <strong>
+                                @actividad.Titulo
+                            </strong>
+
+                            <div class="text-muted small">
+
+                                @(actividad.FechaHoraInicio
+                                    .ToString(
+                                        "dd/MM/yyyy · HH:mm"))
+
+                                ·
+
+                                @actividad.AlumnoNombre
+
+                            </div>
+
+                        </div>
+
+
+                        <button type="button"
+                                class="btn btn-sm btn-outline-success"
+                                @onclick="() => CambiarEstado(actividad, true)">
+
+                            Reactivar
+
+                        </button>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+
+    </section>
+}
+<section class="calendar-section mt-5">
+
+    <div class="calendar-header">
+
+        <div>
+
+            <span class="text-muted small">
+                Calendario
+            </span>
+
+            <h2 class="h4 mb-0">
+                @ObtenerTituloMes()
+            </h2>
+
+        </div>
+
+
+        <div class="calendar-navigation">
+
+            <button type="button"
+                    class="btn btn-sm btn-outline-secondary"
+                    @onclick="MesAnterior">
+
+                ‹
+
+            </button>
+
+
+            <button type="button"
+                    class="btn btn-sm btn-outline-secondary"
+                    @onclick="IrAHoy">
+
+                Hoy
+
+            </button>
+
+
+            <button type="button"
+                    class="btn btn-sm btn-outline-secondary"
+                    @onclick="MesSiguiente">
+
+                ›
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div class="calendar">
+
+        @* Encabezados *@
+        <div class="calendar-weekday">
+            Lun
+        </div>
+
+        <div class="calendar-weekday">
+            Mar
+        </div>
+
+        <div class="calendar-weekday">
+            Mié
+        </div>
+
+        <div class="calendar-weekday">
+            Jue
+        </div>
+
+        <div class="calendar-weekday">
+            Vie
+        </div>
+
+        <div class="calendar-weekday">
+            Sáb
+        </div>
+
+        <div class="calendar-weekday">
+            Dom
+        </div>
+
+
+        @foreach (var dia in ObtenerDiasCalendario())
+        {
+            <button type="button"
+                    class="@ObtenerClaseDia(dia)"
+                    @onclick="() => SeleccionarDia(dia.Fecha)">
+
+                <span class="calendar-day-number">
+                    @dia.Fecha.Day
+                </span>
+
+
+                <div class="calendar-events">
+
+                    @foreach (var actividad in
+                        dia.Actividades.Take(3))
+                    {
+                        <div class="@ObtenerClaseEventoCalendario(actividad.Tipo)">
+
+                            <span>
+                                @(actividad.FechaHoraInicio.ToString("HH:mm"))
+                            </span>
+
+                            <strong>
+                                @actividad.Titulo
+                            </strong>
+
+                        </div>
+                    }
+
+
+                    @if (dia.Actividades.Count > 3)
+                    {
+                        <span class="more-events">
+                            +@(dia.Actividades.Count - 3) más
+                        </span>
+                    }
+
+                </div>
+
+            </button>
+        }
+
+    </div>
+
+</section>
+
+@if (_fechaSeleccionada.HasValue)
+{
+    <section class="selected-day-section mt-4">
+
+        <div class="d-flex
+                    justify-content-between
+                    align-items-center
+                    mb-3">
+
+            <div>
+
+                <span class="text-muted small">
+                    Día seleccionado
+                </span>
+
+                <h2 class="h5 mb-0">
+                    @(_fechaSeleccionada.Value
+                        .ToString("dd/MM/yyyy"))
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        @if (ActividadesFechaSeleccionada.Count == 0)
+        {
+            <div class="alert alert-light border">
+
+                No hay actividades programadas
+                para este día.
+
+            </div>
+        }
+        else
+        {
+            <div class="d-flex flex-column gap-2">
+
+                @foreach (var actividad in
+                    ActividadesFechaSeleccionada)
+                {
+                    <div class="card">
+
+                        <div class="card-body">
+
+                            <div class="d-flex
+                                        justify-content-between
+                                        gap-3">
+
+                                <div>
+
+                                    <small class="text-muted">
+
+                                        @(actividad.FechaHoraInicio
+                                            .ToString("HH:mm"))
+
+                                        @if (actividad.FechaHoraFin.HasValue)
+                                        {
+                                            <span>
+                                                -
+                                                @(actividad.FechaHoraFin.Value
+                                                    .ToString("HH:mm"))
+                                            </span>
+                                        }
+
+                                    </small>
+
+                                    <h3 class="h6 mb-1">
+                                        @actividad.Titulo
+                                    </h3>
+
+                                    <span class="text-muted small">
+                                        @actividad.AlumnoNombre
+                                        ·
+                                        @actividad.AulaNombre
+                                    </span>
+
+                                </div>
+
+
+                                <span class="badge text-bg-light">
+                                    @actividad.Tipo
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+        }
+
+    </section>
+}
+
+</section>
+
+</div>
+
+
+@code
+{
+    private readonly string[] _tipos =
+    {
+        "Pedagógica",
+        "Terapéutica",
+        "Seguimiento",
+        "Reunión",
+        "Otra"
+    };
+
+
+    private List<AlumnoProfesionalDto> _alumnos =
+        new();
+    private List<ActividadDto> _actividades =
+        new();
+
+    private FormActividad _form =
+        new();
+
+
+    private bool _mostrarFormulario;
+
+    private bool _guardando;
+
+
+    private string _mensaje =
+        string.Empty;
+
+    private string _error =
+        string.Empty;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarDatos();
+    }
+
+
+    // Carga alumnos y actividades autorizadas.
+    private async Task CargarDatos()
+    {
+        _error = string.Empty;
+
+        try
+        {
+            var alumnosTask =
+                Http.GetFromJsonAsync<
+                    List<AlumnoProfesionalDto>>(
+                    "api/profesional/alumnos");
+
+            var actividadesTask =
+                Http.GetFromJsonAsync<
+                    List<ActividadDto>>(
+                    "api/agenda");
+
+
+            await Task.WhenAll(
+                alumnosTask,
+                actividadesTask);
+
+
+            _alumnos =
+                alumnosTask.Result
+                ?? new();
+
+            _actividades =
+                actividadesTask.Result
+                ?? new();
+        }
+        catch
+        {
+            _error =
+                "No fue posible cargar la agenda.";
+        }
+    }
+
+
+    // Abre un formulario nuevo.
+    private void NuevaActividad()
+    {
+        _mensaje = string.Empty;
+        _error = string.Empty;
+        _editando = false;
+        _actividadEditandoId = null;
+
+
+        var inicio =
+            ObtenerProximaHora();
+
+        var fin =
+            inicio.AddHours(1);
+
+
+        _form =
+            new FormActividad
+            {
+                Tipo =
+                    "Pedagógica",
+
+                InicioTexto =
+                    FormatearFecha(inicio),
+
+                FinTexto =
+                    FormatearFecha(fin)
+            };
+
+
+        _mostrarFormulario = true;
+    }
+
+
+    // Guarda literalmente lo elegido por el navegador.
+    private void CambiarInicio(
+        ChangeEventArgs e)
+    {
+        _form.InicioTexto =
+            e.Value?.ToString()
+            ?? string.Empty;
+    }
+
+
+    private void CambiarFin(
+        ChangeEventArgs e)
+    {
+        _form.FinTexto =
+            e.Value?.ToString()
+            ?? string.Empty;
+    }
+
+
+    private void CerrarFormulario()
+    {
+        _mostrarFormulario = false;
+        _editando = false;
+        _actividadEditandoId = null;    
+
+        _form =
+            new FormActividad();
+    }
+
+
+// Convierte el valor entregado por datetime-local.
+private bool TryConvertirFecha(
+    string valor,
+    out DateTime fecha)
+{
+    fecha = default;
+
+    var formatos =
+        new[]
+        {
+            "yyyy-MM-ddTHH:mm",
+            "yyyy-MM-ddTHH:mm:ss"
+        };
+
+    var convertido =
+        DateTime.TryParseExact(
+            valor,
+            formatos,
+            CultureInfo.InvariantCulture,
+            DateTimeStyles.None,
+            out var resultado);
+
+    if (!convertido)
+    {
+        return false;
+    }
+
+    fecha =
+        DateTime.SpecifyKind(
+            resultado,
+            DateTimeKind.Unspecified);
+
+    return true;
+}
+
+
+    private async Task GuardarActividad()
+    {
+        _mensaje = string.Empty;
+        _error = string.Empty;
+
+
+        if (_form.AlumnoId ==
+            Guid.Empty)
+        {
+            _error =
+                "Debes seleccionar un alumno.";
+
+            return;
+        }
+
+
+        if (string.IsNullOrWhiteSpace(
+            _form.Titulo))
+        {
+            _error =
+                "Debes ingresar un título.";
+
+            return;
+        }
+
+
+        if (!TryConvertirFecha(
+            _form.InicioTexto,
+            out var inicio))
+        {
+            _error =
+                "La fecha de inicio no es válida.";
+
+            return;
+        }
+
+
+        if (!TryConvertirFecha(
+            _form.FinTexto,
+            out var fin))
+        {
+            _error =
+                "La fecha de término no es válida.";
+
+            return;
+        }
+
+
+        if (fin <= inicio)
+        {
+            _error =
+                "La fecha de término debe ser posterior al inicio.";
+
+            return;
+        }
+
+
+        _guardando = true;
+
+
+        try
+        {
+            if (_editando &&
+                _actividadEditandoId.HasValue)
+            {
+                var request =
+                    new ActualizarActividadRequest
+                    {
+                        Titulo =
+                            _form.Titulo.Trim(),
+
+                        Descripcion =
+                            string.IsNullOrWhiteSpace(
+                                _form.Descripcion)
+                                ? null
+                                : _form.Descripcion.Trim(),
+
+                        Tipo =
+                            _form.Tipo,
+
+                        FechaHoraInicio =
+                            inicio,
+
+                        FechaHoraFin =
+                            fin
+                    };
+
+
+                var respuesta =
+                    await Http.PutAsJsonAsync(
+                        $"api/agenda/{_actividadEditandoId.Value}",
+                        request);
+
+
+                if (!respuesta.IsSuccessStatusCode)
+                {
+                    _error =
+                        "No fue posible actualizar la actividad.";
+
+                    return;
+                }
+
+
+                _mensaje =
+                    "Actividad actualizada correctamente.";
+            }
+            else
+            {
+                var request =
+                    new CrearActividadRequest
+                    {
+                        AlumnoId =
+                            _form.AlumnoId,
+
+                        Titulo =
+                            _form.Titulo.Trim(),
+
+                        Descripcion =
+                            string.IsNullOrWhiteSpace(
+                                _form.Descripcion)
+                                ? null
+                                : _form.Descripcion.Trim(),
+
+                        Tipo =
+                            _form.Tipo,
+
+                        FechaHoraInicio =
+                            inicio,
+
+                        FechaHoraFin =
+                            fin
+                    };
+
+
+                var respuesta =
+                    await Http.PostAsJsonAsync(
+                        "api/agenda",
+                        request);
+
+
+                if (!respuesta.IsSuccessStatusCode)
+                {
+                    _error =
+                        "No fue posible crear la actividad.";
+
+                    return;
+                }
+
+
+                _mensaje =
+                    "Actividad creada correctamente.";
+            }
+
+
+            CerrarFormulario();
+
+            await CargarDatos();
+        }
+        catch
+        {
+            _error =
+                "No fue posible guardar la actividad.";
+        }
+        finally
+        {
+            _guardando = false;
+        }
+    }
+
+private List<ActividadDto> ActividadesProximas =>
+    _actividades
+        .Where(x =>
+            x.Activa &&
+            x.FechaHoraInicio >= DateTime.Now)
+        .OrderBy(x =>
+            x.FechaHoraInicio)
+        .ToList();
+
+
+private List<ActividadDto> ActividadesPasadas =>
+    _actividades
+        .Where(x =>
+            x.Activa &&
+            x.FechaHoraInicio < DateTime.Now)
+        .OrderByDescending(x =>
+            x.FechaHoraInicio)
+        .ToList();
+
+
+private List<ActividadDto> ActividadesCanceladas =>
+    _actividades
+        .Where(x =>
+            !x.Activa)
+        .OrderByDescending(x =>
+            x.FechaHoraInicio)
+        .ToList();
+
+
+private List<ActividadDto> ActividadesHoy =>
+    _actividades
+        .Where(x =>
+            x.Activa &&
+            x.FechaHoraInicio.Date ==
+                DateTime.Today)
+        .ToList();
+
+    private DateTime ObtenerProximaHora()
+    {
+        var ahora =
+            DateTime.Now;
+
+
+        return new DateTime(
+            ahora.Year,
+            ahora.Month,
+            ahora.Day,
+            ahora.Hour,
+            0,
+            0)
+            .AddHours(1);
+    }
+
+
+    private string FormatearFecha(
+        DateTime fecha)
+    {
+        return fecha.ToString(
+            "yyyy-MM-ddTHH:mm",
+            CultureInfo.InvariantCulture);
+    }
+
+private bool _editando;
+
+private Guid? _actividadEditandoId;
+
+// Cambia el estado sin eliminar el historial.
+private async Task CambiarEstado(
+    ActividadDto actividad,
+    bool activa)
+{
+    _mensaje = string.Empty;
+    _error = string.Empty;
+
+    try
+    {
+        var request =
+            new CambiarEstadoActividadRequest
+            {
+                Activa = activa
+            };
+
+
+        var respuesta =
+            await Http.PatchAsJsonAsync(
+                $"api/agenda/{actividad.Id}/estado",
+                request);
+
+
+        if (!respuesta.IsSuccessStatusCode)
+        {
+            _error =
+                "No fue posible cambiar el estado de la actividad.";
+
+            return;
+        }
+
+
+        _mensaje =
+            activa
+                ? "Actividad reactivada correctamente."
+                : "Actividad cancelada correctamente.";
+
+
+        await CargarDatos();
+    }
+    catch
+    {
+        _error =
+            "No fue posible cambiar el estado de la actividad.";
+    }
+}
+
+// Abre una actividad existente para modificarla.
+private void EditarActividad(
+    ActividadDto actividad)
+{
+    _mensaje = string.Empty;
+    _error = string.Empty;
+
+    _editando = true;
+
+    _actividadEditandoId =
+        actividad.Id;
+
+
+    var fin =
+        actividad.FechaHoraFin
+        ?? actividad.FechaHoraInicio
+            .AddHours(1);
+
+
+    _form =
+        new FormActividad
+        {
+            AlumnoId =
+                actividad.AlumnoId,
+
+            Titulo =
+                actividad.Titulo,
+
+            Descripcion =
+                actividad.Descripcion
+                ?? string.Empty,
+
+            Tipo =
+                actividad.Tipo,
+
+            InicioTexto =
+                FormatearFecha(
+                    actividad.FechaHoraInicio),
+
+            FinTexto =
+                FormatearFecha(fin)
+        };
+
+
+    _mostrarFormulario = true;
+}
+
+// Construye las seis semanas visibles del calendario.
+private List<DiaCalendario> ObtenerDiasCalendario()
+{
+    var primerDiaMes =
+        new DateTime(
+            _mesActual.Year,
+            _mesActual.Month,
+            1);
+
+
+    var desplazamiento =
+        ((int)primerDiaMes.DayOfWeek + 6) % 7;
+
+
+    var primerDiaVisible =
+        primerDiaMes.AddDays(
+            -desplazamiento);
+
+
+    var dias =
+        new List<DiaCalendario>();
+
+
+    // Mostramos 6 semanas completas.
+    for (var i = 0; i < 42; i++)
+    {
+        var fecha =
+            primerDiaVisible.AddDays(i);
+
+
+        var actividadesDia =
+            _actividades
+                .Where(x =>
+                    x.Activa &&
+                    x.FechaHoraInicio.Date ==
+                        fecha.Date)
+                .OrderBy(x =>
+                    x.FechaHoraInicio)
+                .ToList();
+
+
+        dias.Add(
+            new DiaCalendario
+            {
+                Fecha = fecha,
+
+                EsMesActual =
+                    fecha.Month ==
+                        _mesActual.Month &&
+                    fecha.Year ==
+                        _mesActual.Year,
+
+                Actividades =
+                    actividadesDia
+            });
+    }
+
+
+    return dias;
+}
+
+private void MesAnterior()
+{
+    _mesActual =
+        _mesActual.AddMonths(-1);
+}
+
+
+private void MesSiguiente()
+{
+    _mesActual =
+        _mesActual.AddMonths(1);
+}
+
+
+private void IrAHoy()
+{
+    _mesActual =
+        new DateTime(
+            DateTime.Today.Year,
+            DateTime.Today.Month,
+            1);
+
+    _fechaSeleccionada =
+        DateTime.Today;
+}
+
+
+private void SeleccionarDia(
+    DateTime fecha)
+{
+    _fechaSeleccionada =
+        fecha;
+}
+
+private string ObtenerTituloMes()
+{
+    var meses =
+        new[]
+        {
+            "Enero",
+            "Febrero",
+            "Marzo",
+            "Abril",
+            "Mayo",
+            "Junio",
+            "Julio",
+            "Agosto",
+            "Septiembre",
+            "Octubre",
+            "Noviembre",
+            "Diciembre"
+        };
+
+
+    return
+        $"{meses[_mesActual.Month - 1]} {_mesActual.Year}";
+}
+
+private List<ActividadDto> ActividadesFechaSeleccionada
+{
+    get
+    {
+        if (!_fechaSeleccionada.HasValue)
+        {
+            return new();
+        }
+
+
+        return _actividades
+            .Where(x =>
+                x.Activa &&
+                x.FechaHoraInicio.Date ==
+                    _fechaSeleccionada.Value.Date)
+            .OrderBy(x =>
+                x.FechaHoraInicio)
+            .ToList();
+    }
+}
+
+private string ObtenerClaseDia(
+    DiaCalendario dia)
+{
+    var clases =
+        "calendar-day";
+
+
+    if (!dia.EsMesActual)
+    {
+        clases += " other-month";
+    }
+
+
+    if (dia.Fecha.Date ==
+        DateTime.Today)
+    {
+        clases += " today";
+    }
+
+
+    if (_fechaSeleccionada.HasValue &&
+        dia.Fecha.Date ==
+        _fechaSeleccionada.Value.Date)
+    {
+        clases += " selected";
+    }
+
+
+    return clases;
+}
+
+private string ObtenerClaseEventoCalendario(
+    string tipo)
+{
+    return tipo switch
+    {
+        "Pedagógica" =>
+            "calendar-event pedagogica",
+
+        "Terapéutica" =>
+            "calendar-event terapeutica",
+
+        "Seguimiento" =>
+            "calendar-event seguimiento",
+
+        "Reunión" =>
+            "calendar-event reunion",
+
+        _ =>
+            "calendar-event otra"
+    };
+}
+
+    private DateTime _mesActual =
+        new DateTime(
+            DateTime.Today.Year,
+            DateTime.Today.Month,
+            1);
+
+    private DateTime? _fechaSeleccionada;
+
+    // Día utilizado solamente por la vista calendario.
+    private class DiaCalendario
+    {
+        public DateTime Fecha { get; set; }
+
+        public bool EsMesActual { get; set; }
+
+        public List<ActividadDto> Actividades { get; set; }
+            = new();
+    }
+
+    // Modelo exclusivo del formulario.
+    private class FormActividad
+    {
+        public Guid AlumnoId { get; set; }
+
+
+        public string Titulo { get; set; }
+            = string.Empty;
+
+
+        public string Descripcion { get; set; }
+            = string.Empty;
+
+
+        public string Tipo { get; set; }
+            = "Pedagógica";
+
+
+        public string InicioTexto { get; set; }
+            = string.Empty;
+
+
+        public string FinTexto { get; set; }
+            = string.Empty;
+    }
+}

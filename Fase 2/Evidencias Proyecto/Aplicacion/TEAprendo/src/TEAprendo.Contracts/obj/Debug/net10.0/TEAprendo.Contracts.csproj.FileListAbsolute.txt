@@ -1,0 +1,11 @@
+C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Contracts\bin\Debug\net10.0\TEAprendo.Contracts.deps.json
+C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Contracts\bin\Debug\net10.0\TEAprendo.Contracts.dll
+C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Contracts\bin\Debug\net10.0\TEAprendo.Contracts.pdb
+C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Contracts\obj\Debug\net10.0\TEAprendo.Contracts.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Contracts\obj\Debug\net10.0\TEAprendo.Contracts.AssemblyInfoInputs.cache
+C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Contracts\obj\Debug\net10.0\TEAprendo.Contracts.AssemblyInfo.cs
+C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Contracts\obj\Debug\net10.0\TEAprendo.Contracts.csproj.CoreCompileInputs.cache
+C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Contracts\obj\Debug\net10.0\TEAprendo.Contracts.dll
+C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Contracts\obj\Debug\net10.0\refint\TEAprendo.Contracts.dll
+C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Contracts\obj\Debug\net10.0\TEAprendo.Contracts.pdb
+C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Contracts\obj\Debug\net10.0\ref\TEAprendo.Contracts.dll

@@ -1,0 +1,15 @@
+C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Application\bin\Debug\net10.0\TEAprendo.application.deps.json
+C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Application\bin\Debug\net10.0\TEAprendo.application.dll
+C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Application\bin\Debug\net10.0\TEAprendo.application.pdb
+C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Application\bin\Debug\net10.0\TEAprendo.Domain.dll
+C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Application\bin\Debug\net10.0\TEAprendo.Domain.pdb
+C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Application\obj\Debug\net10.0\TEAprendo.application.csproj.AssemblyReference.cache
+C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Application\obj\Debug\net10.0\TEAprendo.application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Application\obj\Debug\net10.0\TEAprendo.application.AssemblyInfoInputs.cache
+C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Application\obj\Debug\net10.0\TEAprendo.application.AssemblyInfo.cs
+C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Application\obj\Debug\net10.0\TEAprendo.application.csproj.CoreCompileInputs.cache
+C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Application\obj\Debug\net10.0\TEAprendo.application.dll
+C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Application\obj\Debug\net10.0\refint\TEAprendo.application.dll
+C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Application\obj\Debug\net10.0\TEAprendo.application.pdb
+C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Application\obj\Debug\net10.0\ref\TEAprendo.application.dll
+C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Application\obj\Debug\net10.0\TEAprend.420A97CB.Up2Date
