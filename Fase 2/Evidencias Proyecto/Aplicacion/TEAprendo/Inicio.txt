@@ -1,0 +1,21 @@
+Inicializador:
+dotnet run --project .\src\TEAprendo.api\TEAprendo.Api.csproj --launch-profile http
+
+2:
+dotnet run --project .\src\TEAprendo.Client\TEAprendo.Client.csproj --launch-profile http
+
+3 - Servicio de IA local:
+dotnet run --project .\src\TEAprendo.AI\TEAprendo.AI.csproj --launch-profile http
+
+Director: director.demo@teaprendo.local
+Profesor: profesor.demo@teaprendo.local
+Terapeuta: terapeuta.demo@teaprendo.local
+Contraseña director: Director1.
+Contraseña profesor: Profesor1.
+Contraseña terapeuta: Terapeuta.
+
+Profesora aula 2B: profesora.camila@teaprendo.local
+Contraseña profesora aula 2B: Docente2.
+
+Profesor aula 3A: profesor.mateo@teaprendo.local
+Contraseña profesor aula 3A: Docente3.

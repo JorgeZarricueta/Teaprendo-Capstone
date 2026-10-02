@@ -9,3 +9,32 @@ C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Contracts\o
 C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Contracts\obj\Debug\net10.0\refint\TEAprendo.Contracts.dll
 C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Contracts\obj\Debug\net10.0\TEAprendo.Contracts.pdb
 C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Contracts\obj\Debug\net10.0\ref\TEAprendo.Contracts.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Contracts\bin\Debug\net10.0\TEAprendo.Contracts.deps.json
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Contracts\bin\Debug\net10.0\TEAprendo.Contracts.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Contracts\bin\Debug\net10.0\TEAprendo.Contracts.pdb
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Contracts\obj\Debug\net10.0\TEAprendo.Contracts.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Contracts\obj\Debug\net10.0\TEAprendo.Contracts.AssemblyInfoInputs.cache
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Contracts\obj\Debug\net10.0\TEAprendo.Contracts.AssemblyInfo.cs
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Contracts\obj\Debug\net10.0\TEAprendo.Contracts.csproj.CoreCompileInputs.cache
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Contracts\obj\Debug\net10.0\TEAprendo.Contracts.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Contracts\obj\Debug\net10.0\refint\TEAprendo.Contracts.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Contracts\obj\Debug\net10.0\TEAprendo.Contracts.pdb
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Contracts\obj\Debug\net10.0\ref\TEAprendo.Contracts.dll
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-observaciones-api\TEAprendo.Contracts.deps.json
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-observaciones-api\TEAprendo.Contracts.dll
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-observaciones-api\TEAprendo.Contracts.pdb
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-observaciones-client\TEAprendo.Contracts.deps.json
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-observaciones-client\TEAprendo.Contracts.dll
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-observaciones-client\TEAprendo.Contracts.pdb
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-contexto-ia\TEAprendo.Contracts.deps.json
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-contexto-ia\TEAprendo.Contracts.dll
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-contexto-ia\TEAprendo.Contracts.pdb
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-api-ia\TEAprendo.Contracts.deps.json
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-api-ia\TEAprendo.Contracts.dll
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-api-ia\TEAprendo.Contracts.pdb
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-client-chat\TEAprendo.Contracts.deps.json
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-client-chat\TEAprendo.Contracts.dll
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-client-chat\TEAprendo.Contracts.pdb
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-client-chat-final\TEAprendo.Contracts.deps.json
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-client-chat-final\TEAprendo.Contracts.dll
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-client-chat-final\TEAprendo.Contracts.pdb

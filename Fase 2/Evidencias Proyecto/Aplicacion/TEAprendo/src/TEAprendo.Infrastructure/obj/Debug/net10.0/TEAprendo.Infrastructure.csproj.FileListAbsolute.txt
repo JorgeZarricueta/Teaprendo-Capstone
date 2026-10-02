@@ -17,3 +17,34 @@ C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Infrastruct
 C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Infrastructure\obj\Debug\net10.0\TEAprendo.Infrastructure.pdb
 C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Infrastructure\obj\Debug\net10.0\TEAprendo.Infrastructure.genruntimeconfig.cache
 C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Infrastructure\obj\Debug\net10.0\ref\TEAprendo.Infrastructure.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Infrastructure\bin\Debug\net10.0\TEAprendo.Infrastructure.deps.json
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Infrastructure\bin\Debug\net10.0\TEAprendo.Infrastructure.runtimeconfig.json
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Infrastructure\bin\Debug\net10.0\TEAprendo.Infrastructure.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Infrastructure\bin\Debug\net10.0\TEAprendo.Infrastructure.pdb
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Infrastructure\bin\Debug\net10.0\TEAprendo.application.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Infrastructure\bin\Debug\net10.0\TEAprendo.Domain.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Infrastructure\bin\Debug\net10.0\TEAprendo.Domain.pdb
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Infrastructure\bin\Debug\net10.0\TEAprendo.application.pdb
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Infrastructure\obj\Debug\net10.0\TEAprendo.Infrastructure.csproj.AssemblyReference.cache
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Infrastructure\obj\Debug\net10.0\TEAprendo.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Infrastructure\obj\Debug\net10.0\TEAprendo.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Infrastructure\obj\Debug\net10.0\TEAprendo.Infrastructure.AssemblyInfo.cs
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Infrastructure\obj\Debug\net10.0\TEAprendo.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Infrastructure\obj\Debug\net10.0\TEAprend.FDAF7E62.Up2Date
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Infrastructure\obj\Debug\net10.0\TEAprendo.Infrastructure.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Infrastructure\obj\Debug\net10.0\refint\TEAprendo.Infrastructure.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Infrastructure\obj\Debug\net10.0\TEAprendo.Infrastructure.pdb
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Infrastructure\obj\Debug\net10.0\TEAprendo.Infrastructure.genruntimeconfig.cache
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Infrastructure\obj\Debug\net10.0\ref\TEAprendo.Infrastructure.dll
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-observaciones-api\TEAprendo.Infrastructure.deps.json
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-observaciones-api\TEAprendo.Infrastructure.runtimeconfig.json
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-observaciones-api\TEAprendo.Infrastructure.dll
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-observaciones-api\TEAprendo.Infrastructure.pdb
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-contexto-ia\TEAprendo.Infrastructure.deps.json
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-contexto-ia\TEAprendo.Infrastructure.runtimeconfig.json
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-contexto-ia\TEAprendo.Infrastructure.dll
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-contexto-ia\TEAprendo.Infrastructure.pdb
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-api-ia\TEAprendo.Infrastructure.deps.json
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-api-ia\TEAprendo.Infrastructure.runtimeconfig.json
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-api-ia\TEAprendo.Infrastructure.dll
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-api-ia\TEAprendo.Infrastructure.pdb

@@ -3,10 +3,12 @@
 @layout TEAprendo.Client.Layout.ProfesionalLayout
 
 @using System.Net.Http.Json
+@using TEAprendo.Contracts.IA
 @using TEAprendo.Contracts.Profesional
 
 @inject HttpClient Http
 @inject NavigationManager Navigation
+@inject IJSRuntime JS
 
 <PageTitle>Aula - TEAprendo</PageTitle>
 
@@ -54,7 +56,7 @@ else if (_aula is not null)
                 ▦
             </div>
 
-            <div>
+            <div class="hero-content">
 
                 <span class="hero-label">
                     Aula asignada
@@ -71,6 +73,12 @@ else if (_aula is not null)
                 </p>
 
             </div>
+
+            <button class="assistant-open-button"
+                    @onclick="AbrirAsistente">
+                <span aria-hidden="true">✦</span>
+                Asistente IA
+            </button>
 
         </section>
 
@@ -183,6 +191,91 @@ else if (_aula is not null)
         </section>
 
     </div>
+
+    @if (_asistenteAbierto)
+    {
+        <div class="assistant-backdrop" @onclick="CerrarAsistente">
+            <section class="assistant-panel"
+                     role="dialog"
+                     aria-modal="true"
+                     aria-labelledby="assistant-title"
+                     @onclick:stopPropagation>
+                <header class="assistant-header">
+                    <div>
+                        <span class="assistant-status"><i></i> Aula @_aula.Nombre</span>
+                        <h2 id="assistant-title">Asistente educativo</h2>
+                    </div>
+                    <button class="assistant-close"
+                            @onclick="CerrarAsistente"
+                            aria-label="Cerrar asistente">&times;</button>
+                </header>
+
+                <div class="assistant-messages"
+                     aria-live="polite"
+                     @ref="_contenedorMensajes">
+                    @if (_mensajes.Count == 0)
+                    {
+                        <div class="assistant-welcome">
+                            <div class="assistant-mark">✦</div>
+                            <strong>Contexto preparado para @_aula.Nombre</strong>
+                            <p>Las respuestas se basarán únicamente en observaciones autorizadas de esta aula.</p>
+                            <div class="suggested-prompts">
+                                <button @onclick="SugerirPlasticina">Actividad con plasticina</button>
+                                <button @onclick="SugerirRuido">Actividad con ruido</button>
+                                <button @onclick="SugerirTransicion">Preparar una transición</button>
+                            </div>
+                        </div>
+                    }
+
+                    @foreach (var mensaje in _mensajes)
+                    {
+                        <article class="chat-message @(mensaje.EsUsuario ? "user-message" : "assistant-message")">
+                            <div class="message-role">@(mensaje.EsUsuario ? "Tú" : "TEAprendo")</div>
+                            <div class="message-content">@mensaje.Texto</div>
+                            @if (!mensaje.EsUsuario && mensaje.Fuentes > 0)
+                            {
+                                <div class="message-sources">@mensaje.Fuentes antecedentes considerados</div>
+                            }
+                        </article>
+                    }
+
+                    @if (_consultando)
+                    {
+                        <div class="assistant-thinking">
+                            <span></span><span></span><span></span>
+                            <label>Revisando antecedentes del aula...</label>
+                        </div>
+                    }
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(_errorAsistente))
+                {
+                    <div class="assistant-error">@_errorAsistente</div>
+                }
+
+                <form class="assistant-composer"
+                      @onsubmit="EnviarPregunta"
+                      @onsubmit:preventDefault>
+                    <label for="assistant-question">Pregunta para el aula @_aula.Nombre</label>
+                    <div class="composer-row">
+                        <textarea id="assistant-question"
+                                  rows="2"
+                                  maxlength="1000"
+                                  placeholder="Escribe una consulta sobre una actividad o situación..."
+                                  @bind="_pregunta"
+                                  @bind:event="oninput"
+                                  disabled="@_consultando"></textarea>
+                        <button type="submit"
+                                disabled="@(_consultando || string.IsNullOrWhiteSpace(_pregunta))"
+                                aria-label="Enviar pregunta">
+                            <span aria-hidden="true">↑</span>
+                        </button>
+                    </div>
+                    <small>Orientación educativa basada en antecedentes; no constituye diagnóstico.</small>
+                </form>
+            </section>
+        </div>
+    }
 }
 
 
@@ -197,6 +290,20 @@ else if (_aula is not null)
     private bool _cargando = true;
 
     private string _error = string.Empty;
+
+    private readonly List<MensajeChat> _mensajes = [];
+
+    private bool _asistenteAbierto;
+
+    private bool _consultando;
+
+    private string _pregunta = string.Empty;
+
+    private string _errorAsistente = string.Empty;
+
+    private ElementReference _contenedorMensajes;
+
+    private bool _desplazarChat;
 
 
     protected override async Task OnParametersSetAsync()
@@ -267,6 +374,133 @@ else if (_aula is not null)
     }
 
 
+    private void AbrirAsistente()
+    {
+        _asistenteAbierto = true;
+        _errorAsistente = string.Empty;
+    }
+
+
+    private void CerrarAsistente()
+    {
+        if (!_consultando)
+        {
+            _asistenteAbierto = false;
+        }
+    }
+
+
+    private void UsarSugerencia(string pregunta)
+    {
+        _pregunta = pregunta;
+    }
+
+
+    private void SugerirPlasticina() =>
+        UsarSugerencia(
+            "Quiero realizar una actividad con plasticina de colores. ¿Qué debo considerar?");
+
+
+    private void SugerirRuido() =>
+        UsarSugerencia(
+            "¿Qué apoyos han funcionado durante actividades con mucho ruido?");
+
+
+    private void SugerirTransicion() =>
+        UsarSugerencia(
+            "¿Qué estrategias han ayudado en cambios de actividad o transiciones?");
+
+
+    private async Task EnviarPregunta()
+    {
+        var pregunta = _pregunta.Trim();
+
+        if (_consultando ||
+            string.IsNullOrWhiteSpace(pregunta))
+        {
+            return;
+        }
+
+        _consultando = true;
+        _errorAsistente = string.Empty;
+        _pregunta = string.Empty;
+        var historial = _mensajes
+            .TakeLast(6)
+            .Select(x => new MensajeHistorialIaDto
+            {
+                EsUsuario = x.EsUsuario,
+                Texto = x.Texto.Length <= 4000
+                    ? x.Texto
+                    : x.Texto[..4000]
+            })
+            .ToList();
+        _mensajes.Add(new MensajeChat(true, pregunta));
+        _desplazarChat = true;
+
+        try
+        {
+            var respuesta = await Http.PostAsJsonAsync(
+                "api/ia/contexto/chat/aula",
+                new SolicitudContextoAulaRequest
+                {
+                    AulaId = AulaId,
+                    Pregunta = pregunta,
+                    MaxObservaciones = 20,
+                    Historial = historial
+                });
+
+            if (!respuesta.IsSuccessStatusCode)
+            {
+                _errorAsistente = respuesta.StatusCode ==
+                    System.Net.HttpStatusCode.ServiceUnavailable
+                    ? "El asistente local no está disponible. Comprueba que TEAprendo.AI y Ollama estén iniciados."
+                    : "No fue posible responder la consulta.";
+
+                return;
+            }
+
+            var resultado = await respuesta.Content
+                .ReadFromJsonAsync<RespuestaAsistenteIaDto>();
+
+            if (resultado is null ||
+                string.IsNullOrWhiteSpace(resultado.Respuesta))
+            {
+                _errorAsistente =
+                    "El asistente devolvió una respuesta vacía.";
+
+                return;
+            }
+
+            _mensajes.Add(new MensajeChat(
+                false,
+                resultado.Respuesta,
+                resultado.ObservacionesFuente.Count));
+            _desplazarChat = true;
+        }
+        catch
+        {
+            _errorAsistente =
+                "No fue posible conectar con el asistente local.";
+        }
+        finally
+        {
+            _consultando = false;
+        }
+    }
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (_desplazarChat)
+        {
+            _desplazarChat = false;
+            await JS.InvokeVoidAsync(
+                "teaprendoChat.scrollToEnd",
+                _contenedorMensajes);
+        }
+    }
+
+
     private void Volver()
     {
         Navigation.NavigateTo(
@@ -280,4 +514,10 @@ else if (_aula is not null)
             ? "?"
             : nombre[..1].ToUpper();
     }
+
+
+    private sealed record MensajeChat(
+        bool EsUsuario,
+        string Texto,
+        int Fuentes = 0);
 }

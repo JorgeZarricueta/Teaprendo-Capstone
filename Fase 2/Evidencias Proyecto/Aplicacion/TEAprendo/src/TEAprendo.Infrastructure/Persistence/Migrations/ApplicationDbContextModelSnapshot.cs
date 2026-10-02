@@ -381,6 +381,95 @@ namespace TEAprendo.Infrastructure.Persistence.Migrations
                     b.ToTable("alumnos", (string)null);
                 });
 
+            modelBuilder.Entity("TEAprendo.Domain.Entities.StudentObservation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<Guid?>("ActivityId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("actividad_id");
+
+                    b.Property<Guid>("AuthorUserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("autor_usuario_id");
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("categoria");
+
+                    b.Property<string>("Context")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("contexto");
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("fecha_creacion_utc");
+
+                    b.Property<string>("FollowUp")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)")
+                        .HasColumnName("seguimiento");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean")
+                        .HasColumnName("activa");
+
+                    b.Property<DateTime>("ObservedAt")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("fecha_observacion");
+
+                    b.Property<string>("Situation")
+                        .IsRequired()
+                        .HasMaxLength(1500)
+                        .HasColumnType("character varying(1500)")
+                        .HasColumnName("situacion");
+
+                    b.Property<Guid>("StudentId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("alumno_id");
+
+                    b.Property<string>("StudentResponse")
+                        .IsRequired()
+                        .HasMaxLength(1500)
+                        .HasColumnType("character varying(1500)")
+                        .HasColumnName("respuesta_alumno");
+
+                    b.Property<string>("SupportApplied")
+                        .HasMaxLength(1500)
+                        .HasColumnType("character varying(1500)")
+                        .HasColumnName("apoyo_aplicado");
+
+                    b.Property<string>("Trigger")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)")
+                        .HasColumnName("desencadenante");
+
+                    b.Property<DateTime?>("UpdatedAtUtc")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("fecha_actualizacion_utc");
+
+                    b.Property<bool?>("WasStabilized")
+                        .HasColumnType("boolean")
+                        .HasColumnName("se_estabilizo");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ActivityId");
+
+                    b.HasIndex("AuthorUserId");
+
+                    b.HasIndex("StudentId", "ObservedAt");
+
+                    b.ToTable("observaciones_alumnos", (string)null);
+                });
+
             modelBuilder.Entity("TEAprendo.Infrastructure.Identity.ApoderadoAlumno", b =>
                 {
                     b.Property<Guid>("UsuarioId")
@@ -631,6 +720,30 @@ namespace TEAprendo.Infrastructure.Persistence.Migrations
                     b.Navigation("Institution");
                 });
 
+            modelBuilder.Entity("TEAprendo.Domain.Entities.StudentObservation", b =>
+                {
+                    b.HasOne("TEAprendo.Domain.Entities.Activity", "Activity")
+                        .WithMany("Observations")
+                        .HasForeignKey("ActivityId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("TEAprendo.Infrastructure.Identity.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("AuthorUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TEAprendo.Domain.Entities.Student", "Student")
+                        .WithMany("Observations")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Activity");
+
+                    b.Navigation("Student");
+                });
+
             modelBuilder.Entity("TEAprendo.Infrastructure.Identity.ApoderadoAlumno", b =>
                 {
                     b.HasOne("TEAprendo.Domain.Entities.Student", "Alumno")
@@ -707,6 +820,11 @@ namespace TEAprendo.Infrastructure.Persistence.Migrations
                     b.Navigation("Usuario");
                 });
 
+            modelBuilder.Entity("TEAprendo.Domain.Entities.Activity", b =>
+                {
+                    b.Navigation("Observations");
+                });
+
             modelBuilder.Entity("TEAprendo.Domain.Entities.Classroom", b =>
                 {
                     b.Navigation("Enrollments");
@@ -727,6 +845,8 @@ namespace TEAprendo.Infrastructure.Persistence.Migrations
                     b.Navigation("Activities");
 
                     b.Navigation("Enrollments");
+
+                    b.Navigation("Observations");
                 });
 #pragma warning restore 612, 618
         }

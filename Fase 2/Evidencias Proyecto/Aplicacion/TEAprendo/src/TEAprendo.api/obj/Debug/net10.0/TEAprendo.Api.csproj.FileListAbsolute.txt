@@ -129,3 +129,158 @@ C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Api\obj\Deb
 C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Api\obj\Debug\net10.0\TEAprendo.Api.pdb
 C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Api\obj\Debug\net10.0\TEAprendo.Api.genruntimeconfig.cache
 C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Api\obj\Debug\net10.0\ref\TEAprendo.Api.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\obj\Debug\net10.0\TEAprendo.Api.csproj.AssemblyReference.cache
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\obj\Debug\net10.0\rpswa.dswa.cache.json
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\obj\Debug\net10.0\TEAprendo.Api.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\obj\Debug\net10.0\TEAprendo.Api.AssemblyInfoInputs.cache
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\obj\Debug\net10.0\TEAprendo.Api.AssemblyInfo.cs
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\obj\Debug\net10.0\TEAprendo.Api.csproj.CoreCompileInputs.cache
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\obj\Debug\net10.0\TEAprendo.Api.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\obj\Debug\net10.0\TEAprendo.Api.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\obj\Debug\net10.0\TEAprendo.Api.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\obj\Debug\net10.0\refint\TEAprendo.Api.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\obj\Debug\net10.0\TEAprendo.Api.pdb
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\appsettings.Development.json
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\appsettings.json
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\TEAprendo.Api.staticwebassets.endpoints.json
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\TEAprendo.Api.exe
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\TEAprendo.Api.deps.json
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\TEAprendo.Api.runtimeconfig.json
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\TEAprendo.Api.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\TEAprendo.Api.pdb
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\Humanizer.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\Microsoft.AspNetCore.OpenApi.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\Microsoft.Build.Framework.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\Microsoft.CodeAnalysis.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\Microsoft.CodeAnalysis.Workspaces.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\Microsoft.CodeAnalysis.ExternalAccess.RazorCompiler.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\Microsoft.CodeAnalysis.Workspaces.MSBuild.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\Microsoft.EntityFrameworkCore.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\Microsoft.OpenApi.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\Microsoft.VisualStudio.SolutionPersistence.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\Mono.TextTemplating.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\Newtonsoft.Json.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\Npgsql.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\System.CodeDom.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\System.Composition.AttributedModel.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\System.Composition.Convention.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\System.Composition.Hosting.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\System.Composition.Runtime.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\System.Composition.TypedParts.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\cs\Microsoft.CodeAnalysis.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\de\Microsoft.CodeAnalysis.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\es\Microsoft.CodeAnalysis.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\fr\Microsoft.CodeAnalysis.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\it\Microsoft.CodeAnalysis.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\ja\Microsoft.CodeAnalysis.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\ko\Microsoft.CodeAnalysis.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\pl\Microsoft.CodeAnalysis.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\pt-BR\Microsoft.CodeAnalysis.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\ru\Microsoft.CodeAnalysis.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\tr\Microsoft.CodeAnalysis.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\cs\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\de\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\es\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\fr\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\it\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\ja\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\ko\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\pl\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\ru\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\tr\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\TEAprendo.application.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\TEAprendo.Contracts.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\TEAprendo.Domain.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\TEAprendo.Infrastructure.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\TEAprendo.Infrastructure.pdb
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\TEAprendo.Contracts.pdb
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\TEAprendo.application.pdb
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\bin\Debug\net10.0\TEAprendo.Domain.pdb
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\obj\Debug\net10.0\rjimswa.dswa.cache.json
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\obj\Debug\net10.0\rjsmrazor.dswa.cache.json
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\obj\Debug\net10.0\rjsmcshtml.dswa.cache.json
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\obj\Debug\net10.0\scopedcss\bundle\TEAprendo.Api.styles.css
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\obj\Debug\net10.0\staticwebassets.build.json
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\obj\Debug\net10.0\staticwebassets.build.json.cache
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\obj\Debug\net10.0\staticwebassets.development.json
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\obj\Debug\net10.0\staticwebassets.build.endpoints.json
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\obj\Debug\net10.0\swae.build.ex.cache
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\obj\Debug\net10.0\TEAprend.814B43A5.Up2Date
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\obj\Debug\net10.0\TEAprendo.Api.genruntimeconfig.cache
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.api\obj\Debug\net10.0\ref\TEAprendo.Api.dll
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-observaciones-api\appsettings.Development.json
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-observaciones-api\appsettings.json
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-observaciones-api\TEAprendo.Api.staticwebassets.endpoints.json
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-observaciones-api\TEAprendo.Api.exe
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-observaciones-api\TEAprendo.Api.deps.json
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-observaciones-api\TEAprendo.Api.runtimeconfig.json
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-observaciones-api\TEAprendo.Api.dll
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-observaciones-api\TEAprendo.Api.pdb
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-contexto-ia\appsettings.Development.json
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-contexto-ia\appsettings.json
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-contexto-ia\TEAprendo.Api.staticwebassets.endpoints.json
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-contexto-ia\TEAprendo.Api.exe
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-contexto-ia\TEAprendo.Api.deps.json
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-contexto-ia\TEAprendo.Api.runtimeconfig.json
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-contexto-ia\TEAprendo.Api.dll
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-contexto-ia\TEAprendo.Api.pdb
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-api-ia\appsettings.Development.json
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-api-ia\appsettings.json
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-api-ia\TEAprendo.Api.staticwebassets.endpoints.json
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-api-ia\TEAprendo.Api.exe
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-api-ia\TEAprendo.Api.deps.json
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-api-ia\TEAprendo.Api.runtimeconfig.json
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-api-ia\TEAprendo.Api.dll
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-api-ia\TEAprendo.Api.pdb

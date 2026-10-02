@@ -9,3 +9,23 @@ C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Domain\obj\
 C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Domain\obj\Debug\net10.0\refint\TEAprendo.Domain.dll
 C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Domain\obj\Debug\net10.0\TEAprendo.Domain.pdb
 C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Domain\obj\Debug\net10.0\ref\TEAprendo.Domain.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Domain\bin\Debug\net10.0\TEAprendo.Domain.deps.json
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Domain\bin\Debug\net10.0\TEAprendo.Domain.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Domain\bin\Debug\net10.0\TEAprendo.Domain.pdb
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Domain\obj\Debug\net10.0\TEAprendo.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Domain\obj\Debug\net10.0\TEAprendo.Domain.AssemblyInfoInputs.cache
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Domain\obj\Debug\net10.0\TEAprendo.Domain.AssemblyInfo.cs
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Domain\obj\Debug\net10.0\TEAprendo.Domain.csproj.CoreCompileInputs.cache
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Domain\obj\Debug\net10.0\TEAprendo.Domain.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Domain\obj\Debug\net10.0\refint\TEAprendo.Domain.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Domain\obj\Debug\net10.0\TEAprendo.Domain.pdb
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Domain\obj\Debug\net10.0\ref\TEAprendo.Domain.dll
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-observaciones-api\TEAprendo.Domain.deps.json
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-observaciones-api\TEAprendo.Domain.dll
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-observaciones-api\TEAprendo.Domain.pdb
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-contexto-ia\TEAprendo.Domain.deps.json
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-contexto-ia\TEAprendo.Domain.dll
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-contexto-ia\TEAprendo.Domain.pdb
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-api-ia\TEAprendo.Domain.deps.json
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-api-ia\TEAprendo.Domain.dll
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-api-ia\TEAprendo.Domain.pdb

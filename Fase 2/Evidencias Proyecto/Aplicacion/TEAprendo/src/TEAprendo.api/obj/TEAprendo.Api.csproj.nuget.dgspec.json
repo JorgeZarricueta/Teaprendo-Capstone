@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Api\\TEAprendo.Api.csproj": {}
+    "C:\\Users\\danyb\\Documents\\duoc\\Semestre 8\\Capstone\\TEAprendo\\src\\TEAprendo.api\\TEAprendo.Api.csproj": {}
   },
   "projects": {
-    "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Api\\TEAprendo.Api.csproj": {
+    "C:\\Users\\danyb\\Documents\\duoc\\Semestre 8\\Capstone\\TEAprendo\\src\\TEAprendo.api\\TEAprendo.Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Api\\TEAprendo.Api.csproj",
+        "projectUniqueName": "C:\\Users\\danyb\\Documents\\duoc\\Semestre 8\\Capstone\\TEAprendo\\src\\TEAprendo.api\\TEAprendo.Api.csproj",
         "projectName": "TEAprendo.Api",
-        "projectPath": "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Api\\TEAprendo.Api.csproj",
-        "packagesPath": "C:\\Users\\kokee\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Api\\obj\\",
+        "projectPath": "C:\\Users\\danyb\\Documents\\duoc\\Semestre 8\\Capstone\\TEAprendo\\src\\TEAprendo.api\\TEAprendo.Api.csproj",
+        "packagesPath": "C:\\Users\\danyb\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\danyb\\Documents\\duoc\\Semestre 8\\Capstone\\TEAprendo\\src\\TEAprendo.api\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\kokee\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\danyb\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -26,6 +26,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -33,11 +34,11 @@
             "framework": "net10.0",
             "targetAlias": "net10.0",
             "projectReferences": {
-              "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Contracts\\TEAprendo.Contracts.csproj": {
-                "projectPath": "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Contracts\\TEAprendo.Contracts.csproj"
+              "C:\\Users\\danyb\\Documents\\duoc\\Semestre 8\\Capstone\\TEAprendo\\src\\TEAprendo.Contracts\\TEAprendo.Contracts.csproj": {
+                "projectPath": "C:\\Users\\danyb\\Documents\\duoc\\Semestre 8\\Capstone\\TEAprendo\\src\\TEAprendo.Contracts\\TEAprendo.Contracts.csproj"
               },
-              "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Infrastructure\\TEAprendo.Infrastructure.csproj": {
-                "projectPath": "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Infrastructure\\TEAprendo.Infrastructure.csproj"
+              "C:\\Users\\danyb\\Documents\\duoc\\Semestre 8\\Capstone\\TEAprendo\\src\\TEAprendo.Infrastructure\\TEAprendo.Infrastructure.csproj": {
+                "projectPath": "C:\\Users\\danyb\\Documents\\duoc\\Semestre 8\\Capstone\\TEAprendo\\src\\TEAprendo.Infrastructure\\TEAprendo.Infrastructure.csproj"
               }
             }
           }
@@ -52,7 +53,7 @@
           "auditLevel": "low",
           "auditMode": "all"
         },
-        "SdkAnalysisLevel": "10.0.300"
+        "SdkAnalysisLevel": "10.0.400"
       },
       "frameworks": {
         "net10.0": {
@@ -93,7 +94,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.302/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.401/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.AspNetCore": "(,10.0.32767]",
             "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",
@@ -511,20 +512,20 @@
         }
       }
     },
-    "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Application\\TEAprendo.application.csproj": {
+    "C:\\Users\\danyb\\Documents\\duoc\\Semestre 8\\Capstone\\TEAprendo\\src\\TEAprendo.Application\\TEAprendo.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Application\\TEAprendo.application.csproj",
-        "projectName": "TEAprendo.application",
-        "projectPath": "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Application\\TEAprendo.application.csproj",
-        "packagesPath": "C:\\Users\\kokee\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Application\\obj\\",
+        "projectUniqueName": "C:\\Users\\danyb\\Documents\\duoc\\Semestre 8\\Capstone\\TEAprendo\\src\\TEAprendo.Application\\TEAprendo.Application.csproj",
+        "projectName": "TEAprendo.Application",
+        "projectPath": "C:\\Users\\danyb\\Documents\\duoc\\Semestre 8\\Capstone\\TEAprendo\\src\\TEAprendo.Application\\TEAprendo.Application.csproj",
+        "packagesPath": "C:\\Users\\danyb\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\danyb\\Documents\\duoc\\Semestre 8\\Capstone\\TEAprendo\\src\\TEAprendo.Application\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\kokee\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\danyb\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -533,6 +534,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -540,8 +542,8 @@
             "framework": "net10.0",
             "targetAlias": "net10.0",
             "projectReferences": {
-              "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Domain\\TEAprendo.Domain.csproj": {
-                "projectPath": "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Domain\\TEAprendo.Domain.csproj"
+              "C:\\Users\\danyb\\Documents\\duoc\\Semestre 8\\Capstone\\TEAprendo\\src\\TEAprendo.Domain\\TEAprendo.Domain.csproj": {
+                "projectPath": "C:\\Users\\danyb\\Documents\\duoc\\Semestre 8\\Capstone\\TEAprendo\\src\\TEAprendo.Domain\\TEAprendo.Domain.csproj"
               }
             }
           }
@@ -556,7 +558,7 @@
           "auditLevel": "low",
           "auditMode": "all"
         },
-        "SdkAnalysisLevel": "10.0.300"
+        "SdkAnalysisLevel": "10.0.400"
       },
       "frameworks": {
         "net10.0": {
@@ -578,7 +580,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.302/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.401/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",
@@ -856,20 +858,20 @@
         }
       }
     },
-    "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Contracts\\TEAprendo.Contracts.csproj": {
+    "C:\\Users\\danyb\\Documents\\duoc\\Semestre 8\\Capstone\\TEAprendo\\src\\TEAprendo.Contracts\\TEAprendo.Contracts.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Contracts\\TEAprendo.Contracts.csproj",
+        "projectUniqueName": "C:\\Users\\danyb\\Documents\\duoc\\Semestre 8\\Capstone\\TEAprendo\\src\\TEAprendo.Contracts\\TEAprendo.Contracts.csproj",
         "projectName": "TEAprendo.Contracts",
-        "projectPath": "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Contracts\\TEAprendo.Contracts.csproj",
-        "packagesPath": "C:\\Users\\kokee\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Contracts\\obj\\",
+        "projectPath": "C:\\Users\\danyb\\Documents\\duoc\\Semestre 8\\Capstone\\TEAprendo\\src\\TEAprendo.Contracts\\TEAprendo.Contracts.csproj",
+        "packagesPath": "C:\\Users\\danyb\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\danyb\\Documents\\duoc\\Semestre 8\\Capstone\\TEAprendo\\src\\TEAprendo.Contracts\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\kokee\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\danyb\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -878,6 +880,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -897,7 +900,7 @@
           "auditLevel": "low",
           "auditMode": "all"
         },
-        "SdkAnalysisLevel": "10.0.300"
+        "SdkAnalysisLevel": "10.0.400"
       },
       "frameworks": {
         "net10.0": {
@@ -919,7 +922,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.302/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.401/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",
@@ -1197,20 +1200,20 @@
         }
       }
     },
-    "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Domain\\TEAprendo.Domain.csproj": {
+    "C:\\Users\\danyb\\Documents\\duoc\\Semestre 8\\Capstone\\TEAprendo\\src\\TEAprendo.Domain\\TEAprendo.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Domain\\TEAprendo.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\danyb\\Documents\\duoc\\Semestre 8\\Capstone\\TEAprendo\\src\\TEAprendo.Domain\\TEAprendo.Domain.csproj",
         "projectName": "TEAprendo.Domain",
-        "projectPath": "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Domain\\TEAprendo.Domain.csproj",
-        "packagesPath": "C:\\Users\\kokee\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Domain\\obj\\",
+        "projectPath": "C:\\Users\\danyb\\Documents\\duoc\\Semestre 8\\Capstone\\TEAprendo\\src\\TEAprendo.Domain\\TEAprendo.Domain.csproj",
+        "packagesPath": "C:\\Users\\danyb\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\danyb\\Documents\\duoc\\Semestre 8\\Capstone\\TEAprendo\\src\\TEAprendo.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\kokee\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\danyb\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -1219,6 +1222,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -1238,7 +1242,7 @@
           "auditLevel": "low",
           "auditMode": "all"
         },
-        "SdkAnalysisLevel": "10.0.300"
+        "SdkAnalysisLevel": "10.0.400"
       },
       "frameworks": {
         "net10.0": {
@@ -1260,7 +1264,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.302/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.401/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",
@@ -1538,20 +1542,20 @@
         }
       }
     },
-    "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Infrastructure\\TEAprendo.Infrastructure.csproj": {
+    "C:\\Users\\danyb\\Documents\\duoc\\Semestre 8\\Capstone\\TEAprendo\\src\\TEAprendo.Infrastructure\\TEAprendo.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Infrastructure\\TEAprendo.Infrastructure.csproj",
+        "projectUniqueName": "C:\\Users\\danyb\\Documents\\duoc\\Semestre 8\\Capstone\\TEAprendo\\src\\TEAprendo.Infrastructure\\TEAprendo.Infrastructure.csproj",
         "projectName": "TEAprendo.Infrastructure",
-        "projectPath": "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Infrastructure\\TEAprendo.Infrastructure.csproj",
-        "packagesPath": "C:\\Users\\kokee\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Infrastructure\\obj\\",
+        "projectPath": "C:\\Users\\danyb\\Documents\\duoc\\Semestre 8\\Capstone\\TEAprendo\\src\\TEAprendo.Infrastructure\\TEAprendo.Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\danyb\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\danyb\\Documents\\duoc\\Semestre 8\\Capstone\\TEAprendo\\src\\TEAprendo.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\kokee\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\danyb\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -1560,6 +1564,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -1567,11 +1572,11 @@
             "framework": "net10.0",
             "targetAlias": "net10.0",
             "projectReferences": {
-              "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Application\\TEAprendo.application.csproj": {
-                "projectPath": "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Application\\TEAprendo.application.csproj"
+              "C:\\Users\\danyb\\Documents\\duoc\\Semestre 8\\Capstone\\TEAprendo\\src\\TEAprendo.Application\\TEAprendo.Application.csproj": {
+                "projectPath": "C:\\Users\\danyb\\Documents\\duoc\\Semestre 8\\Capstone\\TEAprendo\\src\\TEAprendo.Application\\TEAprendo.Application.csproj"
               },
-              "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Domain\\TEAprendo.Domain.csproj": {
-                "projectPath": "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Domain\\TEAprendo.Domain.csproj"
+              "C:\\Users\\danyb\\Documents\\duoc\\Semestre 8\\Capstone\\TEAprendo\\src\\TEAprendo.Domain\\TEAprendo.Domain.csproj": {
+                "projectPath": "C:\\Users\\danyb\\Documents\\duoc\\Semestre 8\\Capstone\\TEAprendo\\src\\TEAprendo.Domain\\TEAprendo.Domain.csproj"
               }
             }
           }
@@ -1586,7 +1591,7 @@
           "auditLevel": "low",
           "auditMode": "all"
         },
-        "SdkAnalysisLevel": "10.0.300"
+        "SdkAnalysisLevel": "10.0.400"
       },
       "frameworks": {
         "net10.0": {
@@ -1628,7 +1633,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.302/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.401/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",

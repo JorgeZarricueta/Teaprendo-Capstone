@@ -1,363 +1,216 @@
 @page "/profesional/alumnos/{AlumnoId:guid}"
-
 @layout TEAprendo.Client.Layout.ProfesionalLayout
-
+@using System.Net
 @using System.Net.Http.Json
+@using System.Text.Json
+@using TEAprendo.Contracts.Agenda
 @using TEAprendo.Contracts.Profesional
-
+@using TEAprendo.Contracts.Profesional.Observaciones
 @inject HttpClient Http
 @inject NavigationManager Navigation
 
 <PageTitle>Perfil del estudiante - TEAprendo</PageTitle>
 
-
 @if (_cargando)
 {
-    <div class="loading-profile">
-        Cargando perfil...
-    </div>
+    <div class="loading-profile">Cargando perfil...</div>
 }
 else if (!string.IsNullOrWhiteSpace(_error))
 {
     <div class="profile-error">
-
-        <strong>
-            No fue posible abrir este estudiante.
-        </strong>
-
-        <p>
-            @_error
-        </p>
-
-        <button class="btn btn-outline-secondary"
-                @onclick="Volver">
-            Volver a mis alumnos
-        </button>
-
+        <strong>No fue posible abrir este estudiante.</strong>
+        <p>@_error</p>
+        <button class="btn btn-outline-secondary" @onclick="Volver">Volver a mis alumnos</button>
     </div>
 }
 else if (_alumno is not null)
 {
     <div class="student-profile">
-
-        <button class="back-button"
-                @onclick="Volver">
-
-            ‹ Volver a mis alumnos
-
-        </button>
-
-
+        <button class="back-button" @onclick="Volver">&lsaquo; Volver a mis alumnos</button>
         <section class="profile-hero">
-
-            <div class="profile-avatar">
-                @ObtenerInicial()
-            </div>
-
+            <div class="profile-avatar">@ObtenerInicial()</div>
             <div class="profile-main-info">
-
-                <span class="profile-label">
-                    Estudiante
-                </span>
-
-                <h1>
-                    @_alumno.Nombre
-                    @_alumno.Apellido
-                </h1>
-
-                <div class="profile-meta">
-
-                    <span>
-                        @_alumno.AulaNombre
-                    </span>
-
-                    <span>•</span>
-
-                    <span>
-                        @_alumno.SedeNombre
-                    </span>
-
-                </div>
-
+                <span class="profile-label">Estudiante</span>
+                <h1>@_alumno.Nombre @_alumno.Apellido</h1>
+                <div class="profile-meta"><span>@_alumno.AulaNombre</span><span>&bull;</span><span>@_alumno.SedeNombre</span></div>
             </div>
-
         </section>
-
 
         <section class="profile-grid">
-
-            <article class="info-card">
-
-                <span class="info-label">
-                    Fecha de nacimiento
-                </span>
-
-                <strong>
-                    @_alumno.FechaNacimiento.ToString("dd/MM/yyyy")
-                </strong>
-
-                <small>
-                    @CalcularEdad(_alumno.FechaNacimiento) años
-                </small>
-
-            </article>
-
-
-            <article class="info-card">
-
-                <span class="info-label">
-                    Aula actual
-                </span>
-
-                <strong>
-                    @_alumno.AulaNombre
-                </strong>
-
-                <small>
-                    Matrícula activa
-                </small>
-
-            </article>
-
-
-            <article class="info-card">
-
-                <span class="info-label">
-                    Establecimiento
-                </span>
-
-                <strong>
-                    @_alumno.SedeNombre
-                </strong>
-
-                <small>
-                    Sede actual
-                </small>
-
-            </article>
-
+            <article class="info-card"><span class="info-label">Fecha de nacimiento</span><strong>@_alumno.FechaNacimiento.ToString("dd/MM/yyyy")</strong><small>@CalcularEdad(_alumno.FechaNacimiento) años</small></article>
+            <article class="info-card"><span class="info-label">Aula actual</span><strong>@_alumno.AulaNombre</strong><small>Matrícula activa</small></article>
+            <article class="info-card"><span class="info-label">Establecimiento</span><strong>@_alumno.SedeNombre</strong><small>Sede actual</small></article>
         </section>
 
+        <section class="profile-section observations-section">
+            <div class="section-heading observations-heading">
+                <div><span>Seguimiento</span><h2>Observaciones del estudiante</h2><p>Antecedentes y estrategias registradas por el equipo profesional.</p></div>
+                <button class="btn btn-primary" @onclick="AlternarFormulario" disabled="@_guardando">@(_mostrarFormulario ? "Cerrar formulario" : "Nueva observación")</button>
+            </div>
 
-        <section class="profile-section">
+            @if (!string.IsNullOrWhiteSpace(_mensaje)) { <div class="observation-message success">@_mensaje</div> }
+            @if (!string.IsNullOrWhiteSpace(_errorObservaciones)) { <div class="observation-message error">@_errorObservaciones</div> }
 
-            <div class="section-heading">
+            @if (_mostrarFormulario)
+            {
+                <EditForm Model="_formulario" OnSubmit="GuardarObservacion" class="observation-form">
+                    <div class="form-header"><h3>@(_observacionEditandoId.HasValue ? "Editar observación" : "Registrar observación")</h3><p>Describe lo esencial. Los detalles adicionales son opcionales.</p></div>
+                    <div class="form-grid">
+                        <label><span>Fecha y hora</span><InputDate @bind-Value="_formulario.FechaObservacion" Type="InputDateType.DateTimeLocal" /></label>
+                        <label><span>Contexto</span><InputSelect @bind-Value="_formulario.Contexto">@foreach (var item in Contextos) { <option value="@item">@item</option> }</InputSelect></label>
+                        <label><span>Categoría</span><InputSelect @bind-Value="_formulario.Categoria">@foreach (var item in Categorias) { <option value="@item">@item</option> }</InputSelect></label>
+                        <label><span>Actividad asociada (opcional)</span><InputSelect @bind-Value="_formulario.ActividadId"><option value="">Sin actividad asociada</option>@foreach (var item in _actividades) { <option value="@item.Id">@item.Titulo - @item.FechaHoraInicio.ToString("dd/MM/yyyy")</option> }</InputSelect></label>
+                    </div>
+                    <label class="form-field-wide"><span>¿Qué ocurrió? <strong>*</strong></span><InputTextArea @bind-Value="_formulario.Situacion" maxlength="1500" placeholder="Ej.: Durante la actividad con plasticina aceptó trabajar solo con el color azul." /></label>
+                    <div class="form-grid form-grid-text">
+                        <label><span>Posible desencadenante</span><InputTextArea @bind-Value="_formulario.Desencadenante" maxlength="1000" placeholder="Cambio de textura, ruido, transición..." /></label>
+                        <label><span>Apoyo o estrategia aplicada</span><InputTextArea @bind-Value="_formulario.ApoyoAplicado" maxlength="1500" placeholder="Autoselección, anticipación, muestra pequeña..." /></label>
+                    </div>
+                    <label class="form-field-wide"><span>¿Cómo respondió el estudiante? <strong>*</strong></span><InputTextArea @bind-Value="_formulario.RespuestaAlumno" maxlength="1500" placeholder="Describe brevemente el resultado observado." /></label>
+                    <div class="form-grid">
+                        <label><span>¿Se estabilizó?</span><InputSelect @bind-Value="_formulario.SeEstabilizo"><option value="">No aplica / sin informar</option><option value="true">Sí</option><option value="false">No</option></InputSelect></label>
+                        <label><span>Seguimiento sugerido</span><InputTextArea @bind-Value="_formulario.Seguimiento" maxlength="1000" placeholder="Qué conviene repetir, evitar u observar." /></label>
+                    </div>
+                    <div class="form-actions"><button type="button" class="btn btn-outline-secondary" @onclick="CerrarFormulario">Cancelar</button><button type="submit" class="btn btn-primary" disabled="@_guardando">@(_guardando ? "Guardando..." : "Guardar observación")</button></div>
+                </EditForm>
+            }
 
-                <div>
-
-                    <span>
-                        Seguimiento
-                    </span>
-
-                    <h2>
-                        Información del estudiante
-                    </h2>
-
-                    <p>
-                        Desde este espacio se centralizará
-                        el seguimiento realizado por los profesionales.
-                    </p>
-
+            @if (_cargandoObservaciones) { <div class="empty-observations">Cargando observaciones...</div> }
+            else if (_observaciones.Count == 0)
+            {
+                <div class="empty-observations"><strong>Aún no hay observaciones.</strong><span>El historial aparecerá aquí cuando un profesional registre la primera.</span></div>
+            }
+            else
+            {
+                <div class="observation-timeline">
+                    @foreach (var item in _observaciones)
+                    {
+                        <article class="observation-item">
+                            <div class="observation-marker"></div>
+                            <div class="observation-content">
+                                <header><div><span class="observation-date">@item.FechaObservacion.ToString("dd/MM/yyyy HH:mm")</span><h3>@item.Contexto</h3></div><span class="category-tag">@item.Categoria</span></header>
+                                <p class="observation-situation">@item.Situacion</p>
+                                @if (!string.IsNullOrWhiteSpace(item.ActividadTitulo)) { <div class="observation-detail"><strong>Actividad:</strong> @item.ActividadTitulo</div> }
+                                @if (!string.IsNullOrWhiteSpace(item.Desencadenante)) { <div class="observation-detail"><strong>Posible desencadenante:</strong> @item.Desencadenante</div> }
+                                @if (!string.IsNullOrWhiteSpace(item.ApoyoAplicado)) { <div class="observation-detail"><strong>Apoyo aplicado:</strong> @item.ApoyoAplicado</div> }
+                                <div class="observation-detail"><strong>Respuesta:</strong> @item.RespuestaAlumno</div>
+                                @if (item.SeEstabilizo.HasValue) { <div class="observation-detail"><strong>Se estabilizó:</strong> @(item.SeEstabilizo.Value ? "Sí" : "No")</div> }
+                                @if (!string.IsNullOrWhiteSpace(item.Seguimiento)) { <div class="observation-detail"><strong>Seguimiento:</strong> @item.Seguimiento</div> }
+                                <footer><span>@item.AutorNombre · @item.AutorRol</span>@if (item.PuedeEditar) { <div class="observation-actions"><button type="button" @onclick="() => EditarObservacion(item)">Editar</button><button type="button" class="danger" @onclick="() => DesactivarObservacion(item.Id)">Eliminar</button></div> }</footer>
+                            </div>
+                        </article>
+                    }
                 </div>
-
-            </div>
-
-
-            <div class="feature-grid">
-
-                <article class="feature-card">
-
-                    <div class="feature-icon">
-                        ✎
-                    </div>
-
-                    <div>
-
-                        <h3>
-                            Observaciones
-                        </h3>
-
-                        <p>
-                            Registra y consulta observaciones
-                            relacionadas con el estudiante.
-                        </p>
-
-                    </div>
-
-                    <span class="coming-soon">
-                        Próximamente
-                    </span>
-
-                </article>
-
-
-                <article class="feature-card">
-
-                    <div class="feature-icon">
-                        ◌
-                    </div>
-
-                    <div>
-
-                        <h3>
-                            Eventos
-                        </h3>
-
-                        <p>
-                            Registra eventos importantes y
-                            estrategias aplicadas.
-                        </p>
-
-                    </div>
-
-                    <span class="coming-soon">
-                        Próximamente
-                    </span>
-
-                </article>
-
-
-                <article class="feature-card">
-
-                    <div class="feature-icon">
-                        ◫
-                    </div>
-
-                    <div>
-
-                        <h3>
-                            Informes
-                        </h3>
-
-                        <p>
-                            Consulta los informes de
-                            seguimiento disponibles.
-                        </p>
-
-                    </div>
-
-                    <span class="coming-soon">
-                        Próximamente
-                    </span>
-
-                </article>
-
-            </div>
-
+            }
         </section>
-
     </div>
 }
 
-
-@code
-{
-    [Parameter]
-    public Guid AlumnoId { get; set; }
-
-
+@code {
+    [Parameter] public Guid AlumnoId { get; set; }
+    private static readonly string[] Contextos = ["Clase", "Actividad programada", "Recreo", "Sesión terapéutica", "Transición", "Otro"];
+    private static readonly string[] Categorias = ["Sensorial", "Regulación emocional", "Comunicación", "Interacción social", "Aprendizaje", "Autonomía", "Otro"];
     private PerfilAlumnoProfesionalDto? _alumno;
+    private List<ObservacionDto> _observaciones = [];
+    private List<ActividadDto> _actividades = [];
+    private CrearObservacionRequest _formulario = NuevoFormulario();
+    private Guid? _observacionEditandoId;
+    private bool _cargando = true, _cargandoObservaciones, _mostrarFormulario, _guardando;
+    private string _error = string.Empty, _errorObservaciones = string.Empty, _mensaje = string.Empty;
 
-    private bool _cargando = true;
+    protected override async Task OnParametersSetAsync() => await CargarAlumno();
 
-    private string _error = string.Empty;
-
-
-    protected override async Task OnParametersSetAsync()
-    {
-        await CargarAlumno();
-    }
-
-
-    // Obtiene el perfil únicamente si existe autorización.
     private async Task CargarAlumno()
     {
-        _cargando = true;
-        _error = string.Empty;
-
+        _cargando = true; _error = string.Empty;
         try
         {
-            var respuesta =
-                await Http.GetAsync(
-                    $"api/profesional/alumnos/{AlumnoId}");
-
-            if (respuesta.StatusCode ==
-                System.Net.HttpStatusCode.Forbidden)
-            {
-                _error =
-                    "No tienes autorización para acceder a este estudiante.";
-
-                return;
-            }
-
-            if (respuesta.StatusCode ==
-                System.Net.HttpStatusCode.NotFound)
-            {
-                _error =
-                    "El estudiante no fue encontrado.";
-
-                return;
-            }
-
-            if (!respuesta.IsSuccessStatusCode)
-            {
-                _error =
-                    "No fue posible obtener la información.";
-
-                return;
-            }
-
-            _alumno =
-                await respuesta.Content
-                    .ReadFromJsonAsync<
-                        PerfilAlumnoProfesionalDto>();
+            var respuesta = await Http.GetAsync($"api/profesional/alumnos/{AlumnoId}");
+            if (respuesta.StatusCode == HttpStatusCode.Forbidden) { _error = "No tienes autorización para acceder a este estudiante."; return; }
+            if (respuesta.StatusCode == HttpStatusCode.NotFound) { _error = "El estudiante no fue encontrado."; return; }
+            if (!respuesta.IsSuccessStatusCode) { _error = "No fue posible obtener la información."; return; }
+            _alumno = await respuesta.Content.ReadFromJsonAsync<PerfilAlumnoProfesionalDto>();
+            await Task.WhenAll(CargarObservaciones(), CargarActividades());
         }
-        catch
-        {
-            _error =
-                "No fue posible conectar con el servidor.";
-        }
-        finally
-        {
-            _cargando = false;
-        }
+        catch { _error = "No fue posible conectar con el servidor."; }
+        finally { _cargando = false; }
     }
 
-
-    private void Volver()
+    private async Task CargarObservaciones()
     {
-        Navigation.NavigateTo(
-            "/profesional/alumnos");
+        _cargandoObservaciones = true;
+        try { _observaciones = await Http.GetFromJsonAsync<List<ObservacionDto>>($"api/observaciones/alumno/{AlumnoId}") ?? []; }
+        catch { _errorObservaciones = "No fue posible cargar el historial de observaciones."; }
+        finally { _cargandoObservaciones = false; }
     }
 
-
-    private string ObtenerInicial()
+    private async Task CargarActividades()
     {
-        if (_alumno is null ||
-            string.IsNullOrWhiteSpace(_alumno.Nombre))
-        {
-            return "?";
-        }
-
-        return _alumno.Nombre[..1].ToUpper();
+        try { _actividades = await Http.GetFromJsonAsync<List<ActividadDto>>($"api/agenda/alumno/{AlumnoId}") ?? []; }
+        catch { _actividades = []; }
     }
 
+    private void AlternarFormulario() { if (_mostrarFormulario) CerrarFormulario(); else { _formulario = NuevoFormulario(); _observacionEditandoId = null; _mostrarFormulario = true; LimpiarMensajes(); } }
+    private void CerrarFormulario() { _mostrarFormulario = false; _observacionEditandoId = null; _formulario = NuevoFormulario(); }
+    private void LimpiarMensajes() { _mensaje = string.Empty; _errorObservaciones = string.Empty; }
 
-    private int CalcularEdad(
-        DateTime fechaNacimiento)
+    private void EditarObservacion(ObservacionDto item)
     {
-        var hoy = DateTime.Today;
-
-        var edad =
-            hoy.Year -
-            fechaNacimiento.Year;
-
-        if (fechaNacimiento.Date >
-            hoy.AddYears(-edad))
-        {
-            edad--;
-        }
-
-        return edad;
+        _observacionEditandoId = item.Id;
+        _formulario = new CrearObservacionRequest { AlumnoId = AlumnoId, ActividadId = item.ActividadId, FechaObservacion = item.FechaObservacion, Contexto = item.Contexto, Categoria = item.Categoria, Situacion = item.Situacion, Desencadenante = item.Desencadenante, ApoyoAplicado = item.ApoyoAplicado, RespuestaAlumno = item.RespuestaAlumno, SeEstabilizo = item.SeEstabilizo, Seguimiento = item.Seguimiento };
+        _mostrarFormulario = true; LimpiarMensajes();
     }
+
+    private async Task GuardarObservacion()
+    {
+        LimpiarMensajes();
+        if (string.IsNullOrWhiteSpace(_formulario.Situacion) || string.IsNullOrWhiteSpace(_formulario.RespuestaAlumno)) { _errorObservaciones = "Completa qué ocurrió y cómo respondió el estudiante."; return; }
+        if (_formulario.FechaObservacion == default || _formulario.FechaObservacion > DateTime.Now.AddMinutes(5)) { _errorObservaciones = "La fecha de la observación no es válida. Selecciona la fecha y hora actuales o una anterior."; return; }
+        _formulario.AlumnoId = AlumnoId;
+        _guardando = true;
+        try
+        {
+            HttpResponseMessage respuesta;
+            if (_observacionEditandoId.HasValue)
+            {
+                var cambio = new ActualizarObservacionRequest { ActividadId = _formulario.ActividadId, FechaObservacion = _formulario.FechaObservacion, Contexto = _formulario.Contexto, Categoria = _formulario.Categoria, Situacion = _formulario.Situacion, Desencadenante = _formulario.Desencadenante, ApoyoAplicado = _formulario.ApoyoAplicado, RespuestaAlumno = _formulario.RespuestaAlumno, SeEstabilizo = _formulario.SeEstabilizo, Seguimiento = _formulario.Seguimiento };
+                respuesta = await Http.PutAsJsonAsync($"api/observaciones/{_observacionEditandoId}", cambio);
+            }
+            else respuesta = await Http.PostAsJsonAsync("api/observaciones", _formulario);
+            if (!respuesta.IsSuccessStatusCode) { _errorObservaciones = await LeerError(respuesta); return; }
+            var edicion = _observacionEditandoId.HasValue; CerrarFormulario(); await CargarObservaciones();
+            _mensaje = edicion ? "La observación fue actualizada." : "La observación fue registrada.";
+        }
+        catch { _errorObservaciones = "No fue posible guardar la observación."; }
+        finally { _guardando = false; }
+    }
+
+    private async Task DesactivarObservacion(Guid id)
+    {
+        LimpiarMensajes();
+        try
+        {
+            var respuesta = await Http.PatchAsync($"api/observaciones/{id}/desactivar", null);
+            if (!respuesta.IsSuccessStatusCode) { _errorObservaciones = await LeerError(respuesta); return; }
+            await CargarObservaciones(); _mensaje = "La observación fue eliminada del historial.";
+        }
+        catch { _errorObservaciones = "No fue posible eliminar la observación."; }
+    }
+
+    private static async Task<string> LeerError(HttpResponseMessage respuesta)
+    {
+        var texto = await respuesta.Content.ReadAsStringAsync();
+        if (string.IsNullOrWhiteSpace(texto)) return "La solicitud no pudo completarse.";
+        try
+        {
+            using var json = JsonDocument.Parse(texto);
+            if (json.RootElement.TryGetProperty("mensaje", out var mensaje)) return mensaje.GetString() ?? texto;
+        }
+        catch (JsonException) { }
+        return texto.Trim('"');
+    }
+    private static CrearObservacionRequest NuevoFormulario() => new() { FechaObservacion = DateTime.Now, Contexto = Contextos[0], Categoria = Categorias[0] };
+    private void Volver() => Navigation.NavigateTo("/profesional/alumnos");
+    private string ObtenerInicial() => string.IsNullOrWhiteSpace(_alumno?.Nombre) ? "?" : _alumno.Nombre[..1].ToUpper();
+    private static int CalcularEdad(DateTime fecha) { var hoy = DateTime.Today; var edad = hoy.Year - fecha.Year; if (fecha.Date > hoy.AddYears(-edad)) edad--; return edad; }
 }

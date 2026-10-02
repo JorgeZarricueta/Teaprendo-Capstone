@@ -219,6 +219,234 @@
     font-size: 13px;
 }
 
+.observations-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.observations-heading .btn {
+    flex: 0 0 auto;
+}
+
+.observation-message {
+    margin: 12px 0;
+    padding: 11px 14px;
+    border: 1px solid;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+.observation-message.success {
+    border-color: #b9ddc8;
+    background: #f1faf5;
+    color: #27643e;
+}
+
+.observation-message.error {
+    border-color: #edc4c4;
+    background: #fff5f5;
+    color: #8f3434;
+}
+
+.observation-form {
+    margin: 18px 0 26px;
+    padding: 22px;
+    border: 1px solid #dfe1e8;
+    border-radius: 8px;
+    background: #fff;
+}
+
+.form-header h3 {
+    margin: 0;
+    color: #3e424b;
+    font-size: 17px;
+}
+
+.form-header p {
+    margin: 4px 0 18px;
+    color: #8c919b;
+    font-size: 12px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.observation-form label {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 14px;
+}
+
+.observation-form label > span {
+    color: #606671;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.observation-form label > span strong {
+    color: #a43f3f;
+}
+
+.observation-form input,
+.observation-form select,
+.observation-form textarea {
+    width: 100%;
+    min-height: 40px;
+    padding: 9px 11px;
+    border: 1px solid #d8dbe3;
+    border-radius: 5px;
+    background: #fff;
+    color: #3e424b;
+    font: inherit;
+    font-size: 13px;
+}
+
+.observation-form textarea {
+    min-height: 76px;
+    resize: vertical;
+}
+
+.form-field-wide textarea {
+    min-height: 88px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 9px;
+    margin-top: 5px;
+}
+
+.empty-observations {
+    display: flex;
+    min-height: 125px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 16px;
+    border: 1px dashed #d9dce4;
+    border-radius: 8px;
+    color: #858b96;
+    font-size: 13px;
+    text-align: center;
+}
+
+.observation-timeline {
+    position: relative;
+    margin-top: 20px;
+    padding-left: 18px;
+}
+
+.observation-timeline::before {
+    position: absolute;
+    top: 8px;
+    bottom: 8px;
+    left: 4px;
+    width: 1px;
+    background: #dcdfe8;
+    content: "";
+}
+
+.observation-item {
+    position: relative;
+    padding: 0 0 18px 13px;
+}
+
+.observation-marker {
+    position: absolute;
+    top: 7px;
+    left: -18px;
+    width: 9px;
+    height: 9px;
+    border: 2px solid #6a7299;
+    border-radius: 50%;
+    background: #fff;
+}
+
+.observation-content {
+    padding: 17px 18px;
+    border: 1px solid #e3e5eb;
+    border-radius: 8px;
+    background: #fff;
+}
+
+.observation-content header,
+.observation-content footer {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.observation-content h3 {
+    margin: 2px 0 0;
+    color: #3c414a;
+    font-size: 15px;
+}
+
+.observation-date {
+    color: #8b919c;
+    font-size: 11px;
+}
+
+.category-tag {
+    padding: 4px 7px;
+    border-radius: 5px;
+    background: #eef0f7;
+    color: #596184;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.observation-situation {
+    margin: 13px 0 10px;
+    color: #434851;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.observation-detail {
+    margin-top: 7px;
+    color: #656b76;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.observation-content footer {
+    align-items: center;
+    margin-top: 15px;
+    padding-top: 11px;
+    border-top: 1px solid #eceef2;
+    color: #9297a1;
+    font-size: 11px;
+}
+
+.observation-actions {
+    display: flex;
+    gap: 11px;
+}
+
+.observation-actions button {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #596184;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.observation-actions button.danger {
+    color: #a34c4c;
+}
+
 
 @media (max-width: 600px) {
 
@@ -241,5 +469,24 @@
     .profile-grid,
     .feature-grid {
         grid-template-columns: 1fr;
+    }
+
+    .observations-heading {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .observation-form {
+        padding: 16px;
+    }
+
+    .observation-content header,
+    .observation-content footer {
+        flex-direction: column;
     }
 }

@@ -21,4 +21,7 @@ public class Student
     // Actividades programadas para el alumno.
     public ICollection<Activity> Activities { get; set; }
         = new List<Activity>();
+
+    public ICollection<StudentObservation> Observations { get; set; }
+        = new List<StudentObservation>();
 }

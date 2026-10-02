@@ -13,3 +13,27 @@ C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Application
 C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Application\obj\Debug\net10.0\TEAprendo.application.pdb
 C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Application\obj\Debug\net10.0\ref\TEAprendo.application.dll
 C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Application\obj\Debug\net10.0\TEAprend.420A97CB.Up2Date
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Application\bin\Debug\net10.0\TEAprendo.application.deps.json
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Application\bin\Debug\net10.0\TEAprendo.application.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Application\bin\Debug\net10.0\TEAprendo.application.pdb
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Application\bin\Debug\net10.0\TEAprendo.Domain.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Application\bin\Debug\net10.0\TEAprendo.Domain.pdb
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Application\obj\Debug\net10.0\TEAprendo.application.csproj.AssemblyReference.cache
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Application\obj\Debug\net10.0\TEAprendo.application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Application\obj\Debug\net10.0\TEAprendo.application.AssemblyInfoInputs.cache
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Application\obj\Debug\net10.0\TEAprendo.application.AssemblyInfo.cs
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Application\obj\Debug\net10.0\TEAprendo.application.csproj.CoreCompileInputs.cache
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Application\obj\Debug\net10.0\TEAprendo.application.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Application\obj\Debug\net10.0\refint\TEAprendo.application.dll
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Application\obj\Debug\net10.0\TEAprendo.application.pdb
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Application\obj\Debug\net10.0\ref\TEAprendo.application.dll
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-observaciones-api\TEAprendo.Application.deps.json
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-observaciones-api\TEAprendo.Application.dll
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-observaciones-api\TEAprendo.Application.pdb
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-contexto-ia\TEAprendo.Application.deps.json
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-contexto-ia\TEAprendo.Application.dll
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-contexto-ia\TEAprendo.Application.pdb
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-api-ia\TEAprendo.Application.deps.json
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-api-ia\TEAprendo.Application.dll
+C:\Users\danyb\AppData\Local\Temp\TEAprendo-api-ia\TEAprendo.Application.pdb
+C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Application\obj\Debug\net10.0\TEAprend.6B9C262B.Up2Date

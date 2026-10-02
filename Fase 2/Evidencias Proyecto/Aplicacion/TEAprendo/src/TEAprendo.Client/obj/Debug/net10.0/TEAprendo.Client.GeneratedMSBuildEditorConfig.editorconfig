@@ -18,105 +18,105 @@ build_property.EntryPointFilePath =
 build_property._SupportedPlatformList = browser
 build_property.RootNamespace = TEAprendo.Client
 build_property.RootNamespace = TEAprendo.Client
-build_property.ProjectDir = C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Client\
+build_property.ProjectDir = C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Client\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = false
 build_property.RazorLangVersion = 10.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\kokee\OneDrive\Escritorio\Proyectos\TEAprendo\src\TEAprendo.Client
+build_property.MSBuildProjectDirectory = C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo\src\TEAprendo.Client
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 10.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/Users/kokee/OneDrive/Escritorio/Proyectos/TEAprendo/src/TEAprendo.Client/App.razor]
+[C:/Users/danyb/Documents/duoc/Semestre 8/Capstone/TEAprendo/src/TEAprendo.Client/App.razor]
 build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kokee/OneDrive/Escritorio/Proyectos/TEAprendo/src/TEAprendo.Client/Pages/ApoderadoInicio.razor]
+[C:/Users/danyb/Documents/duoc/Semestre 8/Capstone/TEAprendo/src/TEAprendo.Client/Pages/ApoderadoInicio.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXBvZGVyYWRvSW5pY2lvLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kokee/OneDrive/Escritorio/Proyectos/TEAprendo/src/TEAprendo.Client/Pages/Counter.razor]
+[C:/Users/danyb/Documents/duoc/Semestre 8/Capstone/TEAprendo/src/TEAprendo.Client/Pages/Counter.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ291bnRlci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kokee/OneDrive/Escritorio/Proyectos/TEAprendo/src/TEAprendo.Client/Pages/Home.razor]
+[C:/Users/danyb/Documents/duoc/Semestre 8/Capstone/TEAprendo/src/TEAprendo.Client/Pages/Home.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSG9tZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kokee/OneDrive/Escritorio/Proyectos/TEAprendo/src/TEAprendo.Client/Pages/NotFound.razor]
+[C:/Users/danyb/Documents/duoc/Semestre 8/Capstone/TEAprendo/src/TEAprendo.Client/Pages/NotFound.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTm90Rm91bmQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kokee/OneDrive/Escritorio/Proyectos/TEAprendo/src/TEAprendo.Client/Pages/Weather.razor]
+[C:/Users/danyb/Documents/duoc/Semestre 8/Capstone/TEAprendo/src/TEAprendo.Client/Pages/Weather.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcV2VhdGhlci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kokee/OneDrive/Escritorio/Proyectos/TEAprendo/src/TEAprendo.Client/_Imports.razor]
+[C:/Users/danyb/Documents/duoc/Semestre 8/Capstone/TEAprendo/src/TEAprendo.Client/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/kokee/OneDrive/Escritorio/Proyectos/TEAprendo/src/TEAprendo.Client/Layout/MainLayout.razor]
+[C:/Users/danyb/Documents/duoc/Semestre 8/Capstone/TEAprendo/src/TEAprendo.Client/Layout/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XE1haW5MYXlvdXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-w0v6ikhmuk
 
-[C:/Users/kokee/OneDrive/Escritorio/Proyectos/TEAprendo/src/TEAprendo.Client/Layout/NavMenu.razor]
+[C:/Users/danyb/Documents/duoc/Semestre 8/Capstone/TEAprendo/src/TEAprendo.Client/Layout/NavMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XE5hdk1lbnUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-lm72hkdda4
 
-[C:/Users/kokee/OneDrive/Escritorio/Proyectos/TEAprendo/src/TEAprendo.Client/Layout/ProfesionalLayout.razor]
+[C:/Users/danyb/Documents/duoc/Semestre 8/Capstone/TEAprendo/src/TEAprendo.Client/Layout/ProfesionalLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XFByb2Zlc2lvbmFsTGF5b3V0LnJhem9y
 build_metadata.AdditionalFiles.CssScope = b-grvm64wm99
 
-[C:/Users/kokee/OneDrive/Escritorio/Proyectos/TEAprendo/src/TEAprendo.Client/Layout/PublicLayout.razor]
+[C:/Users/danyb/Documents/duoc/Semestre 8/Capstone/TEAprendo/src/TEAprendo.Client/Layout/PublicLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XFB1YmxpY0xheW91dC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-auj9frbd6f
 
-[C:/Users/kokee/OneDrive/Escritorio/Proyectos/TEAprendo/src/TEAprendo.Client/Pages/AgendaProfesional.razor]
+[C:/Users/danyb/Documents/duoc/Semestre 8/Capstone/TEAprendo/src/TEAprendo.Client/Pages/AgendaProfesional.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWdlbmRhUHJvZmVzaW9uYWwucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-tj57nbg5sf
 
-[C:/Users/kokee/OneDrive/Escritorio/Proyectos/TEAprendo/src/TEAprendo.Client/Pages/Alumnos.razor]
+[C:/Users/danyb/Documents/duoc/Semestre 8/Capstone/TEAprendo/src/TEAprendo.Client/Pages/Alumnos.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWx1bW5vcy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-92aca0e7f6
 
-[C:/Users/kokee/OneDrive/Escritorio/Proyectos/TEAprendo/src/TEAprendo.Client/Pages/Aulas.razor]
+[C:/Users/danyb/Documents/duoc/Semestre 8/Capstone/TEAprendo/src/TEAprendo.Client/Pages/Aulas.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXVsYXMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-q1oba8ltet
 
-[C:/Users/kokee/OneDrive/Escritorio/Proyectos/TEAprendo/src/TEAprendo.Client/Pages/Dashboard.razor]
+[C:/Users/danyb/Documents/duoc/Semestre 8/Capstone/TEAprendo/src/TEAprendo.Client/Pages/Dashboard.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGFzaGJvYXJkLnJhem9y
 build_metadata.AdditionalFiles.CssScope = b-ltq80gp7w1
 
-[C:/Users/kokee/OneDrive/Escritorio/Proyectos/TEAprendo/src/TEAprendo.Client/Pages/DashboardProfesional.razor]
+[C:/Users/danyb/Documents/duoc/Semestre 8/Capstone/TEAprendo/src/TEAprendo.Client/Pages/DashboardProfesional.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGFzaGJvYXJkUHJvZmVzaW9uYWwucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-g19m3yd1by
 
-[C:/Users/kokee/OneDrive/Escritorio/Proyectos/TEAprendo/src/TEAprendo.Client/Pages/DetalleAulaProfesional.razor]
+[C:/Users/danyb/Documents/duoc/Semestre 8/Capstone/TEAprendo/src/TEAprendo.Client/Pages/DetalleAulaProfesional.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGV0YWxsZUF1bGFQcm9mZXNpb25hbC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-vybs3z3ppj
 
-[C:/Users/kokee/OneDrive/Escritorio/Proyectos/TEAprendo/src/TEAprendo.Client/Pages/Login.razor]
+[C:/Users/danyb/Documents/duoc/Semestre 8/Capstone/TEAprendo/src/TEAprendo.Client/Pages/Login.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW4ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-nx5ophsxgq
 
-[C:/Users/kokee/OneDrive/Escritorio/Proyectos/TEAprendo/src/TEAprendo.Client/Pages/MisAlumnos.razor]
+[C:/Users/danyb/Documents/duoc/Semestre 8/Capstone/TEAprendo/src/TEAprendo.Client/Pages/MisAlumnos.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWlzQWx1bW5vcy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-prrmignpgd
 
-[C:/Users/kokee/OneDrive/Escritorio/Proyectos/TEAprendo/src/TEAprendo.Client/Pages/MisAulas.razor]
+[C:/Users/danyb/Documents/duoc/Semestre 8/Capstone/TEAprendo/src/TEAprendo.Client/Pages/MisAulas.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWlzQXVsYXMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-gs3wkiykt5
 
-[C:/Users/kokee/OneDrive/Escritorio/Proyectos/TEAprendo/src/TEAprendo.Client/Pages/PerfilAlumnoProfesional.razor]
+[C:/Users/danyb/Documents/duoc/Semestre 8/Capstone/TEAprendo/src/TEAprendo.Client/Pages/PerfilAlumnoProfesional.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGVyZmlsQWx1bW5vUHJvZmVzaW9uYWwucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-i04e68694h
 
-[C:/Users/kokee/OneDrive/Escritorio/Proyectos/TEAprendo/src/TEAprendo.Client/Pages/SeleccionarSede.razor]
+[C:/Users/danyb/Documents/duoc/Semestre 8/Capstone/TEAprendo/src/TEAprendo.Client/Pages/SeleccionarSede.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2VsZWNjaW9uYXJTZWRlLnJhem9y
 build_metadata.AdditionalFiles.CssScope = b-idk4d83226
 
-[C:/Users/kokee/OneDrive/Escritorio/Proyectos/TEAprendo/src/TEAprendo.Client/Pages/Usuarios.razor]
+[C:/Users/danyb/Documents/duoc/Semestre 8/Capstone/TEAprendo/src/TEAprendo.Client/Pages/Usuarios.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXN1YXJpb3MucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-394icogvw9

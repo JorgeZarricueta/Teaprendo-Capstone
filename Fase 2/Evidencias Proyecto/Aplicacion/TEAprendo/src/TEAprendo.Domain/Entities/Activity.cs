@@ -24,4 +24,7 @@ public class Activity
     public DateTime CreatedAtUtc { get; set; }
 
     public Student Student { get; set; } = null!;
+
+    public ICollection<StudentObservation> Observations { get; set; }
+        = new List<StudentObservation>();
 }

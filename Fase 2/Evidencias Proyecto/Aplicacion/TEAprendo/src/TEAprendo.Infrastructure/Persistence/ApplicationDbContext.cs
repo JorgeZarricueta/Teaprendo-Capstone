@@ -36,6 +36,9 @@ public class ApplicationDbContext :
     => Set<TerapeutaAlumno>();
 
     public DbSet<Activity> Activities => Set<Activity>();
+
+    public DbSet<StudentObservation> StudentObservations
+        => Set<StudentObservation>();
     
 
 
@@ -436,6 +439,88 @@ public class ApplicationDbContext :
                 .WithMany(x => x.Activities)
                 .HasForeignKey(x => x.StudentId)
                 .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        // =========================
+        // Observaciones de alumnos
+        // =========================
+
+        modelBuilder.Entity<StudentObservation>(entity =>
+        {
+            entity.ToTable("observaciones_alumnos");
+
+            entity.HasKey(x => x.Id);
+
+            entity.Property(x => x.Id).HasColumnName("id");
+            entity.Property(x => x.StudentId).HasColumnName("alumno_id");
+            entity.Property(x => x.AuthorUserId).HasColumnName("autor_usuario_id");
+            entity.Property(x => x.ActivityId).HasColumnName("actividad_id");
+
+            entity.Property(x => x.ObservedAt)
+                .HasColumnName("fecha_observacion")
+                .HasColumnType("timestamp without time zone");
+
+            entity.Property(x => x.Context)
+                .HasColumnName("contexto")
+                .HasMaxLength(50)
+                .IsRequired();
+
+            entity.Property(x => x.Category)
+                .HasColumnName("categoria")
+                .HasMaxLength(50)
+                .IsRequired();
+
+            entity.Property(x => x.Situation)
+                .HasColumnName("situacion")
+                .HasMaxLength(1500)
+                .IsRequired();
+
+            entity.Property(x => x.Trigger)
+                .HasColumnName("desencadenante")
+                .HasMaxLength(1000);
+
+            entity.Property(x => x.SupportApplied)
+                .HasColumnName("apoyo_aplicado")
+                .HasMaxLength(1500);
+
+            entity.Property(x => x.StudentResponse)
+                .HasColumnName("respuesta_alumno")
+                .HasMaxLength(1500)
+                .IsRequired();
+
+            entity.Property(x => x.WasStabilized)
+                .HasColumnName("se_estabilizo");
+
+            entity.Property(x => x.FollowUp)
+                .HasColumnName("seguimiento")
+                .HasMaxLength(1000);
+
+            entity.Property(x => x.IsActive).HasColumnName("activa");
+
+            entity.Property(x => x.CreatedAtUtc)
+                .HasColumnName("fecha_creacion_utc")
+                .HasColumnType("timestamp with time zone");
+
+            entity.Property(x => x.UpdatedAtUtc)
+                .HasColumnName("fecha_actualizacion_utc")
+                .HasColumnType("timestamp with time zone");
+
+            entity.HasOne(x => x.Student)
+                .WithMany(x => x.Observations)
+                .HasForeignKey(x => x.StudentId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne(x => x.Activity)
+                .WithMany(x => x.Observations)
+                .HasForeignKey(x => x.ActivityId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            entity.HasOne<ApplicationUser>()
+                .WithMany()
+                .HasForeignKey(x => x.AuthorUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasIndex(x => new { x.StudentId, x.ObservedAt });
         });
     }
     

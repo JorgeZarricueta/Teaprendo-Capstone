@@ -1009,17 +1009,17 @@
           "buildTransitive/net8.0/_._": {}
         }
       },
-      "TEAprendo.application/1.0.0": {
+      "TEAprendo.Application/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v10.0",
         "dependencies": {
           "TEAprendo.Domain": "1.0.0"
         },
         "compile": {
-          "bin/placeholder/TEAprendo.application.dll": {}
+          "bin/placeholder/TEAprendo.Application.dll": {}
         },
         "runtime": {
-          "bin/placeholder/TEAprendo.application.dll": {}
+          "bin/placeholder/TEAprendo.Application.dll": {}
         }
       },
       "TEAprendo.Domain/1.0.0": {
@@ -3097,10 +3097,10 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "TEAprendo.application/1.0.0": {
+    "TEAprendo.Application/1.0.0": {
       "type": "project",
-      "path": "../TEAprendo.Application/TEAprendo.application.csproj",
-      "msbuildProject": "../TEAprendo.Application/TEAprendo.application.csproj"
+      "path": "../TEAprendo.Application/TEAprendo.Application.csproj",
+      "msbuildProject": "../TEAprendo.Application/TEAprendo.Application.csproj"
     },
     "TEAprendo.Domain/1.0.0": {
       "type": "project",
@@ -3114,28 +3114,28 @@
       "Microsoft.EntityFrameworkCore >= 10.0.12",
       "Microsoft.EntityFrameworkCore.Design >= 10.0.12",
       "Npgsql.EntityFrameworkCore.PostgreSQL >= 10.0.3",
-      "TEAprendo.Domain >= 1.0.0",
-      "TEAprendo.application >= 1.0.0"
+      "TEAprendo.Application >= 1.0.0",
+      "TEAprendo.Domain >= 1.0.0"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\kokee\\.nuget\\packages\\": {},
+    "C:\\Users\\danyb\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Infrastructure\\TEAprendo.Infrastructure.csproj",
+      "projectUniqueName": "C:\\Users\\danyb\\Documents\\duoc\\Semestre 8\\Capstone\\TEAprendo\\src\\TEAprendo.Infrastructure\\TEAprendo.Infrastructure.csproj",
       "projectName": "TEAprendo.Infrastructure",
-      "projectPath": "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Infrastructure\\TEAprendo.Infrastructure.csproj",
-      "packagesPath": "C:\\Users\\kokee\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Infrastructure\\obj\\",
+      "projectPath": "C:\\Users\\danyb\\Documents\\duoc\\Semestre 8\\Capstone\\TEAprendo\\src\\TEAprendo.Infrastructure\\TEAprendo.Infrastructure.csproj",
+      "packagesPath": "C:\\Users\\danyb\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\danyb\\Documents\\duoc\\Semestre 8\\Capstone\\TEAprendo\\src\\TEAprendo.Infrastructure\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\kokee\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\danyb\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -3144,6 +3144,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -3151,11 +3152,11 @@
           "framework": "net10.0",
           "targetAlias": "net10.0",
           "projectReferences": {
-            "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Application\\TEAprendo.application.csproj": {
-              "projectPath": "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Application\\TEAprendo.application.csproj"
+            "C:\\Users\\danyb\\Documents\\duoc\\Semestre 8\\Capstone\\TEAprendo\\src\\TEAprendo.Application\\TEAprendo.Application.csproj": {
+              "projectPath": "C:\\Users\\danyb\\Documents\\duoc\\Semestre 8\\Capstone\\TEAprendo\\src\\TEAprendo.Application\\TEAprendo.Application.csproj"
             },
-            "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Domain\\TEAprendo.Domain.csproj": {
-              "projectPath": "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Domain\\TEAprendo.Domain.csproj"
+            "C:\\Users\\danyb\\Documents\\duoc\\Semestre 8\\Capstone\\TEAprendo\\src\\TEAprendo.Domain\\TEAprendo.Domain.csproj": {
+              "projectPath": "C:\\Users\\danyb\\Documents\\duoc\\Semestre 8\\Capstone\\TEAprendo\\src\\TEAprendo.Domain\\TEAprendo.Domain.csproj"
             }
           }
         }
@@ -3170,7 +3171,7 @@
         "auditLevel": "low",
         "auditMode": "all"
       },
-      "SdkAnalysisLevel": "10.0.300"
+      "SdkAnalysisLevel": "10.0.400"
     },
     "frameworks": {
       "net10.0": {
@@ -3212,7 +3213,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.302/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.401/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.CSharp": "(,4.7.32767]",
           "Microsoft.VisualBasic": "(,10.4.32767]",
