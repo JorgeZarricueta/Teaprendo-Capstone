@@ -1,15 +1,244 @@
-.calendar-section[b-tj57nbg5sf] {
+/* =========================
+   Página
+   ========================= */
+
+.agenda-page[b-tj57nbg5sf] {
     width: 100%;
+    max-width: 1350px;
+    margin: 0 auto;
+    padding: 6px 0 35px;
+}
+
+
+/* =========================
+   Encabezado
+   ========================= */
+
+.agenda-header[b-tj57nbg5sf] {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.agenda-eyebrow[b-tj57nbg5sf] {
+    color: #9298a5;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.agenda-header h1[b-tj57nbg5sf] {
+    margin: 4px 0 0;
+    color: #363a44;
+    font-size: 31px;
+    font-weight: 650;
+}
+
+.agenda-header p[b-tj57nbg5sf] {
+    margin: 6px 0 0;
+    color: #8a909b;
+    font-size: 14px;
+}
+
+.btn-new-activity[b-tj57nbg5sf] {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 11px 17px;
+    border: 0;
+    border-radius: 12px;
+    background: #747da8;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        transform 0.15s ease,
+        background 0.15s ease;
+}
+
+.btn-new-activity:hover[b-tj57nbg5sf] {
+    background: #666f9a;
+    transform: translateY(-1px);
+}
+
+
+/* =========================
+   Mensajes
+   ========================= */
+
+.alert[b-tj57nbg5sf] {
+    border-radius: 13px;
+    font-size: 13px;
+}
+
+
+/* =========================
+   Formulario
+   ========================= */
+
+.agenda-form-card[b-tj57nbg5sf] {
+    border: 1px solid #e1e3eb;
+    border-radius: 20px;
+    background: #fff;
+    box-shadow:
+        0 8px 28px rgba(42, 46, 65, 0.04);
+}
+
+.agenda-form-card .card-body[b-tj57nbg5sf] {
+    padding: 25px;
+}
+
+.agenda-form-card h2[b-tj57nbg5sf] {
+    color: #3d414a;
+    font-weight: 650;
+}
+
+.form-label[b-tj57nbg5sf] {
+    color: #666c78;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.form-control[b-tj57nbg5sf],
+.form-select[b-tj57nbg5sf] {
+    min-height: 45px;
+    border: 1px solid #dfe2e9;
+    border-radius: 11px;
+    color: #414650;
+    font-size: 13px;
+}
+
+.form-control:focus[b-tj57nbg5sf],
+.form-select:focus[b-tj57nbg5sf] {
+    border-color: #adb2d0;
+    box-shadow:
+        0 0 0 3px rgba(116, 125, 168, 0.09);
+}
+
+.form-select:disabled[b-tj57nbg5sf] {
+    background: #f5f5f7;
+    color: #8d929c;
+}
+
+textarea.form-control[b-tj57nbg5sf] {
+    min-height: 95px;
+}
+
+
+/* =========================
+   Resumen
+   ========================= */
+
+.agenda-stat-card[b-tj57nbg5sf] {
+    border: 1px solid #e7e9ef;
+    border-radius: 17px;
+    background: #fff;
+    box-shadow: none;
+}
+
+.agenda-stat-content[b-tj57nbg5sf] {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 19px;
+}
+
+.agenda-stat-icon[b-tj57nbg5sf] {
+    width: 45px;
+    height: 45px;
+    min-width: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 13px;
+    background: #eef0f8;
+    color: #7079a3;
+    font-size: 19px;
+}
+
+.agenda-stat-icon.cancelled[b-tj57nbg5sf] {
+    background: #f8eeee;
+    color: #a27676;
+}
+
+.agenda-stat-content > div:last-child[b-tj57nbg5sf] {
+    display: flex;
+    flex-direction: column;
+}
+
+.agenda-stat-content small[b-tj57nbg5sf] {
+    color: #9297a2;
+    font-size: 11px;
+}
+
+.agenda-stat-content strong[b-tj57nbg5sf] {
+    color: #3c4049;
+    font-size: 24px;
+    line-height: 1.15;
+}
+
+
+/* =========================
+   Tarjetas de actividades
+   ========================= */
+
+section.mt-5 > .mb-3 h2[b-tj57nbg5sf] {
+    color: #393d46;
+    font-weight: 650;
+}
+
+section.mt-5 > .mb-3 p[b-tj57nbg5sf] {
+    font-size: 13px;
+}
+
+.card.shadow-sm[b-tj57nbg5sf] {
+    border: 1px solid #e7e9ef;
+    border-radius: 16px;
+    box-shadow: none !important;
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.card.shadow-sm:hover[b-tj57nbg5sf] {
+    transform: translateY(-1px);
+    box-shadow:
+        0 8px 24px rgba(38, 43, 60, 0.05) !important;
+}
+
+.badge.text-bg-light[b-tj57nbg5sf] {
+    padding: 6px 9px;
+    border-radius: 9px;
+    background: #f0f1f6 !important;
+    color: #737a8e !important;
+    font-size: 10px;
+}
+
+
+/* =========================
+   Calendario
+   ========================= */
+
+.calendar-section[b-tj57nbg5sf] {
+    margin-top: 42px !important;
 }
 
 .calendar-header[b-tj57nbg5sf] {
     display: flex;
     justify-content: space-between;
     align-items: center;
-
     gap: 16px;
+    margin-bottom: 17px;
+}
 
-    margin-bottom: 18px;
+.calendar-header h2[b-tj57nbg5sf] {
+    margin-top: 3px;
+    color: #393d46;
+    font-weight: 650;
 }
 
 .calendar-navigation[b-tj57nbg5sf] {
@@ -17,62 +246,44 @@
     gap: 7px;
 }
 
-
-/* Cuadrícula */
-
 .calendar[b-tj57nbg5sf] {
     display: grid;
-    grid-template-columns: repeat(7, minmax(0, 1fr));
-
+    grid-template-columns:
+        repeat(7, minmax(0, 1fr));
     overflow: hidden;
-
-    border: 1px solid #e3e5eb;
-    border-radius: 16px;
-
-    background: #ffffff;
+    border: 1px solid #e2e4eb;
+    border-radius: 18px;
+    background: #fff;
 }
 
 .calendar-weekday[b-tj57nbg5sf] {
     padding: 11px 7px;
-
-    border-bottom: 1px solid #e8e9ee;
-
+    border-bottom: 1px solid #e9eaf0;
     background: #f7f7fa;
-
-    color: #8b909b;
-
+    color: #878d99;
     font-size: 10px;
     font-weight: 700;
-
     text-align: center;
     text-transform: uppercase;
 }
 
-
-/* Día */
-
 .calendar-day[b-tj57nbg5sf] {
     min-width: 0;
     min-height: 125px;
-
     display: flex;
     flex-direction: column;
     align-items: stretch;
-
     padding: 9px;
-
     border: 0;
     border-right: 1px solid #eeeeF2;
     border-bottom: 1px solid #eeeeF2;
-
-    background: #ffffff;
-
+    background: #fff;
+    color: #414650;
     text-align: left;
-
     cursor: pointer;
-
     transition:
-        background 0.15s ease;
+        background 0.15s ease,
+        box-shadow 0.15s ease;
 }
 
 .calendar-day:hover[b-tj57nbg5sf] {
@@ -81,89 +292,71 @@
 
 .calendar-day.other-month[b-tj57nbg5sf] {
     background: #fafafa;
-    opacity: 0.48;
-}
-
-
-/* Día actual */
-
-.calendar-day.today[b-tj57nbg5sf] {
-    background: #f7f7fc;
-}
-
-.calendar-day.today .calendar-day-number[b-tj57nbg5sf] {
-    width: 27px;
-    height: 27px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 50%;
-
-    background: #717ba6;
-
-    color: #ffffff;
-}
-
-
-/* Día seleccionado */
-
-.calendar-day.selected[b-tj57nbg5sf] {
-    box-shadow:
-        inset 0 0 0 2px
-        #939ac1;
-
-    background: #f9f9fe;
+    opacity: 0.43;
 }
 
 .calendar-day-number[b-tj57nbg5sf] {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
     color: #555b67;
-
     font-size: 12px;
     font-weight: 700;
 }
 
+.calendar-day.today
+.calendar-day-number[b-tj57nbg5sf] {
+    background: #747da8;
+    color: #fff;
+}
 
-/* Eventos */
+.calendar-day.selected[b-tj57nbg5sf] {
+    position: relative;
+    z-index: 1;
+    background: #f8f8fd;
+    box-shadow:
+        inset 0 0 0 2px #9ca3c6;
+}
+
+
+/* Eventos del calendario */
 
 .calendar-events[b-tj57nbg5sf] {
+    min-width: 0;
     display: flex;
     flex-direction: column;
-
     gap: 4px;
-
-    margin-top: 7px;
+    margin-top: 6px;
 }
 
 .calendar-event[b-tj57nbg5sf] {
     min-width: 0;
-
-    padding: 4px 6px;
-
-    border-radius: 6px;
-
+    display: flex;
+    gap: 4px;
     overflow: hidden;
-
+    padding: 4px 6px;
+    border-radius: 7px;
     font-size: 8px;
-
     white-space: nowrap;
-    text-overflow: ellipsis;
 }
 
 .calendar-event span[b-tj57nbg5sf] {
-    margin-right: 4px;
-
+    flex-shrink: 0;
     font-weight: 700;
 }
 
 .calendar-event strong[b-tj57nbg5sf] {
+    overflow: hidden;
     font-weight: 600;
+    text-overflow: ellipsis;
 }
 
 .calendar-event.pedagogica[b-tj57nbg5sf] {
     background: #edf3f8;
-    color: #617b99;
+    color: #617c99;
 }
 
 .calendar-event.terapeutica[b-tj57nbg5sf] {
@@ -178,7 +371,7 @@
 
 .calendar-event.reunion[b-tj57nbg5sf] {
     background: #f8f2e9;
-    color: #977a59;
+    color: #987a58;
 }
 
 .calendar-event.otra[b-tj57nbg5sf] {
@@ -187,32 +380,60 @@
 }
 
 .more-events[b-tj57nbg5sf] {
-    color: #969ba6;
-
+    color: #9298a2;
     font-size: 8px;
     font-weight: 600;
 }
 
 
-/* Día seleccionado */
+/* =========================
+   Día seleccionado
+   ========================= */
 
 .selected-day-section[b-tj57nbg5sf] {
     padding: 20px;
-
-    border: 1px solid #e6e7ed;
-    border-radius: 15px;
-
+    border: 1px solid #e4e6ed;
+    border-radius: 16px;
     background: #fafafd;
 }
 
+.selected-day-section h2[b-tj57nbg5sf] {
+    color: #41454e;
+}
 
-/* Responsive */
+
+/* =========================
+   Botones Bootstrap
+   ========================= */
+
+.btn-outline-primary[b-tj57nbg5sf],
+.btn-outline-danger[b-tj57nbg5sf],
+.btn-outline-success[b-tj57nbg5sf],
+.btn-outline-secondary[b-tj57nbg5sf] {
+    border-radius: 9px;
+    font-size: 11px;
+}
+
+
+/* =========================
+   Responsive
+   ========================= */
 
 @media (max-width: 800px) {
 
-    .calendar-header[b-tj57nbg5sf] {
-        align-items: flex-start;
+    .agenda-header[b-tj57nbg5sf] {
         flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .btn-new-activity[b-tj57nbg5sf] {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .calendar-header[b-tj57nbg5sf] {
+        flex-direction: column;
+        align-items: flex-start;
     }
 
     .calendar[b-tj57nbg5sf] {

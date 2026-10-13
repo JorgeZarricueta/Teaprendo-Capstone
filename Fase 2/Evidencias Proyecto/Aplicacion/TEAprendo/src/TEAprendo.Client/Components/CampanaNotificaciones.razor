@@ -1,0 +1,556 @@
+@using System.Net.Http.Json
+@using TEAprendo.Contracts.Notificaciones
+
+@inject HttpClient Http
+@inject NavigationManager Navigation
+
+
+<div class="notification-wrapper">
+
+    <button type="button"
+            class="notification-bell"
+            aria-label="Abrir notificaciones"
+            @onclick="AlternarBandeja">
+
+        <span class="bell-symbol">
+            ♢
+        </span>
+
+        @if (_noLeidas > 0)
+        {
+            <span class="notification-badge">
+                @ObtenerTextoContador()
+            </span>
+        }
+
+    </button>
+
+
+    @if (_abierta)
+    {
+        <section class="notification-panel">
+
+            <div class="notification-header">
+
+                <div>
+                    <span>
+                        Centro de avisos
+                    </span>
+
+                    <h3>
+                        Notificaciones
+                    </h3>
+                </div>
+
+
+                @if (_noLeidas > 0)
+                {
+                    <button type="button"
+                            class="mark-all"
+                            disabled="@_procesando"
+                            @onclick="MarcarTodas">
+
+                        Marcar todas como leídas
+
+                    </button>
+                }
+
+            </div>
+
+
+            @if (_cargando)
+            {
+                <div class="notification-loading">
+
+                    <div class="notification-spinner">
+                    </div>
+
+                    <span>
+                        Cargando...
+                    </span>
+
+                </div>
+            }
+            else if (_error)
+            {
+                <div class="notification-empty">
+
+                    <span class="empty-icon">
+                        !
+                    </span>
+
+                    <strong>
+                        No pudimos cargar los avisos
+                    </strong>
+
+                    <button type="button"
+                            @onclick="CargarBandeja">
+
+                        Intentar nuevamente
+
+                    </button>
+
+                </div>
+            }
+            else if (_notificaciones.Count == 0)
+            {
+                <div class="notification-empty">
+
+                    <span class="empty-icon">
+                        ✓
+                    </span>
+
+                    <strong>
+                        Estás al día
+                    </strong>
+
+                    <p>
+                        No tienes notificaciones nuevas.
+                    </p>
+
+                </div>
+            }
+            else
+            {
+                <div class="notification-list">
+
+                    @foreach (var notificacion
+                        in NotificacionesVisibles)
+                    {
+                        <button type="button"
+                                class="@ObtenerClaseNotificacion(notificacion)"
+                                @onclick="() => AbrirNotificacion(notificacion)">
+
+                            <div class="@ObtenerClaseIcono(notificacion.Tipo)">
+
+                                @ObtenerIcono(notificacion.Tipo)
+
+                            </div>
+
+
+                            <div class="notification-content">
+
+                                <div class="notification-title-row">
+
+                                    <strong>
+                                        @notificacion.Titulo
+                                    </strong>
+
+                                    @if (!notificacion.Leida)
+                                    {
+                                        <span class="unread-dot">
+                                        </span>
+                                    }
+
+                                </div>
+
+
+                                <p>
+                                    @notificacion.Mensaje
+                                </p>
+
+
+                                <span class="notification-time">
+                                    @ObtenerTiempo(notificacion.FechaCreacionUtc)
+                                </span>
+
+                            </div>
+
+                        </button>
+                    }
+
+                </div>
+
+
+                @if (_notificaciones.Count > 5)
+                {
+                    <button type="button"
+                            class="show-more"
+                            @onclick="AlternarTodas">
+
+                        @(_mostrarTodas
+                            ? "Mostrar menos"
+                            : $"Ver todas ({_notificaciones.Count})")
+
+                    </button>
+                }
+            }
+
+        </section>
+    }
+
+</div>
+
+
+@code
+{
+    private List<NotificacionDto> _notificaciones =
+        new();
+
+    private int _noLeidas;
+
+    private bool _abierta;
+
+    private bool _cargando;
+
+    private bool _procesando;
+
+    private bool _mostrarTodas;
+
+    private bool _error;
+
+
+    private List<NotificacionDto> NotificacionesVisibles =>
+        _mostrarTodas
+            ? _notificaciones
+            : _notificaciones
+                .Take(5)
+                .ToList();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarResumen();
+    }
+
+
+    // Abre la bandeja y actualiza sus datos.
+    private async Task AlternarBandeja()
+    {
+        _abierta =
+            !_abierta;
+
+
+        if (_abierta)
+        {
+            await CargarResumen();
+
+            await CargarBandeja();
+        }
+    }
+
+
+    private async Task CargarResumen()
+    {
+        try
+        {
+            var resumen =
+                await Http.GetFromJsonAsync<
+                    ResumenNotificacionesDto>(
+                    "api/notificaciones/resumen");
+
+
+            _noLeidas =
+                resumen?.NoLeidas
+                ?? 0;
+        }
+        catch
+        {
+            _noLeidas =
+                0;
+        }
+    }
+
+
+    private async Task CargarBandeja()
+    {
+        _cargando =
+            true;
+
+        _error =
+            false;
+
+
+        try
+        {
+            _notificaciones =
+                await Http.GetFromJsonAsync<
+                    List<NotificacionDto>>(
+                    "api/notificaciones")
+                ?? new();
+        }
+        catch
+        {
+            _error =
+                true;
+        }
+        finally
+        {
+            _cargando =
+                false;
+        }
+    }
+
+
+    // Marca una notificación antes de navegar.
+    private async Task AbrirNotificacion(
+        NotificacionDto notificacion)
+    {
+        if (!notificacion.Leida)
+        {
+            var marcada =
+                await MarcarUna(
+                    notificacion);
+
+
+            if (!marcada)
+            {
+                return;
+            }
+        }
+
+
+        if (!string.IsNullOrWhiteSpace(
+            notificacion.Ruta))
+        {
+            _abierta =
+                false;
+
+
+            Navigation.NavigateTo(
+                notificacion.Ruta);
+        }
+    }
+
+
+    private async Task<bool> MarcarUna(
+        NotificacionDto notificacion)
+    {
+        try
+        {
+            using var request =
+                new HttpRequestMessage(
+                    HttpMethod.Patch,
+                    $"api/notificaciones/{notificacion.Id}/leer");
+
+
+            var respuesta =
+                await Http.SendAsync(
+                    request);
+
+
+            if (!respuesta.IsSuccessStatusCode)
+            {
+                return false;
+            }
+
+
+            notificacion.Leida =
+                true;
+
+            notificacion.FechaLecturaUtc =
+                DateTime.UtcNow;
+
+
+            if (_noLeidas > 0)
+            {
+                _noLeidas--;
+            }
+
+
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+
+    private async Task MarcarTodas()
+    {
+        if (_procesando)
+        {
+            return;
+        }
+
+
+        _procesando =
+            true;
+
+
+        try
+        {
+            using var request =
+                new HttpRequestMessage(
+                    HttpMethod.Patch,
+                    "api/notificaciones/leer-todas");
+
+
+            var respuesta =
+                await Http.SendAsync(
+                    request);
+
+
+            if (!respuesta.IsSuccessStatusCode)
+            {
+                return;
+            }
+
+
+            var ahora =
+                DateTime.UtcNow;
+
+
+            foreach (var notificacion in
+                _notificaciones)
+            {
+                if (!notificacion.Leida)
+                {
+                    notificacion.Leida =
+                        true;
+
+                    notificacion.FechaLecturaUtc =
+                        ahora;
+                }
+            }
+
+
+            _noLeidas =
+                0;
+        }
+        finally
+        {
+            _procesando =
+                false;
+        }
+    }
+
+
+    private void AlternarTodas()
+    {
+        _mostrarTodas =
+            !_mostrarTodas;
+    }
+
+
+    private string ObtenerTextoContador()
+    {
+        return _noLeidas > 9
+            ? "9+"
+            : _noLeidas.ToString();
+    }
+
+
+    private string ObtenerClaseNotificacion(
+        NotificacionDto notificacion)
+    {
+        return notificacion.Leida
+            ? "notification-item"
+            : "notification-item unread";
+    }
+
+
+    private string ObtenerClaseIcono(
+        string tipo)
+    {
+        return tipo switch
+        {
+            "CitaSolicitada" =>
+                "notification-type requested",
+
+            "CitaAceptada" =>
+                "notification-type accepted",
+
+            "CitaRechazada" =>
+                "notification-type rejected",
+
+            "CitaCancelada" =>
+                "notification-type cancelled",
+
+            _ =>
+                "notification-type generic"
+        };
+    }
+
+
+    private string ObtenerIcono(
+        string tipo)
+    {
+        return tipo switch
+        {
+            "CitaSolicitada" =>
+                "◷",
+
+            "CitaAceptada" =>
+                "✓",
+
+            "CitaRechazada" =>
+                "×",
+
+            "CitaCancelada" =>
+                "–",
+
+            _ =>
+                "•"
+        };
+    }
+
+
+    private string ObtenerTiempo(
+        DateTime fechaUtc)
+    {
+        var ahora =
+            DateTime.UtcNow;
+
+
+        if (fechaUtc.Kind ==
+            DateTimeKind.Local)
+        {
+            fechaUtc =
+                fechaUtc.ToUniversalTime();
+        }
+        else if (fechaUtc.Kind ==
+            DateTimeKind.Unspecified)
+        {
+            fechaUtc =
+                DateTime.SpecifyKind(
+                    fechaUtc,
+                    DateTimeKind.Utc);
+        }
+
+
+        var diferencia =
+            ahora - fechaUtc;
+
+
+        if (diferencia.TotalMinutes < 1)
+        {
+            return "Ahora";
+        }
+
+
+        if (diferencia.TotalMinutes < 60)
+        {
+            return
+                $"Hace {(int)diferencia.TotalMinutes} min";
+        }
+
+
+        if (diferencia.TotalHours < 24)
+        {
+            var horas =
+                (int)diferencia.TotalHours;
+
+            return horas == 1
+                ? "Hace 1 hora"
+                : $"Hace {horas} horas";
+        }
+
+
+        if (diferencia.TotalDays < 7)
+        {
+            var dias =
+                (int)diferencia.TotalDays;
+
+            return dias == 1
+                ? "Hace 1 día"
+                : $"Hace {dias} días";
+        }
+
+
+        return fechaUtc
+            .ToLocalTime()
+            .ToString("dd/MM/yyyy");
+    }
+}

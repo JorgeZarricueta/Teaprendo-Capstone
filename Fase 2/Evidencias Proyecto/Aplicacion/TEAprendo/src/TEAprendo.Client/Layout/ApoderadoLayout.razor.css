@@ -1,0 +1,272 @@
+.guardian-layout {
+    min-height: 100vh;
+    background: #f7f7fa;
+}
+
+
+/* Sidebar */
+
+.guardian-sidebar {
+    width: 255px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 15px;
+    border-right: 1px solid #e7e8ed;
+    background: #ffffff;
+    z-index: 10;
+}
+
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 7px 8px 23px;
+}
+
+.brand-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: #eef4f0;
+    color: #668574;
+    font-weight: 700;
+}
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.brand-text strong {
+    color: #393d46;
+    font-size: 15px;
+}
+
+.brand-text span {
+    color: #9a9fa8;
+    font-size: 10px;
+}
+
+
+/* Navegación */
+
+.guardian-nav {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.nav-section-title {
+    margin: 18px 10px 6px;
+    color: #adb0b8;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+}
+
+.guardian-nav-link {
+    min-height: 43px;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 0 12px;
+    border-radius: 11px;
+    color: #737985;
+    text-decoration: none;
+    font-size: 12px;
+}
+
+.guardian-nav-link:hover {
+    background: #f6f7f8;
+    color: #535963;
+}
+
+.guardian-nav-link.active {
+    background: #edf4ef;
+    color: #607e6c;
+    font-weight: 600;
+}
+
+.nav-icon {
+    width: 21px;
+    font-size: 16px;
+    text-align: center;
+}
+
+.nav-disabled {
+    opacity: 0.45;
+    cursor: default;
+}
+
+
+/* Logout */
+
+.sidebar-bottom {
+    padding-top: 15px;
+    border-top: 1px solid #eeeeF2;
+}
+
+.logout-button {
+    width: 100%;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 12px;
+    border: 0;
+    border-radius: 11px;
+    background: transparent;
+    color: #888e98;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.logout-button:hover {
+    background: #f8f3f3;
+    color: #956f6f;
+}
+
+
+/* Contenido */
+
+.guardian-main {
+    margin-left: 255px;
+    min-height: 100vh;
+}
+
+.guardian-topbar {
+    min-height: 70px;
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 29px;
+    border-bottom: 1px solid #e7e8ed;
+    background: rgba(255, 255, 255, 0.94);
+}
+
+.topbar-context {
+    color: #858b96;
+    font-size: 12px;
+}
+
+.guardian-user {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+}
+
+.user-text {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+}
+
+.user-text strong {
+    color: #454952;
+    font-size: 12px;
+}
+
+.user-text span {
+    color: #a0a4ac;
+    font-size: 10px;
+}
+
+.user-avatar {
+    width: 37px;
+    height: 37px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #eaf2ed;
+    color: #668374;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.guardian-content {
+    padding: 28px;
+}
+
+
+/* Responsive */
+
+@media (max-width: 760px) {
+
+    .guardian-sidebar {
+        width: 76px;
+        padding: 18px 9px;
+    }
+
+    .brand-text,
+    .guardian-nav-link span:last-child,
+    .nav-section-title,
+    .logout-button span:last-child {
+        display: none;
+    }
+
+    .sidebar-brand,
+    .guardian-nav-link,
+    .logout-button {
+        justify-content: center;
+    }
+
+    .guardian-main {
+        margin-left: 76px;
+    }
+
+    .guardian-content {
+        padding: 18px;
+    }
+
+    .user-text {
+        display: none;
+    }
+}
+
+.topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+
+/* Ajuste de nombres */
+
+.guardian-user {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+
+    flex-shrink: 0;
+}
+
+.user-text {
+    display: flex;
+    flex-direction: column;
+
+    min-width: max-content;
+
+    text-align: right;
+
+    white-space: nowrap;
+}
+
+.user-text strong {
+    max-width: 210px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

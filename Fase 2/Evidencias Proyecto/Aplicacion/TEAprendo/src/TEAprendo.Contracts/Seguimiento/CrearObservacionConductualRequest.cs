@@ -1,0 +1,20 @@
+namespace TEAprendo.Contracts.Seguimiento;
+
+public class CrearObservacionConductualRequest
+{
+    public Guid AlumnoId { get; set; }
+
+    public DateTime FechaHoraObservacion { get; set; }
+
+    public string Contexto { get; set; }
+        = string.Empty;
+
+    public string Conducta { get; set; }
+        = string.Empty;
+
+    public string? Antecedente { get; set; }
+
+    public string? Consecuencia { get; set; }
+
+    public string? Notas { get; set; }
+}

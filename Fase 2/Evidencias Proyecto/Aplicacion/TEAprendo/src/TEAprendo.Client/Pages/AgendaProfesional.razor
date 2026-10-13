@@ -14,13 +14,18 @@
 
 <div class="container py-4">
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="agenda-header">
 
         <div>
+            <span class="agenda-eyebrow">
+                Organización
+            </span>
+
             <h1>Agenda</h1>
 
-            <p class="text-muted">
-                Programa actividades para tus estudiantes.
+            <p>
+                Programa y consulta las actividades
+                de tus estudiantes.
             </p>
         </div>
 
@@ -53,7 +58,7 @@
 
     @if (_mostrarFormulario)
     {
-        <div class="card shadow-sm">
+        <div class="card agenda-form-card">
 
             <div class="card-body">
 
@@ -168,10 +173,6 @@
                                value="@_form.InicioTexto"
                                @onchange="CambiarInicio" />
 
-                        <small class="text-muted">
-                            Valor seleccionado:
-                            @_form.InicioTexto
-                        </small>
 
                     </div>
 
@@ -187,11 +188,6 @@
                                class="form-control"
                                value="@_form.FinTexto"
                                @onchange="CambiarFin" />
-
-                        <small class="text-muted">
-                            Valor seleccionado:
-                            @_form.FinTexto
-                        </small>
 
                     </div>
 
@@ -231,15 +227,21 @@
     <div class="row g-3 mt-4">
 
     <div class="col-md-4">
-        <div class="card shadow-sm h-100">
-            <div class="card-body">
+        <div class="card agenda-stat-card h-100">
+            <div class="card-body agenda-stat-content">
 
-                <small class="text-muted">
-                    Próximas
-                </small>
+                <div class="agenda-stat-icon">
+                    ◷
+                </div>
 
-                <div class="fs-3 fw-bold">
-                    @ActividadesProximas.Count
+                <div>
+                    <small>
+                        Próximas
+                    </small>
+
+                    <strong>
+                        @ActividadesProximas.Count
+                    </strong>
                 </div>
 
             </div>
@@ -249,14 +251,20 @@
 
     <div class="col-md-4">
         <div class="card shadow-sm h-100">
-            <div class="card-body">
+            <div class="card-body agenda-stat-content">
 
-                <small class="text-muted">
-                    Hoy
-                </small>
+                <div class="agenda-stat-icon">
+                    ◎
+                </div>
 
-                <div class="fs-3 fw-bold">
-                    @ActividadesHoy.Count
+                <div>
+                    <small>
+                        Hoy
+                    </small>
+
+                    <strong>
+                        @ActividadesHoy.Count
+                    </strong>
                 </div>
 
             </div>
@@ -266,14 +274,20 @@
 
     <div class="col-md-4">
         <div class="card shadow-sm h-100">
-            <div class="card-body">
+            <div class="card-body agenda-stat-content">
 
-                <small class="text-muted">
-                    Canceladas
-                </small>
+                <div class="agenda-stat-icon cancelled">
+                    ×
+                </div>
 
-                <div class="fs-3 fw-bold">
-                    @ActividadesCanceladas.Count
+                <div>
+                    <small>
+                        Canceladas
+                    </small>
+
+                    <strong>
+                        @ActividadesCanceladas.Count
+                    </strong>
                 </div>
 
             </div>
@@ -1406,6 +1420,7 @@ private string ObtenerClaseEventoCalendario(
         public List<ActividadDto> Actividades { get; set; }
             = new();
     }
+
 
     // Modelo exclusivo del formulario.
     private class FormActividad

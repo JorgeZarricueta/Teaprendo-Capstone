@@ -1,0 +1,111 @@
+@page "/apoderado"
+
+@layout TEAprendo.Client.Layout.ApoderadoLayout
+
+@using System.Net.Http.Json
+@using TEAprendo.Contracts.Citas
+
+@inject HttpClient Http
+@inject NavigationManager Navigation
+
+<PageTitle>Portal Apoderado - TEAprendo</PageTitle>
+
+
+<div class="guardian-dashboard">
+
+    <section class="welcome-panel">
+
+        <span>
+            Portal familiar
+        </span>
+
+        <h1>
+            Bienvenido a TEAprendo
+        </h1>
+
+        <p>
+            Consulta la información de tus estudiantes
+            y comunícate con sus profesionales.
+        </p>
+
+    </section>
+
+
+    <div class="dashboard-grid">
+
+        <article class="dashboard-card">
+
+            <div class="dashboard-icon">
+                ◎
+            </div>
+
+            <div>
+                <span>Mis estudiantes</span>
+
+                <strong>
+                    @_alumnos.Count
+                </strong>
+            </div>
+
+        </article>
+
+
+        <button class="dashboard-action"
+                @onclick="AbrirCitas">
+
+            <div class="dashboard-icon">
+                ◷
+            </div>
+
+            <div>
+                <strong>
+                    Citas
+                </strong>
+
+                <span>
+                    Solicita o revisa citas con
+                    los profesionales.
+                </span>
+            </div>
+
+            <span class="dashboard-arrow">
+                ›
+            </span>
+
+        </button>
+
+    </div>
+
+</div>
+
+
+@code
+{
+    private List<AlumnoCitaDto> _alumnos =
+        new();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _alumnos =
+                await Http.GetFromJsonAsync<
+                    List<AlumnoCitaDto>>(
+                    "api/citas/alumnos")
+                ?? new();
+        }
+        catch
+        {
+            _alumnos =
+                new();
+        }
+    }
+
+
+    private void AbrirCitas()
+    {
+        Navigation.NavigateTo(
+            "/apoderado/citas");
+    }
+}

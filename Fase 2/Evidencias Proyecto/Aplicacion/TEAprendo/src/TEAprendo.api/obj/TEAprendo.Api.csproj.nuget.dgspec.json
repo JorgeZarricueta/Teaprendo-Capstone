@@ -511,12 +511,12 @@
         }
       }
     },
-    "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Application\\TEAprendo.application.csproj": {
+    "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Application\\TEAprendo.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Application\\TEAprendo.application.csproj",
-        "projectName": "TEAprendo.application",
-        "projectPath": "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Application\\TEAprendo.application.csproj",
+        "projectUniqueName": "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Application\\TEAprendo.Application.csproj",
+        "projectName": "TEAprendo.Application",
+        "projectPath": "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Application\\TEAprendo.Application.csproj",
         "packagesPath": "C:\\Users\\kokee\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Application\\obj\\",
         "projectStyle": "PackageReference",
@@ -1567,8 +1567,8 @@
             "framework": "net10.0",
             "targetAlias": "net10.0",
             "projectReferences": {
-              "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Application\\TEAprendo.application.csproj": {
-                "projectPath": "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Application\\TEAprendo.application.csproj"
+              "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Application\\TEAprendo.Application.csproj": {
+                "projectPath": "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Application\\TEAprendo.Application.csproj"
               },
               "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Domain\\TEAprendo.Domain.csproj": {
                 "projectPath": "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Domain\\TEAprendo.Domain.csproj"

@@ -1,0 +1,232 @@
+@inherits LayoutComponentBase
+
+@using TEAprendo.Client.Services
+@using TEAprendo.Client.Components
+
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject SesionService Sesion
+@inject SedeContextoService SedeContexto
+
+
+<div class="guardian-layout">
+
+    <aside class="guardian-sidebar">
+
+        <div class="sidebar-brand">
+
+            <div class="brand-icon">
+                T
+            </div>
+
+            <div class="brand-text">
+                <strong>TEAprendo</strong>
+                <span>Portal Apoderado</span>
+            </div>
+
+        </div>
+
+
+        <nav class="guardian-nav">
+
+            <NavLink href="/apoderado"
+                     Match="NavLinkMatch.All"
+                     class="guardian-nav-link">
+
+                <span class="nav-icon">⌂</span>
+                <span>Inicio</span>
+
+            </NavLink>
+
+
+            <div class="nav-section-title">
+                Mi familia
+            </div>
+
+
+            <NavLink href="/apoderado/citas"
+                     class="guardian-nav-link">
+
+                <span class="nav-icon">◷</span>
+                <span>Citas</span>
+
+            </NavLink>
+
+
+            <div class="guardian-nav-link nav-disabled">
+
+                <span class="nav-icon">◎</span>
+                <span>Mis estudiantes</span>
+
+            </div>
+
+
+            <div class="nav-section-title">
+                Comunicación
+            </div>
+
+
+            <div class="guardian-nav-link nav-disabled">
+
+                <span class="nav-icon">◫</span>
+                <span>Comunicados</span>
+
+            </div>
+
+
+            <div class="guardian-nav-link nav-disabled">
+
+                <span class="nav-icon">◇</span>
+                <span>Mensajes</span>
+
+            </div>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <button class="logout-button"
+                    @onclick="CerrarSesion">
+
+                <span>↪</span>
+                <span>Cerrar sesión</span>
+
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <main class="guardian-main">
+
+        <header class="guardian-topbar">
+
+            <div>
+                <span class="topbar-context">
+                    Portal familiar
+                </span>
+            </div>
+
+
+            <div class="topbar-actions">
+
+                <CampanaNotificaciones />
+
+
+                <div class="guardian-user">
+
+                    <div class="user-text">
+
+                        <strong>
+                            @_nombreUsuario
+                        </strong>
+
+                        <span>
+                            Apoderado
+                        </span>
+
+                    </div>
+
+
+                    <div class="user-avatar">
+                        @_inicial
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <section class="guardian-content">
+
+            @Body
+
+        </section>
+
+    </main>
+
+</div>
+
+
+@code
+{
+    private string _nombreUsuario =
+        "Apoderado";
+
+    private string _inicial =
+        "?";
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var usuario =
+            Sesion.UsuarioActual
+            ?? await Sesion.CargarAsync();
+
+
+        if (usuario is null)
+        {
+            Navigation.NavigateTo(
+                "/login",
+                true);
+
+            return;
+        }
+
+
+        var esApoderado =
+            usuario.Roles.Contains(
+                "Apoderado",
+                StringComparer.OrdinalIgnoreCase);
+
+
+        if (!esApoderado)
+        {
+            Navigation.NavigateTo(
+                "/seleccionar-sede");
+
+            return;
+        }
+
+
+        _nombreUsuario =
+            $"{usuario.Nombre} {usuario.Apellido}";
+
+
+        if (!string.IsNullOrWhiteSpace(
+            usuario.Nombre))
+        {
+            _inicial =
+                usuario.Nombre[..1]
+                    .ToUpper();
+        }
+    }
+
+
+    private async Task CerrarSesion()
+    {
+        try
+        {
+            await Http.PostAsync(
+                "api/autenticacion/logout",
+                null);
+        }
+        catch
+        {
+        }
+
+
+        Sesion.Limpiar();
+
+        SedeContexto.Limpiar();
+
+
+        Navigation.NavigateTo(
+            "/login",
+            true);
+    }
+}

@@ -21,4 +21,12 @@ public class Student
     // Actividades programadas para el alumno.
     public ICollection<Activity> Activities { get; set; }
         = new List<Activity>();
+
+    // Solicitudes de cita asociadas al alumno.
+    public ICollection<Appointment> Appointments { get; set; }
+        = new List<Appointment>();
+
+    // Observaciones conductuales asociadas al alumno.
+    public ICollection<BehavioralObservation> BehavioralObservations { get; set; }
+        = new List<BehavioralObservation>();
 }

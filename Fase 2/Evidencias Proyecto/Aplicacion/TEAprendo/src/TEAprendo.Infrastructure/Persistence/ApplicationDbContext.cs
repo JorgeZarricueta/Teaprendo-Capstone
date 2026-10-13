@@ -36,7 +36,21 @@ public class ApplicationDbContext :
     => Set<TerapeutaAlumno>();
 
     public DbSet<Activity> Activities => Set<Activity>();
+
+    public DbSet<Appointment> Appointments =>
+    Set<Appointment>();
     
+    public DbSet<Notification> Notifications =>
+    Set<Notification>();
+
+    public DbSet<BehavioralObservation> BehavioralObservations =>
+    Set<BehavioralObservation>();
+
+    public DbSet<Intervention> Interventions =>
+        Set<Intervention>();
+
+    public DbSet<InterventionResult> InterventionResults =>
+        Set<InterventionResult>();
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -436,6 +450,393 @@ public class ApplicationDbContext :
                 .WithMany(x => x.Activities)
                 .HasForeignKey(x => x.StudentId)
                 .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        // =========================
+        // Citas
+        // =========================
+
+        modelBuilder.Entity<Appointment>(entity =>
+        {
+            entity.ToTable("citas");
+
+            entity.HasKey(x => x.Id);
+
+
+            entity.Property(x => x.Id)
+                .HasColumnName("id");
+
+
+            entity.Property(x => x.StudentId)
+                .HasColumnName("alumno_id");
+
+
+            entity.Property(x => x.GuardianUserId)
+                .HasColumnName("apoderado_usuario_id");
+
+
+            entity.Property(x => x.ProfessionalUserId)
+                .HasColumnName("profesional_usuario_id");
+
+
+            entity.Property(x => x.ProfessionalRole)
+                .HasColumnName("rol_profesional")
+                .HasMaxLength(30)
+                .IsRequired();
+
+
+            entity.Property(x => x.Reason)
+                .HasColumnName("motivo")
+                .HasMaxLength(1000)
+                .IsRequired();
+
+
+            // Horarios locales propuestos.
+            entity.Property(x => x.RequestedStartDateTime)
+                .HasColumnName(
+                    "fecha_hora_inicio_solicitada")
+                .HasColumnType(
+                    "timestamp without time zone");
+
+
+            entity.Property(x => x.RequestedEndDateTime)
+                .HasColumnName(
+                    "fecha_hora_fin_solicitada")
+                .HasColumnType(
+                    "timestamp without time zone");
+
+
+            entity.Property(x => x.Status)
+                .HasColumnName("estado")
+                .HasMaxLength(30)
+                .IsRequired();
+
+
+            entity.Property(x => x.ResponseMessage)
+                .HasColumnName("mensaje_respuesta")
+                .HasMaxLength(1000);
+
+
+            entity.Property(x => x.CreatedAtUtc)
+                .HasColumnName("fecha_creacion_utc")
+                .HasColumnType(
+                    "timestamp with time zone");
+
+
+            entity.Property(x => x.RespondedAtUtc)
+                .HasColumnName("fecha_respuesta_utc")
+                .HasColumnType(
+                    "timestamp with time zone");
+
+
+            // Una cita pertenece a un alumno.
+            entity.HasOne(x => x.Student)
+                .WithMany(x => x.Appointments)
+                .HasForeignKey(x => x.StudentId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        // =========================
+        // Notificaciones
+        // =========================
+
+        modelBuilder.Entity<Notification>(entity =>
+        {
+            entity.ToTable("notificaciones");
+
+            entity.HasKey(x => x.Id);
+
+
+            entity.Property(x => x.Id)
+                .HasColumnName("id");
+
+
+            entity.Property(x => x.UserId)
+                .HasColumnName("usuario_id")
+                .IsRequired();
+
+
+            entity.Property(x => x.Type)
+                .HasColumnName("tipo")
+                .HasMaxLength(50)
+                .IsRequired();
+
+
+            entity.Property(x => x.Title)
+                .HasColumnName("titulo")
+                .HasMaxLength(150)
+                .IsRequired();
+
+
+            entity.Property(x => x.Message)
+                .HasColumnName("mensaje")
+                .HasMaxLength(1000)
+                .IsRequired();
+
+
+            entity.Property(x => x.Route)
+                .HasColumnName("ruta")
+                .HasMaxLength(250);
+
+
+            entity.Property(x => x.EntityType)
+                .HasColumnName("entidad_tipo")
+                .HasMaxLength(50);
+
+
+            entity.Property(x => x.EntityId)
+                .HasColumnName("entidad_id");
+
+
+            entity.Property(x => x.IsRead)
+                .HasColumnName("leida")
+                .HasDefaultValue(false)
+                .IsRequired();
+
+
+            entity.Property(x => x.CreatedAtUtc)
+                .HasColumnName("fecha_creacion_utc")
+                .HasColumnType(
+                    "timestamp with time zone")
+                .IsRequired();
+
+
+            entity.Property(x => x.ReadAtUtc)
+                .HasColumnName("fecha_lectura_utc")
+                .HasColumnType(
+                    "timestamp with time zone");
+
+
+            // La notificación pertenece a un usuario.
+            entity.HasOne<ApplicationUser>()
+                .WithMany()
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // =========================
+        // Observaciones conductuales
+        // =========================
+
+        modelBuilder.Entity<BehavioralObservation>(entity =>
+        {
+            entity.ToTable("observaciones_conductuales");
+
+            entity.HasKey(x => x.Id);
+
+
+            entity.Property(x => x.Id)
+                .HasColumnName("id");
+
+
+            entity.Property(x => x.StudentId)
+                .HasColumnName("alumno_id")
+                .IsRequired();
+
+
+            entity.Property(x => x.CreatedByUserId)
+                .HasColumnName("creado_por_usuario_id")
+                .IsRequired();
+
+
+            entity.Property(x => x.ObservationDateTime)
+                .HasColumnName("fecha_hora_observacion")
+                .HasColumnType(
+                    "timestamp without time zone")
+                .IsRequired();
+
+
+            entity.Property(x => x.Context)
+                .HasColumnName("contexto")
+                .HasMaxLength(1000)
+                .IsRequired();
+
+
+            entity.Property(x => x.Behavior)
+                .HasColumnName("conducta")
+                .HasMaxLength(1500)
+                .IsRequired();
+
+
+            entity.Property(x => x.Antecedent)
+                .HasColumnName("antecedente")
+                .HasMaxLength(1000);
+
+
+            entity.Property(x => x.Consequence)
+                .HasColumnName("consecuencia")
+                .HasMaxLength(1000);
+
+
+            entity.Property(x => x.Notes)
+                .HasColumnName("notas")
+                .HasMaxLength(1500);
+
+
+            entity.Property(x => x.CreatedAtUtc)
+                .HasColumnName("fecha_creacion_utc")
+                .HasColumnType(
+                    "timestamp with time zone")
+                .IsRequired();
+
+
+            entity.HasOne(x => x.Student)
+                .WithMany(x =>
+                    x.BehavioralObservations)
+                .HasForeignKey(x =>
+                    x.StudentId)
+                .OnDelete(
+                    DeleteBehavior.Restrict);
+
+
+            entity.HasOne<ApplicationUser>()
+                .WithMany()
+                .HasForeignKey(x =>
+                    x.CreatedByUserId)
+                .OnDelete(
+                    DeleteBehavior.Restrict);
+        });
+
+        // =========================
+        // Intervenciones
+        // =========================
+
+        modelBuilder.Entity<Intervention>(entity =>
+        {
+            entity.ToTable("intervenciones");
+
+            entity.HasKey(x => x.Id);
+
+
+            entity.Property(x => x.Id)
+                .HasColumnName("id");
+
+
+            entity.Property(x => x.BehavioralObservationId)
+                .HasColumnName("observacion_id")
+                .IsRequired();
+
+
+            entity.Property(x => x.CreatedByUserId)
+                .HasColumnName("creado_por_usuario_id")
+                .IsRequired();
+
+
+            entity.Property(x => x.Strategy)
+                .HasColumnName("estrategia")
+                .HasMaxLength(1500)
+                .IsRequired();
+
+
+            entity.Property(x => x.Objective)
+                .HasColumnName("objetivo")
+                .HasMaxLength(1000);
+
+
+            entity.Property(x => x.InterventionDateTime)
+                .HasColumnName("fecha_hora_intervencion")
+                .HasColumnType(
+                    "timestamp without time zone")
+                .IsRequired();
+
+
+            entity.Property(x => x.CreatedAtUtc)
+                .HasColumnName("fecha_creacion_utc")
+                .HasColumnType(
+                    "timestamp with time zone")
+                .IsRequired();
+
+
+            entity.HasOne(x =>
+                    x.BehavioralObservation)
+                .WithMany(x =>
+                    x.Interventions)
+                .HasForeignKey(x =>
+                    x.BehavioralObservationId)
+                .OnDelete(
+                    DeleteBehavior.Cascade);
+
+
+            entity.HasOne<ApplicationUser>()
+                .WithMany()
+                .HasForeignKey(x =>
+                    x.CreatedByUserId)
+                .OnDelete(
+                    DeleteBehavior.Restrict);
+        });
+
+        // =========================
+        // Resultados de intervención
+        // =========================
+
+        modelBuilder.Entity<InterventionResult>(entity =>
+        {
+            entity.ToTable("resultados_intervencion");
+
+            entity.HasKey(x => x.Id);
+
+
+            entity.Property(x => x.Id)
+                .HasColumnName("id");
+
+
+            entity.Property(x => x.InterventionId)
+                .HasColumnName("intervencion_id")
+                .IsRequired();
+
+
+            entity.Property(x => x.CreatedByUserId)
+                .HasColumnName("creado_por_usuario_id")
+                .IsRequired();
+
+
+            entity.Property(x => x.ResultDateTime)
+                .HasColumnName("fecha_hora_resultado")
+                .HasColumnType(
+                    "timestamp without time zone")
+                .IsRequired();
+
+
+            entity.Property(x => x.Outcome)
+                .HasColumnName("resultado")
+                .HasMaxLength(1500)
+                .IsRequired();
+
+
+            entity.Property(x => x.Effectiveness)
+                .HasColumnName("efectividad")
+                .HasMaxLength(50)
+                .IsRequired();
+
+
+            entity.Property(x => x.Notes)
+                .HasColumnName("notas")
+                .HasMaxLength(1500);
+
+
+            entity.Property(x => x.CreatedAtUtc)
+                .HasColumnName("fecha_creacion_utc")
+                .HasColumnType(
+                    "timestamp with time zone")
+                .IsRequired();
+
+
+            entity.HasOne(x =>
+                    x.Intervention)
+                .WithMany(x =>
+                    x.Results)
+                .HasForeignKey(x =>
+                    x.InterventionId)
+                .OnDelete(
+                    DeleteBehavior.Cascade);
+
+
+            entity.HasOne<ApplicationUser>()
+                .WithMany()
+                .HasForeignKey(x =>
+                    x.CreatedByUserId)
+                .OnDelete(
+                    DeleteBehavior.Restrict);
         });
     }
     

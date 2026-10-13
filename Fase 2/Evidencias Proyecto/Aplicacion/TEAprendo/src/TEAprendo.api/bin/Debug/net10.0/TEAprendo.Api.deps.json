@@ -509,12 +509,12 @@
           }
         }
       },
-      "TEAprendo.application/1.0.0": {
+      "TEAprendo.Application/1.0.0": {
         "dependencies": {
           "TEAprendo.Domain": "1.0.0"
         },
         "runtime": {
-          "TEAprendo.application.dll": {
+          "TEAprendo.Application.dll": {
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
@@ -541,8 +541,8 @@
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "10.0.12",
           "Microsoft.EntityFrameworkCore": "10.0.12",
           "Npgsql.EntityFrameworkCore.PostgreSQL": "10.0.3",
-          "TEAprendo.Domain": "1.0.0",
-          "TEAprendo.application": "1.0.0"
+          "TEAprendo.Application": "1.0.0",
+          "TEAprendo.Domain": "1.0.0"
         },
         "runtime": {
           "TEAprendo.Infrastructure.dll": {
@@ -748,7 +748,7 @@
       "path": "system.composition.typedparts/9.0.0",
       "hashPath": "system.composition.typedparts.9.0.0.nupkg.sha512"
     },
-    "TEAprendo.application/1.0.0": {
+    "TEAprendo.Application/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

@@ -1,0 +1,1051 @@
+@page "/apoderado/citas"
+
+@layout TEAprendo.Client.Layout.ApoderadoLayout
+
+@using System.Globalization
+@using System.Net.Http.Json
+@using TEAprendo.Contracts.Citas
+
+@inject HttpClient Http
+
+<PageTitle>Citas - TEAprendo</PageTitle>
+
+
+<div class="appointments-page">
+
+    <div class="page-header">
+
+        <div>
+
+            <span class="page-eyebrow">
+                Comunicación
+            </span>
+
+            <h1>
+                Citas
+            </h1>
+
+            <p>
+                Solicita una reunión con los profesionales
+                vinculados a tus estudiantes.
+            </p>
+
+        </div>
+
+
+        <button class="btn-new"
+                @onclick="NuevaSolicitud">
+
+            <span>＋</span>
+
+            Solicitar cita
+
+        </button>
+
+    </div>
+
+
+    @if (!string.IsNullOrWhiteSpace(_mensaje))
+    {
+        <div class="alert alert-success">
+            @_mensaje
+        </div>
+    }
+
+
+    @if (!string.IsNullOrWhiteSpace(_error))
+    {
+        <div class="alert alert-danger">
+            @_error
+        </div>
+    }
+
+
+    @* =========================
+       Formulario
+       ========================= *@
+
+    @if (_mostrarFormulario)
+    {
+        <section class="appointment-form">
+
+            <div class="form-header">
+
+                <div>
+
+                    <span class="page-eyebrow">
+                        Nueva solicitud
+                    </span>
+
+                    <h2>
+                        Solicitar cita
+                    </h2>
+
+                </div>
+
+
+                <button type="button"
+                        class="close-button"
+                        @onclick="CerrarFormulario">
+
+                    ×
+
+                </button>
+
+            </div>
+
+
+            <div class="form-grid">
+
+                <div class="form-field">
+
+                    <label>
+                        Estudiante
+                    </label>
+
+                    <select class="form-select"
+                            value="@_form.AlumnoId"
+                            @onchange="CambiarAlumno">
+
+                        <option value="@Guid.Empty">
+                            Selecciona un estudiante
+                        </option>
+
+                        @foreach (var alumno in _alumnos)
+                        {
+                            <option value="@alumno.Id">
+                                @alumno.Nombre
+                                @alumno.Apellido
+                                ·
+                                @alumno.AulaNombre
+                            </option>
+                        }
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label>
+                        Profesional
+                    </label>
+
+                    <select class="form-select"
+                            @bind="_form.ProfesionalUsuarioId"
+                            disabled="@(_cargandoProfesionales || _form.AlumnoId == Guid.Empty)">
+
+                        <option value="@Guid.Empty">
+                            @ObtenerTextoProfesional()
+                        </option>
+
+                        @foreach (var profesional in _profesionales)
+                        {
+                            <option value="@profesional.Id">
+
+                                @profesional.Nombre
+                                @profesional.Apellido
+                                ·
+                                @ObtenerNombreRol(
+                                    profesional.Rol)
+
+                            </option>
+                        }
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-field form-full">
+
+                    <label>
+                        Motivo de la cita
+                    </label>
+
+                    <textarea class="form-control"
+                              rows="4"
+                              maxlength="1000"
+                              placeholder="Cuéntanos brevemente el motivo de la solicitud..."
+                              @bind="_form.Motivo">
+                    </textarea>
+
+                </div>
+
+
+                @* Conservamos la fecha como texto,
+                   igual que en Agenda. *@
+
+                <div class="form-field">
+
+                    <label>
+                        Fecha y hora de inicio
+                    </label>
+
+                    <input type="datetime-local"
+                           class="form-control"
+                           value="@_form.InicioTexto"
+                           @onchange="CambiarInicio" />
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label>
+                        Fecha y hora de término
+                    </label>
+
+                    <input type="datetime-local"
+                           class="form-control"
+                           value="@_form.FinTexto"
+                           @onchange="CambiarFin" />
+
+                </div>
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <button type="button"
+                        class="btn-secondary"
+                        @onclick="CerrarFormulario">
+
+                    Cancelar
+
+                </button>
+
+
+                <button type="button"
+                        class="btn-send"
+                        disabled="@_enviando"
+                        @onclick="EnviarSolicitud">
+
+                    @(_enviando
+                        ? "Enviando..."
+                        : "Enviar solicitud")
+
+                </button>
+
+            </div>
+
+        </section>
+    }
+
+
+    @* =========================
+       Resumen
+       ========================= *@
+
+    <div class="status-grid">
+
+        <article>
+            <span>Pendientes</span>
+            <strong>@CitasPendientes.Count</strong>
+        </article>
+
+        <article>
+            <span>Aceptadas</span>
+            <strong>@CitasAceptadas.Count</strong>
+        </article>
+
+        <article>
+            <span>Rechazadas</span>
+            <strong>@CitasRechazadas.Count</strong>
+        </article>
+
+        <article>
+            <span>Canceladas</span>
+            <strong>@CitasCanceladas.Count</strong>
+        </article>
+
+    </div>
+
+
+    @if (_cargando)
+    {
+        <div class="loading-state">
+            Cargando solicitudes...
+        </div>
+    }
+    else
+    {
+        <section class="appointments-section">
+
+            <div class="section-header">
+
+                <div>
+
+                    <span class="page-eyebrow">
+                        Solicitudes
+                    </span>
+
+                    <h2>
+                        Mis citas
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            @if (_citas.Count == 0)
+            {
+                <div class="empty-state">
+
+                    <strong>
+                        Todavía no has solicitado citas
+                    </strong>
+
+                    <p>
+                        Cuando necesites conversar con un
+                        profesional puedes enviar una solicitud
+                        desde aquí.
+                    </p>
+
+                </div>
+            }
+            else
+            {
+                <div class="appointments-list">
+
+                    @foreach (var cita in _citas)
+                    {
+                        <article class="appointment-card">
+
+                            <div class="appointment-date">
+
+                                <strong>
+                                    @cita.FechaHoraInicio.Day
+                                </strong>
+
+                                <span>
+                                    @ObtenerMesCorto(
+                                        cita.FechaHoraInicio)
+                                </span>
+
+                            </div>
+
+
+                            <div class="appointment-content">
+
+                                <div class="appointment-top">
+
+                                    <div>
+
+                                        <span class="appointment-time">
+
+                                            @(cita.FechaHoraInicio
+                                                .ToString("HH:mm"))
+
+                                            -
+
+                                            @(cita.FechaHoraFin
+                                                .ToString("HH:mm"))
+
+                                        </span>
+
+
+                                        <h3>
+                                            @cita.ProfesionalNombre
+                                        </h3>
+
+
+                                        <span class="professional-role">
+
+                                            @ObtenerNombreRol(
+                                                cita.RolProfesional)
+
+                                        </span>
+
+                                    </div>
+
+
+                                    <span class="@ObtenerClaseEstado(
+                                        cita.Estado)">
+
+                                        @cita.Estado
+
+                                    </span>
+
+                                </div>
+
+
+                                <div class="student-info">
+
+                                    <span>
+                                        Estudiante
+                                    </span>
+
+                                    <strong>
+                                        @cita.AlumnoNombre
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="reason">
+
+                                    <span>
+                                        Motivo
+                                    </span>
+
+                                    <p>
+                                        @cita.Motivo
+                                    </p>
+
+                                </div>
+
+
+                                @if (!string.IsNullOrWhiteSpace(
+                                    cita.MensajeRespuesta))
+                                {
+                                    <div class="response-message">
+
+                                        <span>
+                                            Respuesta del profesional
+                                        </span>
+
+                                        <p>
+                                            @cita.MensajeRespuesta
+                                        </p>
+
+                                    </div>
+                                }
+
+
+                                @if (cita.Estado.Equals(
+                                    "Pendiente",
+                                    StringComparison.OrdinalIgnoreCase))
+                                {
+                                    <div class="appointment-actions">
+
+                                        <button type="button"
+                                                class="btn-cancel-request"
+                                                @onclick="() => CancelarSolicitud(cita)">
+
+                                            Cancelar solicitud
+
+                                        </button>
+
+                                    </div>
+                                }
+
+                            </div>
+
+                        </article>
+                    }
+
+                </div>
+            }
+
+        </section>
+    }
+
+</div>
+
+
+@code
+{
+    private List<AlumnoCitaDto> _alumnos =
+        new();
+
+    private List<ProfesionalCitaDto> _profesionales =
+        new();
+
+    private List<CitaDto> _citas =
+        new();
+
+
+    private FormCita _form =
+        new();
+
+
+    private bool _cargando = true;
+
+    private bool _cargandoProfesionales;
+
+    private bool _mostrarFormulario;
+
+    private bool _enviando;
+
+
+    private string _mensaje =
+        string.Empty;
+
+    private string _error =
+        string.Empty;
+
+
+    private List<CitaDto> CitasPendientes =>
+        FiltrarPorEstado("Pendiente");
+
+    private List<CitaDto> CitasAceptadas =>
+        FiltrarPorEstado("Aceptada");
+
+    private List<CitaDto> CitasRechazadas =>
+        FiltrarPorEstado("Rechazada");
+
+    private List<CitaDto> CitasCanceladas =>
+        FiltrarPorEstado("Cancelada");
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarDatos();
+    }
+
+
+    // Carga alumnos y solicitudes del Apoderado.
+    private async Task CargarDatos()
+    {
+        _cargando = true;
+        _error = string.Empty;
+
+        try
+        {
+            var alumnosTask =
+                Http.GetFromJsonAsync<
+                    List<AlumnoCitaDto>>(
+                    "api/citas/alumnos");
+
+            var citasTask =
+                Http.GetFromJsonAsync<
+                    List<CitaDto>>(
+                    "api/citas/mis-solicitudes");
+
+
+            await Task.WhenAll(
+                alumnosTask,
+                citasTask);
+
+
+            _alumnos =
+                alumnosTask.Result
+                ?? new();
+
+            _citas =
+                citasTask.Result
+                    ?.OrderByDescending(x =>
+                        x.FechaCreacionUtc)
+                    .ToList()
+                ?? new();
+        }
+        catch
+        {
+            _error =
+                "No fue posible cargar las citas.";
+        }
+        finally
+        {
+            _cargando = false;
+        }
+    }
+
+
+    private void NuevaSolicitud()
+    {
+        _mensaje = string.Empty;
+        _error = string.Empty;
+
+        var inicio =
+            ObtenerProximaHora();
+
+        var fin =
+            inicio.AddMinutes(30);
+
+
+        _form =
+            new FormCita
+            {
+                InicioTexto =
+                    FormatearFecha(inicio),
+
+                FinTexto =
+                    FormatearFecha(fin)
+            };
+
+
+        _profesionales =
+            new();
+
+        _mostrarFormulario =
+            true;
+    }
+
+
+    // Carga los profesionales del alumno seleccionado.
+    private async Task CambiarAlumno(
+        ChangeEventArgs e)
+    {
+        _form.ProfesionalUsuarioId =
+            Guid.Empty;
+
+        _profesionales =
+            new();
+
+
+        if (!Guid.TryParse(
+            e.Value?.ToString(),
+            out var alumnoId))
+        {
+            _form.AlumnoId =
+                Guid.Empty;
+
+            return;
+        }
+
+
+        _form.AlumnoId =
+            alumnoId;
+
+
+        if (alumnoId ==
+            Guid.Empty)
+        {
+            return;
+        }
+
+
+        _cargandoProfesionales =
+            true;
+
+        _error =
+            string.Empty;
+
+
+        try
+        {
+            _profesionales =
+                await Http.GetFromJsonAsync<
+                    List<ProfesionalCitaDto>>(
+                    $"api/citas/alumnos/{alumnoId}/profesionales")
+                ?? new();
+        }
+        catch
+        {
+            _error =
+                "No fue posible cargar los profesionales.";
+        }
+        finally
+        {
+            _cargandoProfesionales =
+                false;
+        }
+    }
+
+
+    private void CambiarInicio(
+        ChangeEventArgs e)
+    {
+        _form.InicioTexto =
+            e.Value?.ToString()
+            ?? string.Empty;
+    }
+
+
+    private void CambiarFin(
+        ChangeEventArgs e)
+    {
+        _form.FinTexto =
+            e.Value?.ToString()
+            ?? string.Empty;
+    }
+
+
+    private void CerrarFormulario()
+    {
+        _mostrarFormulario =
+            false;
+
+        _profesionales =
+            new();
+
+        _form =
+            new();
+    }
+
+
+    private async Task EnviarSolicitud()
+    {
+        _mensaje = string.Empty;
+        _error = string.Empty;
+
+
+        if (_form.AlumnoId ==
+            Guid.Empty)
+        {
+            _error =
+                "Debes seleccionar un estudiante.";
+
+            return;
+        }
+
+
+        if (_form.ProfesionalUsuarioId ==
+            Guid.Empty)
+        {
+            _error =
+                "Debes seleccionar un profesional.";
+
+            return;
+        }
+
+
+        if (string.IsNullOrWhiteSpace(
+            _form.Motivo))
+        {
+            _error =
+                "Debes indicar el motivo de la cita.";
+
+            return;
+        }
+
+
+        if (!TryConvertirFecha(
+            _form.InicioTexto,
+            out var inicio))
+        {
+            _error =
+                "La fecha de inicio no es válida.";
+
+            return;
+        }
+
+
+        if (!TryConvertirFecha(
+            _form.FinTexto,
+            out var fin))
+        {
+            _error =
+                "La fecha de término no es válida.";
+
+            return;
+        }
+
+        if (inicio <= DateTime.Now)
+        {
+            _error =
+                "Debes seleccionar una fecha futura.";
+
+            return;
+        }
+
+        if (fin <= inicio)
+        {
+            _error =
+                "La hora de término debe ser posterior al inicio.";
+
+            return;
+        }
+
+
+        _enviando =
+            true;
+
+
+        try
+        {
+            var request =
+                new CrearCitaRequest
+                {
+                    AlumnoId =
+                        _form.AlumnoId,
+
+                    ProfesionalUsuarioId =
+                        _form.ProfesionalUsuarioId,
+
+                    Motivo =
+                        _form.Motivo.Trim(),
+
+                    FechaHoraInicio =
+                        inicio,
+
+                    FechaHoraFin =
+                        fin
+                };
+
+
+            var respuesta =
+                await Http.PostAsJsonAsync(
+                    "api/citas",
+                    request);
+
+
+            if (!respuesta.IsSuccessStatusCode)
+            {
+                await ProcesarErrorApi(
+                    respuesta);
+
+                return;
+            }
+
+
+            _mensaje =
+                "Solicitud enviada correctamente.";
+
+
+            CerrarFormulario();
+
+            await CargarDatos();
+        }
+        catch
+        {
+            _error =
+                "No fue posible enviar la solicitud.";
+        }
+        finally
+        {
+            _enviando =
+                false;
+        }
+    }
+
+
+    // Cancela una solicitud pendiente.
+    private async Task CancelarSolicitud(
+        CitaDto cita)
+    {
+        _mensaje = string.Empty;
+        _error = string.Empty;
+
+        try
+        {
+            using var request =
+                new HttpRequestMessage(
+                    HttpMethod.Patch,
+                    $"api/citas/{cita.Id}/cancelar");
+
+
+            var respuesta =
+                await Http.SendAsync(
+                    request);
+
+
+            if (!respuesta.IsSuccessStatusCode)
+            {
+                await ProcesarErrorApi(
+                    respuesta);
+
+                return;
+            }
+
+
+            _mensaje =
+                "Solicitud cancelada correctamente.";
+
+
+            await CargarDatos();
+        }
+        catch
+        {
+            _error =
+                "No fue posible cancelar la solicitud.";
+        }
+    }
+
+
+    private async Task ProcesarErrorApi(
+        HttpResponseMessage respuesta)
+    {
+        try
+        {
+            var error =
+                await respuesta.Content
+                    .ReadFromJsonAsync<
+                        MensajeApi>();
+
+
+            _error =
+                error?.Mensaje
+                ?? "No fue posible completar la operación.";
+        }
+        catch
+        {
+            _error =
+                "No fue posible completar la operación.";
+        }
+    }
+
+
+    private bool TryConvertirFecha(
+        string valor,
+        out DateTime fecha)
+    {
+        fecha =
+            default;
+
+
+        var formatos =
+            new[]
+            {
+                "yyyy-MM-ddTHH:mm",
+                "yyyy-MM-ddTHH:mm:ss"
+            };
+
+
+        if (!DateTime.TryParseExact(
+            valor,
+            formatos,
+            CultureInfo.InvariantCulture,
+            DateTimeStyles.None,
+            out var resultado))
+        {
+            return false;
+        }
+
+
+        fecha =
+            DateTime.SpecifyKind(
+                resultado,
+                DateTimeKind.Unspecified);
+
+
+        return true;
+    }
+
+
+    private DateTime ObtenerProximaHora()
+    {
+        var ahora =
+            DateTime.Now;
+
+
+        return new DateTime(
+            ahora.Year,
+            ahora.Month,
+            ahora.Day,
+            ahora.Hour,
+            0,
+            0)
+            .AddHours(1);
+    }
+
+
+    private string FormatearFecha(
+        DateTime fecha)
+    {
+        return fecha.ToString(
+            "yyyy-MM-ddTHH:mm",
+            CultureInfo.InvariantCulture);
+    }
+
+
+    private List<CitaDto> FiltrarPorEstado(
+        string estado)
+    {
+        return _citas
+            .Where(x =>
+                x.Estado.Equals(
+                    estado,
+                    StringComparison.OrdinalIgnoreCase))
+            .ToList();
+    }
+
+
+    private string ObtenerTextoProfesional()
+    {
+        if (_form.AlumnoId ==
+            Guid.Empty)
+        {
+            return
+                "Primero selecciona un estudiante";
+        }
+
+        if (_cargandoProfesionales)
+        {
+            return
+                "Cargando profesionales...";
+        }
+
+        return _profesionales.Count == 0
+            ? "No hay profesionales disponibles"
+            : "Selecciona un profesional";
+    }
+
+
+    private string ObtenerNombreRol(
+        string rol)
+    {
+        return rol.Equals(
+            "Docente",
+            StringComparison.OrdinalIgnoreCase)
+                ? "Educador"
+                : "Profesional";
+    }
+
+
+    private string ObtenerClaseEstado(
+        string estado)
+    {
+        return estado switch
+        {
+            "Pendiente" =>
+                "appointment-status pending",
+
+            "Aceptada" =>
+                "appointment-status accepted",
+
+            "Rechazada" =>
+                "appointment-status rejected",
+
+            "Cancelada" =>
+                "appointment-status cancelled",
+
+            _ =>
+                "appointment-status"
+        };
+    }
+
+
+    private string ObtenerMesCorto(
+        DateTime fecha)
+    {
+        var meses =
+            new[]
+            {
+                "ENE",
+                "FEB",
+                "MAR",
+                "ABR",
+                "MAY",
+                "JUN",
+                "JUL",
+                "AGO",
+                "SEP",
+                "OCT",
+                "NOV",
+                "DIC"
+            };
+
+
+        return meses[
+            fecha.Month - 1];
+    }
+
+
+    private class FormCita
+    {
+        public Guid AlumnoId { get; set; }
+
+        public Guid ProfesionalUsuarioId { get; set; }
+
+        public string Motivo { get; set; }
+            = string.Empty;
+
+        public string InicioTexto { get; set; }
+            = string.Empty;
+
+        public string FinTexto { get; set; }
+            = string.Empty;
+    }
+
+
+    private class MensajeApi
+    {
+        public string Mensaje { get; set; }
+            = string.Empty;
+    }
+}

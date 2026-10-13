@@ -685,17 +685,17 @@
           "buildTransitive/net8.0/_._": {}
         }
       },
-      "TEAprendo.application/1.0.0": {
+      "TEAprendo.Application/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v10.0",
         "dependencies": {
           "TEAprendo.Domain": "1.0.0"
         },
         "compile": {
-          "bin/placeholder/TEAprendo.application.dll": {}
+          "bin/placeholder/TEAprendo.Application.dll": {}
         },
         "runtime": {
-          "bin/placeholder/TEAprendo.application.dll": {}
+          "bin/placeholder/TEAprendo.Application.dll": {}
         }
       },
       "TEAprendo.Contracts/1.0.0": {
@@ -725,8 +725,8 @@
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "10.0.12",
           "Microsoft.EntityFrameworkCore": "10.0.12",
           "Npgsql.EntityFrameworkCore.PostgreSQL": "10.0.3",
-          "TEAprendo.Domain": "1.0.0",
-          "TEAprendo.application": "1.0.0"
+          "TEAprendo.Application": "1.0.0",
+          "TEAprendo.Domain": "1.0.0"
         },
         "compile": {
           "bin/placeholder/TEAprendo.Infrastructure.dll": {}
@@ -2279,10 +2279,10 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "TEAprendo.application/1.0.0": {
+    "TEAprendo.Application/1.0.0": {
       "type": "project",
-      "path": "../TEAprendo.Application/TEAprendo.application.csproj",
-      "msbuildProject": "../TEAprendo.Application/TEAprendo.application.csproj"
+      "path": "../TEAprendo.Application/TEAprendo.Application.csproj",
+      "msbuildProject": "../TEAprendo.Application/TEAprendo.Application.csproj"
     },
     "TEAprendo.Contracts/1.0.0": {
       "type": "project",

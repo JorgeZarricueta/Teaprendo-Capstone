@@ -279,3 +279,9 @@
         padding: 16px;
     }
 }
+
+.topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}

@@ -1,6 +1,7 @@
 @inherits LayoutComponentBase
 
 @using TEAprendo.Client.Services
+@using TEAprendo.Client.Components
 
 @inject HttpClient Http
 @inject NavigationManager Navigation
@@ -45,6 +46,14 @@
                 <span class="nav-icon">◷</span>
 
                 <span>Agenda</span>
+
+            </NavLink>
+
+            <NavLink href="/profesional/citas"
+                    class="professional-nav-link">
+
+                <span class="nav-icon">◷</span>
+                <span>Citas</span>
 
             </NavLink>
 
@@ -126,6 +135,19 @@
 
 
             <div class="professional-user">
+
+                <div class="topbar-actions">
+
+                    <CampanaNotificaciones />
+
+
+                    <div class="professional-user">
+
+                        @* Tu contenido actual *@
+
+                    </div>
+
+                </div>
 
                 <div class="user-text">
 

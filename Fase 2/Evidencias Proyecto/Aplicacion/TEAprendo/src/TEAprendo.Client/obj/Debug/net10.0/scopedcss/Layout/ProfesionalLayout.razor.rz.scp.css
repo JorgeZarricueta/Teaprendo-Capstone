@@ -279,3 +279,9 @@
         padding: 16px;
     }
 }
+
+.topbar-actions[b-grvm64wm99] {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
