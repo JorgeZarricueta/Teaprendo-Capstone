@@ -1,0 +1,125 @@
+TEAprendo - Accesos y ejecucion local
+Actualizado: 13/10/2026
+Archivo local con contrasenas. Excluido de Git mediante .gitignore.
+
+ESTADO AL TERMINAR
+API, Client, IA y Ollama detenidos.
+PostgreSQL permanece iniciado.
+
+CREDENCIALES CONFIRMADAS
+
+Administrador general:
+  Correo: prueba1@gmail.com
+  Contrasena: Prueba1.
+  Nombre: Prueba1
+  Apellido: Prueba1
+  La contrasena incluye el punto final; se verifico contra el hash almacenado.
+
+PostgreSQL:
+  Servidor: localhost
+  Puerto: 5432
+  Base de datos: teaprendo_db
+  Usuario: teaprendo_app
+  Contrasena: teaprendo_app123.
+  La contrasena incluye el punto final.
+  La conexion ya esta configurada en User Secrets de TEAprendo.Api.
+  Este usuario es de base de datos; no sirve para iniciar sesion en la web.
+
+USUARIOS EXISTENTES EN LA APLICACION
+
+  Director: director.demo@teaprendo.local
+  Profesor: profesor.demo@teaprendo.local
+  Terapeuta: terapeuta.demo@teaprendo.local
+  Profesora Camila: profesora.camila@teaprendo.local
+  Profesor Mateo: profesor.mateo@teaprendo.local
+
+  Contrasenas: no disponibles en los archivos actuales.
+  No coinciden con Prueba1. y no se pueden recuperar desde sus hashes.
+  Utiliza las claves que elegiste al crearlos. No se restablecio ninguna clave.
+  El administrador no tiene acceso al chat profesional: usa Docente o Terapeuta.
+
+PREPARACION
+
+En PowerShell, ubicarse en el proyecto:
+  cd 'C:\Users\danyb\Documents\duoc\Semestre 8\Capstone\TEAprendo'
+
+Antes de compilar, detener API, Client e IA:
+  powershell -ExecutionPolicy Bypass -File .\tools\Stop-Local.ps1
+
+Restaurar y compilar:
+  dotnet restore
+  dotnet build
+
+Si modificas los modelos de datos y existen migraciones pendientes:
+  dotnet ef database update --project .\src\TEAprendo.Infrastructure\TEAprendo.Infrastructure.csproj --startup-project .\src\TEAprendo.api\TEAprendo.Api.csproj
+La base actual ya tiene sus migraciones aplicadas.
+
+INICIAR CADA PROCESO
+
+1. PostgreSQL
+   Ya esta iniciado. Para verificarlo:
+     Get-Service -Name postgresql-x64-18
+   Solo si esta detenido, desde PowerShell como administrador:
+     Start-Service -Name postgresql-x64-18
+
+2. Ollama - terminal independiente
+     ollama serve
+   Dejar esa terminal abierta.
+   Si Ollama ya esta abierto desde su aplicacion, no ejecutar otro servidor.
+   Verificar los modelos instalados desde otra terminal:
+     ollama list
+   Modelo utilizado: qwen3:4b-q4_K_M
+   Q8 tambien esta instalado, pero no es el modelo activo del proyecto.
+
+3. Servicio IA - otra terminal, desde la raiz del proyecto
+     dotnet run --no-build --project .\src\TEAprendo.AI\TEAprendo.AI.csproj --launch-profile http
+   Servicio: http://localhost:5220
+   Estado: http://localhost:5220/health
+   La clave interna compartida con API ya esta configurada en User Secrets.
+
+4. API - otra terminal, desde la raiz del proyecto
+     dotnet run --no-build --project .\src\TEAprendo.api\TEAprendo.Api.csproj --launch-profile http
+   Direccion: http://localhost:5211
+
+5. Client - otra terminal, desde la raiz del proyecto
+     dotnet run --no-build --project .\src\TEAprendo.Client\TEAprendo.Client.csproj --launch-profile http
+   Abrir en el navegador: http://localhost:5157
+   Iniciar sesion con un profesor, abrir Mis aulas y seleccionar un aula.
+   Pulsar "Asistente IA" para abrir el chat con el contexto autorizado de esa aula.
+   Al entrar o recargar el aula, el chat permanece cerrado.
+
+ALTERNATIVA: INICIAR LOS TRES PROYECTOS CON UN SOLO COMANDO
+
+Primero iniciar PostgreSQL y Ollama; luego, desde la raiz:
+  powershell -ExecutionPolicy Bypass -File .\tools\Start-Local.ps1
+
+Este script inicia IA, API y Client en segundo plano, usando lo ya compilado.
+No inicia PostgreSQL ni Ollama. No combinarlo con las terminales manuales
+para los mismos proyectos: cada puerto debe tener una sola instancia.
+
+DETENER
+
+Si los proyectos se iniciaron con Start-Local:
+  powershell -ExecutionPolicy Bypass -File .\tools\Stop-Local.ps1
+
+Si se iniciaron manualmente:
+  Presionar Ctrl+C en cada terminal de IA, API y Client.
+
+Para detener Ollama iniciado manualmente:
+  Presionar Ctrl+C en la terminal de ollama serve.
+Si se inicio desde la aplicacion de Ollama, salir desde su icono de bandeja.
+Stop-Local no detiene Ollama ni PostgreSQL.
+
+QA
+
+Pruebas automatizadas:
+  dotnet test
+
+Con todos los servicios iniciados, probar PostgreSQL y Ollama reales:
+  dotnet run --project .\tools\qa\TEAprendo.QA.csproj
+
+LOGS Y DOCUMENTACION
+
+Logs de Start-Local: %LOCALAPPDATA%\TEAprendo\IA
+Documentacion: docs\IA.md
+Historial del chat: temporal en memoria; se pierde al reiniciar API.
