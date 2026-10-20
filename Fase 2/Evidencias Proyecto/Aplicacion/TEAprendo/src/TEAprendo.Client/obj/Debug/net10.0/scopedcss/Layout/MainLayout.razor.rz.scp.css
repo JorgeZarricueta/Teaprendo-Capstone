@@ -1,3 +1,7 @@
+/* =========================================================
+   LAYOUT GENERAL
+   ========================================================= */
+
 .crm-layout[b-w0v6ikhmuk] {
     min-height: 100vh;
     display: flex;
@@ -5,172 +9,799 @@
 }
 
 
-/* Menú lateral */
+/* =========================================================
+   MENÚ LATERAL
+   ========================================================= */
 
 .sidebar[b-w0v6ikhmuk] {
-    width: 245px;
-    min-height: 100vh;
-    background: white;
-    border-right: 1px solid #e9ecef;
+    width: 255px;
+    height: 100vh;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 20;
+
     display: flex;
     flex-direction: column;
+
+    padding: 20px 14px;
+
+    border-right: 1px solid #e7e9ef;
+
+    background: #ffffff;
+
+    box-shadow:
+        4px 0 18px
+        rgba(48, 56, 80, 0.025);
 }
+
+
+/* =========================================================
+   MARCA TEAPRENDO
+   ========================================================= */
 
 .sidebar-brand[b-w0v6ikhmuk] {
-    padding: 28px 24px;
-    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    align-items: center;
+
+    min-height: 62px;
+
+    padding:
+        4px 10px
+        18px;
 }
 
+
 .sidebar-brand h2[b-w0v6ikhmuk] {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
     margin: 0;
-    font-size: 26px;
+
+    color: #3f4654;
+
+    font-size: 17px;
+    font-weight: 700;
+
+    letter-spacing: -0.02em;
 }
+
+
+/* Cuadrado con la T */
+
+.sidebar-brand h2[b-w0v6ikhmuk]::before {
+    content: "T";
+
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border: 1px solid #dce8f8;
+    border-radius: 13px;
+
+    background: #eaf2ff;
+
+    color: #647fb2;
+
+    font-size: 16px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   NAVEGACIÓN
+   ========================================================= */
 
 .sidebar-nav[b-w0v6ikhmuk] {
     flex: 1;
-    padding: 20px 14px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 5px;
+
+    overflow-y: auto;
+
+    padding-bottom: 10px;
 }
+
+
+/* Títulos de sección */
+
+.sidebar-section-title[b-w0v6ikhmuk] {
+    margin:
+        17px 12px
+        5px;
+
+    color: #adb1ba;
+
+    font-size: 8px;
+    font-weight: 700;
+
+    letter-spacing: 0.11em;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   BOTONES DEL MENÚ
+   ========================================================= */
 
 .nav-item[b-w0v6ikhmuk] {
+    min-height: 46px;
+
+    position: relative;
+
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 12px 14px;
-    margin-bottom: 6px;
-    border-radius: 10px;
+
+    gap: 11px;
+
+    padding:
+        0 12px;
+
+    border: 1px solid transparent;
+    border-radius: 12px;
+
+    color: #737a87;
+
+    font-size: 12px;
+    font-weight: 500;
+
     text-decoration: none;
-    color: #495057;
-    transition: 0.2s;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        color 0.15s ease,
+        border-color 0.15s ease,
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
 }
+
+
+/* Iconos */
+
+.nav-item > span[b-w0v6ikhmuk] {
+    width: 31px;
+    height: 31px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background: #f5f6f9;
+
+    color: #798292;
+
+    font-size: 15px;
+
+    transition:
+        background 0.15s ease,
+        color 0.15s ease;
+}
+
+
+/* Hover */
 
 .nav-item:hover[b-w0v6ikhmuk] {
-    background: #f3f5f7;
-    color: #212529;
+    background: #f7f8fb;
+
+    border-color: #eef0f4;
+
+    color: #4f5665;
+
+    transform: translateX(2px);
+
+    text-decoration: none;
 }
+
+
+.nav-item:hover > span[b-w0v6ikhmuk] {
+    background: #ffffff;
+
+    color: #657ba8;
+}
+
+
+/* =========================================================
+   PÁGINA ACTIVA
+   ========================================================= */
 
 .nav-item.active[b-w0v6ikhmuk] {
-    background: #e8f2ff;
-    color: #0d6efd;
-    font-weight: 600;
+    background: #eaf2ff;
+
+    border-color: #dce7f6;
+
+    color: #5574a7;
+
+    font-weight: 650;
+
+    box-shadow:
+        0 4px 12px
+        rgba(91, 117, 162, 0.06);
 }
 
-.sidebar-footer[b-w0v6ikhmuk] {
-    padding: 20px;
-    border-top: 1px solid #f0f0f0;
+
+/* Marca lateral tipo marcapáginas */
+
+.nav-item.active[b-w0v6ikhmuk]::before {
+    content: "";
+
+    width: 4px;
+    height: 27px;
+
+    position: absolute;
+
+    left: -14px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    border-radius:
+        0 5px 5px 0;
+
+    background: #7e96c6;
 }
+
+
+/* Icono de página activa */
+
+.nav-item.active > span[b-w0v6ikhmuk] {
+    background: rgba(
+        255,
+        255,
+        255,
+        0.72
+    );
+
+    color: #5673a7;
+}
+
+
+/* =========================================================
+   COLORES PASTEL DE ICONOS
+   ========================================================= */
+
+/* Dashboard */
+
+.sidebar-nav .nav-item:nth-of-type(1) > span[b-w0v6ikhmuk] {
+    background: #edf3ff;
+    color: #637eb2;
+}
+
+
+/* Aulas */
+
+.sidebar-nav .nav-item:nth-of-type(2) > span[b-w0v6ikhmuk] {
+    background: #eaf6f1;
+    color: #618675;
+}
+
+
+/* Alumnos */
+
+.sidebar-nav .nav-item:nth-of-type(3) > span[b-w0v6ikhmuk] {
+    background: #fbecef;
+    color: #a06d79;
+}
+
+
+/* Usuarios */
+
+.sidebar-nav .nav-item:nth-of-type(4) > span[b-w0v6ikhmuk] {
+    background: #f1ecfb;
+    color: #796da0;
+}
+
+
+/* El activo mantiene estilo principal */
+
+.sidebar-nav .nav-item.active > span[b-w0v6ikhmuk] {
+    background: rgba(
+        255,
+        255,
+        255,
+        0.72
+    );
+
+    color: #5673a7;
+}
+
+
+/* =========================================================
+   CERRAR SESIÓN
+   ========================================================= */
+
+.sidebar-footer[b-w0v6ikhmuk] {
+    margin-top: auto;
+
+    padding-top: 14px;
+
+    border-top: 1px solid #eeeeF2;
+}
+
 
 .logout-button[b-w0v6ikhmuk] {
     width: 100%;
-    border: none;
+    min-height: 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    padding:
+        0 12px;
+
+    border: 1px solid transparent;
+    border-radius: 12px;
+
     background: transparent;
-    color: #dc3545;
-    padding: 10px;
-    text-align: left;
+
+    color: #888e98;
+
+    font-size: 11px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        color 0.15s ease,
+        border-color 0.15s ease;
 }
 
 
-/* Zona principal */
+/* Icono salir */
+
+.logout-button[b-w0v6ikhmuk]::before {
+    content: "↪";
+
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    margin-right: 10px;
+
+    border-radius: 9px;
+
+    background: #f7f0f1;
+
+    color: #9b7479;
+
+    font-size: 15px;
+}
+
+
+.logout-button:hover[b-w0v6ikhmuk] {
+    background: #fbf0f1;
+
+    border-color: #f2e2e4;
+
+    color: #996b71;
+}
+
+
+/* =========================================================
+   ZONA PRINCIPAL
+   ========================================================= */
 
 .crm-main[b-w0v6ikhmuk] {
     flex: 1;
     min-width: 0;
+
+    margin-left: 255px;
+
+    width:
+        calc(100% - 255px);
 }
 
 
-/* Barra superior */
+/* =========================================================
+   TOPBAR
+   ========================================================= */
 
 .topbar[b-w0v6ikhmuk] {
     height: 76px;
-    background: white;
-    border-bottom: 1px solid #e9ecef;
+
+    position: sticky;
+    top: 0;
+    z-index: 10;
+
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 0 30px;
+    justify-content: space-between;
+
+    padding:
+        0 30px;
+
+    border-bottom: 1px solid #e7e9ee;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            0.96
+        );
+
+    backdrop-filter:
+        blur(8px);
 }
+
+
+/* =========================================================
+   SEDE ACTUAL
+   ========================================================= */
 
 .sede-actual[b-w0v6ikhmuk] {
+    min-width: 0;
+
     display: flex;
     flex-direction: column;
+
+    gap: 2px;
 }
+
 
 .sede-actual strong[b-w0v6ikhmuk] {
-    font-size: 16px;
+    overflow: hidden;
+
+    color: #434954;
+
+    font-size: 14px;
+    font-weight: 650;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
+
 
 .sede-actual span[b-w0v6ikhmuk] {
-    font-size: 13px;
-    color: #6c757d;
+    overflow: hidden;
+
+    color: #969ca7;
+
+    font-size: 10px;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 
-/* Usuario */
+/* =========================================================
+   USUARIO
+   ========================================================= */
 
 .usuario-actual[b-w0v6ikhmuk] {
     display: flex;
     align-items: center;
-    gap: 14px;
+
+    gap: 12px;
+
     text-align: right;
 }
+
 
 .usuario-actual div:first-child[b-w0v6ikhmuk] {
     display: flex;
     flex-direction: column;
+
+    gap: 1px;
 }
+
+
+.usuario-actual strong[b-w0v6ikhmuk] {
+    color: #454b56;
+
+    font-size: 12px;
+    font-weight: 650;
+}
+
 
 .usuario-actual span[b-w0v6ikhmuk] {
-    font-size: 12px;
-    color: #6c757d;
+    color: #979ca6;
+
+    font-size: 9px;
 }
 
+
+/* Avatar */
+
 .avatar[b-w0v6ikhmuk] {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    background: #e8f2ff;
+    width: 40px;
+    height: 40px;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 600;
-    color: #0d6efd;
+
+    border: 1px solid #dce6f5;
+    border-radius: 13px;
+
+    background: #eaf2ff;
+
+    color: #637eae;
+
+    font-size: 13px;
+    font-weight: 700;
 }
 
 
-/* Contenido */
+/* =========================================================
+   CONTENIDO PRINCIPAL
+   ========================================================= */
 
 .crm-content[b-w0v6ikhmuk] {
+    width: 100%;
+
     padding: 30px;
+
+    box-sizing: border-box;
 }
 
 
-@media (max-width: 768px) {
+/* =========================================================
+   SCROLL DEL MENÚ
+   ========================================================= */
+
+.sidebar-nav[b-w0v6ikhmuk]::-webkit-scrollbar {
+    width: 4px;
+}
+
+
+.sidebar-nav[b-w0v6ikhmuk]::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+
+.sidebar-nav[b-w0v6ikhmuk]::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+
+    background: #dfe2e9;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
 
     .sidebar[b-w0v6ikhmuk] {
-        width: 75px;
+        width: 82px;
+
+        padding:
+            18px 9px;
     }
+
+
+    .crm-main[b-w0v6ikhmuk] {
+        margin-left: 82px;
+
+        width:
+            calc(100% - 82px);
+    }
+
+
+    /* Logo */
+
+    .sidebar-brand[b-w0v6ikhmuk] {
+        justify-content: center;
+
+        padding:
+            4px 0
+            22px;
+    }
+
 
     .sidebar-brand h2[b-w0v6ikhmuk] {
+        width: 42px;
+
+        overflow: hidden;
+
         font-size: 0;
+
+        gap: 0;
     }
 
-    .sidebar-brand h2[b-w0v6ikhmuk]::after {
-        content: "TE";
-        font-size: 22px;
+
+    .sidebar-brand h2[b-w0v6ikhmuk]::before {
+        flex-shrink: 0;
+
+        font-size: 16px;
     }
+
+
+    /* Oculta títulos */
+
+    .sidebar-section-title[b-w0v6ikhmuk] {
+        display: none;
+    }
+
+
+    /* Botones */
+
+    .sidebar-nav[b-w0v6ikhmuk] {
+        gap: 7px;
+    }
+
 
     .nav-item[b-w0v6ikhmuk] {
+        width: 100%;
+        height: 48px;
+
         justify-content: center;
-    }
 
-    .nav-item[b-w0v6ikhmuk] {
+        padding: 0;
+
+        overflow: hidden;
+
         font-size: 0;
     }
 
-    .nav-item span[b-w0v6ikhmuk] {
-        font-size: 22px;
+
+    .nav-item > span[b-w0v6ikhmuk] {
+        width: 37px;
+        height: 37px;
+
+        font-size: 16px;
     }
+
+
+    .nav-item.active[b-w0v6ikhmuk]::before {
+        left: -9px;
+    }
+
+
+    /* Logout */
+
+    .logout-button[b-w0v6ikhmuk] {
+        height: 46px;
+
+        justify-content: center;
+
+        overflow: hidden;
+
+        padding: 0;
+
+        font-size: 0;
+    }
+
+
+    .logout-button[b-w0v6ikhmuk]::before {
+        width: 37px;
+        height: 37px;
+
+        margin: 0;
+
+        font-size: 17px;
+    }
+
+
+    /* Contenido */
 
     .crm-content[b-w0v6ikhmuk] {
-        padding: 18px;
+        padding: 22px;
+    }
+}
+
+
+/* =========================================================
+   MÓVIL
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .sidebar[b-w0v6ikhmuk] {
+        width: 70px;
+
+        padding:
+            15px 7px;
+    }
+
+
+    .crm-main[b-w0v6ikhmuk] {
+        margin-left: 70px;
+
+        width:
+            calc(100% - 70px);
+    }
+
+
+    .sidebar-brand h2[b-w0v6ikhmuk] {
+        width: 38px;
+    }
+
+
+    .sidebar-brand h2[b-w0v6ikhmuk]::before {
+        width: 38px;
+        height: 38px;
+
+        border-radius: 11px;
+
+        font-size: 14px;
+    }
+
+
+    .nav-item[b-w0v6ikhmuk] {
+        min-height: 45px;
+        height: 45px;
+    }
+
+
+    .nav-item > span[b-w0v6ikhmuk] {
+        width: 34px;
+        height: 34px;
+
+        font-size: 15px;
+    }
+
+
+    .nav-item.active[b-w0v6ikhmuk]::before {
+        left: -7px;
+    }
+
+
+    /* Topbar */
+
+    .topbar[b-w0v6ikhmuk] {
+        height: 67px;
+
+        padding:
+            0 15px;
+    }
+
+
+    .sede-actual strong[b-w0v6ikhmuk] {
+        max-width: 150px;
+
+        font-size: 11px;
+    }
+
+
+    .sede-actual span[b-w0v6ikhmuk] {
+        display: none;
+    }
+
+
+    .usuario-actual div:first-child[b-w0v6ikhmuk] {
+        display: none;
+    }
+
+
+    .avatar[b-w0v6ikhmuk] {
+        width: 37px;
+        height: 37px;
+
+        border-radius: 11px;
+
+        font-size: 12px;
+    }
+
+
+    .crm-content[b-w0v6ikhmuk] {
+        padding: 15px;
     }
 }

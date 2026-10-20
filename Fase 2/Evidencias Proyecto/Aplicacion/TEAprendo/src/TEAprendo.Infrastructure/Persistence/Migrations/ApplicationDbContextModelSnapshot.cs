@@ -367,6 +367,82 @@ namespace TEAprendo.Infrastructure.Persistence.Migrations
                     b.ToTable("aulas", (string)null);
                 });
 
+            modelBuilder.Entity("TEAprendo.Domain.Entities.CrisisEvent", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Context")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("contexto");
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("fecha_creacion_utc");
+
+                    b.Property<Guid>("CreatedByUserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("creado_por_usuario_id");
+
+                    b.Property<int?>("DurationMinutes")
+                        .HasColumnType("integer")
+                        .HasColumnName("duracion_minutos");
+
+                    b.Property<DateTime>("EventDateTime")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("fecha_hora_evento");
+
+                    b.Property<string>("EventDescription")
+                        .IsRequired()
+                        .HasMaxLength(1500)
+                        .HasColumnType("character varying(1500)")
+                        .HasColumnName("descripcion_evento");
+
+                    b.Property<string>("ImmediateSupport")
+                        .HasMaxLength(1500)
+                        .HasColumnType("character varying(1500)")
+                        .HasColumnName("apoyo_inmediato");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)")
+                        .HasColumnName("notas");
+
+                    b.Property<string>("Outcome")
+                        .HasMaxLength(1500)
+                        .HasColumnType("character varying(1500)")
+                        .HasColumnName("resultado");
+
+                    b.Property<bool>("RequiredAdditionalSupport")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false)
+                        .HasColumnName("requirio_apoyo_adicional");
+
+                    b.Property<Guid>("StudentId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("alumno_id");
+
+                    b.Property<string>("Trigger")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)")
+                        .HasColumnName("desencadenante");
+
+                    b.Property<bool?>("WasStabilized")
+                        .HasColumnType("boolean")
+                        .HasColumnName("se_estabilizo");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("eventos_crisis", (string)null);
+                });
+
             modelBuilder.Entity("TEAprendo.Domain.Entities.Enrollment", b =>
                 {
                     b.Property<Guid>("Id")
@@ -909,6 +985,17 @@ namespace TEAprendo.Infrastructure.Persistence.Migrations
                     b.Navigation("Site");
                 });
 
+            modelBuilder.Entity("TEAprendo.Domain.Entities.CrisisEvent", b =>
+                {
+                    b.HasOne("TEAprendo.Domain.Entities.Student", "Student")
+                        .WithMany("CrisisEvents")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Student");
+                });
+
             modelBuilder.Entity("TEAprendo.Domain.Entities.Enrollment", b =>
                 {
                     b.HasOne("TEAprendo.Domain.Entities.Classroom", "Classroom")
@@ -1090,6 +1177,8 @@ namespace TEAprendo.Infrastructure.Persistence.Migrations
                     b.Navigation("Appointments");
 
                     b.Navigation("BehavioralObservations");
+
+                    b.Navigation("CrisisEvents");
 
                     b.Navigation("Enrollments");
                 });

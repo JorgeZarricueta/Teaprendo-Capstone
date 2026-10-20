@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/src/">
+    <Project Path="src/TEAprendo.AI/TEAprendo.AI.csproj" />
     <Project Path="src/TEAprendo.Api/TEAprendo.Api.csproj" />
     <Project Path="src/TEAprendo.Client/TEAprendo.Client.csproj" />
     <Project Path="src/TEAprendo.Contracts/TEAprendo.Contracts.csproj" />

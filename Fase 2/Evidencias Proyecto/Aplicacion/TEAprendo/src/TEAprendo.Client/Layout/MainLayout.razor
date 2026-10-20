@@ -18,28 +18,52 @@
 
         <nav class="sidebar-nav">
 
+            <span class="sidebar-section-title">
+                Principal
+            </span>
+
             <NavLink href="/dashboard"
-                     class="nav-item">
-                <span>⌂</span>
+                    Match="NavLinkMatch.All"
+                    class="nav-item">
+
+                
                 Dashboard
+
             </NavLink>
+
+
+            <span class="sidebar-section-title">
+                Gestión académica
+            </span>
 
             <NavLink href="/aulas"
-                     class="nav-item">
-                <span>🏫</span>
+                    class="nav-item">
+
+                
                 Aulas
+
             </NavLink>
+
 
             <NavLink href="/alumnos"
-                     class="nav-item">
-                <span>🎓</span>
+                    class="nav-item">
+
+                
                 Alumnos
+
             </NavLink>
 
+
+            <span class="sidebar-section-title">
+                Administración
+            </span>
+
             <NavLink href="/usuarios"
-                     class="nav-item">
-                <span>👥</span>
+                    class="nav-item">
+
+                
                 Usuarios
+
             </NavLink>
 
         </nav>

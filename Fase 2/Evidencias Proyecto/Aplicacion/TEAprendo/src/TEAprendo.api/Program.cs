@@ -30,6 +30,18 @@ builder.Services
 // Habilita los controladores de la API.
 builder.Services.AddControllers();
 
+// Cliente utilizado para comunicarse con el servicio local de IA.
+builder.Services.AddHttpClient("TEAprendoIA", client =>
+{
+    client.BaseAddress =
+        new Uri(
+            builder.Configuration["Servicios:IA"] ??
+            "http://localhost:5270");
+
+    client.Timeout =
+        TimeSpan.FromMinutes(5);
+});
+
 // Habilita la autorización por roles.
 builder.Services.AddAuthorization();
 

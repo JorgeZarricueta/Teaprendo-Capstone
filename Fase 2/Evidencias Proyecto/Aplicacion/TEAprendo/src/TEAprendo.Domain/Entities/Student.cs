@@ -29,4 +29,8 @@ public class Student
     // Observaciones conductuales asociadas al alumno.
     public ICollection<BehavioralObservation> BehavioralObservations { get; set; }
         = new List<BehavioralObservation>();
+
+    // Eventos de crisis asociados al alumno.
+    public ICollection<CrisisEvent> CrisisEvents { get; set; }
+        = new List<CrisisEvent>();
 }

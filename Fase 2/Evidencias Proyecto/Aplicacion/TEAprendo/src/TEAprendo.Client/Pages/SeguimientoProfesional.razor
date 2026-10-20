@@ -1,0 +1,980 @@
+@page "/profesional/seguimiento"
+
+@layout TEAprendo.Client.Layout.ProfesionalLayout
+
+@using System.Globalization
+@using System.Net.Http.Json
+@using TEAprendo.Contracts.Profesional
+@using TEAprendo.Contracts.Seguimiento
+
+@inject HttpClient Http
+
+<PageTitle>Seguimiento - TEAprendo</PageTitle>
+
+
+<div class="tracking-page">
+
+    <div class="page-header">
+
+        <div>
+
+            <span class="page-eyebrow">
+                Seguimiento
+            </span>
+
+            <h1>
+                Observaciones conductuales
+            </h1>
+
+            <p>
+                Registra y consulta el seguimiento
+                de tus estudiantes.
+            </p>
+
+        </div>
+
+
+        <button type="button"
+                class="btn-new-observation"
+                @onclick="NuevaObservacion">
+
+            <span>＋</span>
+
+            Nueva observación
+
+        </button>
+
+    </div>
+
+
+    @if (!string.IsNullOrWhiteSpace(_mensaje))
+    {
+        <div class="alert alert-success">
+            @_mensaje
+        </div>
+    }
+
+
+    @if (!string.IsNullOrWhiteSpace(_error))
+    {
+        <div class="alert alert-danger">
+            @_error
+        </div>
+    }
+
+
+    @* =========================
+       Formulario
+       ========================= *@
+
+    @if (_mostrarFormulario)
+    {
+        <section class="observation-form">
+
+            <div class="form-header">
+
+                <div>
+
+                    <span class="page-eyebrow">
+                        Nuevo registro
+                    </span>
+
+                    <h2>
+                        Observación conductual
+                    </h2>
+
+                </div>
+
+
+                <button type="button"
+                        class="close-button"
+                        @onclick="CerrarFormulario">
+
+                    ×
+
+                </button>
+
+            </div>
+
+
+            <div class="form-grid">
+
+                <div class="form-field">
+
+                    <label>
+                        Estudiante
+                    </label>
+
+                    <select class="form-select"
+                            @bind="_form.AlumnoId">
+
+                        <option value="@Guid.Empty">
+                            Selecciona un estudiante
+                        </option>
+
+                        @foreach (var alumno in _alumnos)
+                        {
+                            <option value="@alumno.Id">
+
+                                @alumno.Nombre
+                                @alumno.Apellido
+                                ·
+                                @alumno.AulaNombre
+
+                            </option>
+                        }
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label>
+                        Fecha y hora de observación
+                    </label>
+
+                    <input type="datetime-local"
+                           class="form-control"
+                           value="@_form.FechaTexto"
+                           @onchange="CambiarFecha" />
+
+                </div>
+
+
+                <div class="form-field form-full">
+
+                    <label>
+                        Contexto
+                    </label>
+
+                    <textarea class="form-control"
+                              rows="3"
+                              maxlength="1000"
+                              placeholder="Ej: Actividad grupal en el aula..."
+                              @bind="_form.Contexto">
+                    </textarea>
+
+                    <small>
+                        Describe dónde y en qué situación
+                        ocurrió la observación.
+                    </small>
+
+                </div>
+
+
+                <div class="form-field form-full">
+
+                    <label>
+                        Conducta observada
+                    </label>
+
+                    <textarea class="form-control"
+                              rows="4"
+                              maxlength="1500"
+                              placeholder="Describe objetivamente la conducta observada..."
+                              @bind="_form.Conducta">
+                    </textarea>
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label>
+                        Antecedente
+                        <span>(opcional)</span>
+                    </label>
+
+                    <textarea class="form-control"
+                              rows="3"
+                              maxlength="1000"
+                              placeholder="¿Qué ocurrió antes?"
+                              @bind="_form.Antecedente">
+                    </textarea>
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label>
+                        Consecuencia
+                        <span>(opcional)</span>
+                    </label>
+
+                    <textarea class="form-control"
+                              rows="3"
+                              maxlength="1000"
+                              placeholder="¿Qué ocurrió después?"
+                              @bind="_form.Consecuencia">
+                    </textarea>
+
+                </div>
+
+
+                <div class="form-field form-full">
+
+                    <label>
+                        Notas adicionales
+                        <span>(opcional)</span>
+                    </label>
+
+                    <textarea class="form-control"
+                              rows="3"
+                              maxlength="1500"
+                              placeholder="Información adicional relevante..."
+                              @bind="_form.Notas">
+                    </textarea>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <button type="button"
+                        class="btn-cancel"
+                        @onclick="CerrarFormulario">
+
+                    Cancelar
+
+                </button>
+
+
+                <button type="button"
+                        class="btn-save"
+                        disabled="@_guardando"
+                        @onclick="GuardarObservacion">
+
+                    @(_guardando
+                        ? "Registrando..."
+                        : "Registrar observación")
+
+                </button>
+
+            </div>
+
+        </section>
+    }
+
+
+    @* =========================
+       Resumen
+       ========================= *@
+
+    <section class="tracking-stats">
+
+        <article>
+
+            <span>
+                Total de observaciones
+            </span>
+
+            <strong>
+                @_observaciones.Count
+            </strong>
+
+        </article>
+
+
+        <article>
+
+            <span>
+                Registradas hoy
+            </span>
+
+            <strong>
+                @ObservacionesHoy.Count
+            </strong>
+
+        </article>
+
+
+        <article>
+
+            <span>
+                Estudiantes con seguimiento
+            </span>
+
+            <strong>
+                @EstudiantesConSeguimiento
+            </strong>
+
+        </article>
+
+    </section>
+
+
+    @* =========================
+       Historial
+       ========================= *@
+
+    <section class="history-section">
+
+        <div class="history-header">
+
+            <div>
+
+                <span class="page-eyebrow">
+                    Historial
+                </span>
+
+                <h2>
+                    Observaciones registradas
+                </h2>
+
+                <p>
+                    Consulta el historial de los estudiantes
+                    que tienes autorizados.
+                </p>
+
+            </div>
+
+
+            <div class="history-filter">
+
+                <label>
+                    Filtrar estudiante
+                </label>
+
+                <select class="form-select"
+                        value="@ObtenerValorFiltro()"
+                        @onchange="CambiarFiltroAlumno">
+
+                    <option value="">
+                        Todos los estudiantes
+                    </option>
+
+                    @foreach (var alumno in _alumnos)
+                    {
+                        <option value="@alumno.Id">
+
+                            @alumno.Nombre
+                            @alumno.Apellido
+
+                        </option>
+                    }
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        @if (_cargando)
+        {
+            <div class="empty-state">
+                Cargando seguimiento...
+            </div>
+        }
+        else if (ObservacionesFiltradas.Count == 0)
+        {
+            <div class="empty-state">
+
+                <div class="empty-icon">
+                    ◎
+                </div>
+
+                <strong>
+                    No hay observaciones registradas
+                </strong>
+
+                <p>
+                    Los registros de seguimiento aparecerán
+                    en esta sección.
+                </p>
+
+            </div>
+        }
+        else
+        {
+            <div class="observations-list">
+
+                @foreach (var observacion
+                    in ObservacionesFiltradas)
+                {
+                    <article class="observation-card">
+
+                        <aside class="observation-date">
+
+                            <strong>
+                                @observacion.FechaHoraObservacion.Day
+                            </strong>
+
+                            <span>
+                                @ObtenerMesCorto(
+                                    observacion.FechaHoraObservacion)
+                            </span>
+
+                            <small>
+                                @(observacion.FechaHoraObservacion
+                                    .ToString("HH:mm"))
+                            </small>
+
+                        </aside>
+
+
+                        <div class="observation-content">
+
+                            <div class="observation-header">
+
+                                <div>
+
+                                    <h3>
+                                        @observacion.AlumnoNombre
+                                    </h3>
+
+                                    <span>
+                                        Registrado por
+                                        @observacion.CreadoPorNombre
+                                    </span>
+
+                                </div>
+
+
+                                <span class="observation-date-full">
+
+                                    @(observacion.FechaHoraObservacion
+                                        .ToString(
+                                            "dd/MM/yyyy · HH:mm"))
+
+                                </span>
+
+                            </div>
+
+
+                            <div class="observation-context">
+
+                                <span>
+                                    Contexto
+                                </span>
+
+                                <p>
+                                    @observacion.Contexto
+                                </p>
+
+                            </div>
+
+
+                            <div class="behavior-box">
+
+                                <span>
+                                    Conducta observada
+                                </span>
+
+                                <p>
+                                    @observacion.Conducta
+                                </p>
+
+                            </div>
+
+
+                            @if (!string.IsNullOrWhiteSpace(
+                                observacion.Antecedente)
+                                ||
+                                !string.IsNullOrWhiteSpace(
+                                    observacion.Consecuencia))
+                            {
+                                <div class="abc-grid">
+
+                                    @if (!string.IsNullOrWhiteSpace(
+                                        observacion.Antecedente))
+                                    {
+                                        <div>
+
+                                            <span>
+                                                Antecedente
+                                            </span>
+
+                                            <p>
+                                                @observacion.Antecedente
+                                            </p>
+
+                                        </div>
+                                    }
+
+
+                                    @if (!string.IsNullOrWhiteSpace(
+                                        observacion.Consecuencia))
+                                    {
+                                        <div>
+
+                                            <span>
+                                                Consecuencia
+                                            </span>
+
+                                            <p>
+                                                @observacion.Consecuencia
+                                            </p>
+
+                                        </div>
+                                    }
+
+                                </div>
+                            }
+
+
+                            @if (!string.IsNullOrWhiteSpace(
+                                observacion.Notas))
+                            {
+                                <div class="notes-box">
+
+                                    <span>
+                                        Notas
+                                    </span>
+
+                                    <p>
+                                        @observacion.Notas
+                                    </p>
+
+                                </div>
+                            }
+
+                        </div>
+
+                    </article>
+                }
+
+            </div>
+        }
+
+    </section>
+
+</div>
+
+
+@code
+{
+    private List<AlumnoProfesionalDto> _alumnos =
+        new();
+
+    private List<ObservacionConductualDto> _observaciones =
+        new();
+
+
+    private FormObservacion _form =
+        new();
+
+
+    private Guid? _filtroAlumnoId;
+
+
+    private bool _mostrarFormulario;
+
+    private bool _guardando;
+
+    private bool _cargando =
+        true;
+
+
+    private string _mensaje =
+        string.Empty;
+
+    private string _error =
+        string.Empty;
+
+
+    private List<ObservacionConductualDto>
+        ObservacionesFiltradas =>
+            _observaciones
+                .Where(x =>
+                    !_filtroAlumnoId.HasValue
+                    ||
+                    x.AlumnoId ==
+                        _filtroAlumnoId.Value)
+                .OrderByDescending(x =>
+                    x.FechaHoraObservacion)
+                .ToList();
+
+
+    private List<ObservacionConductualDto>
+        ObservacionesHoy =>
+            _observaciones
+                .Where(x =>
+                    x.FechaHoraObservacion.Date ==
+                        DateTime.Today)
+                .ToList();
+
+
+    private int EstudiantesConSeguimiento =>
+        _observaciones
+            .Select(x =>
+                x.AlumnoId)
+            .Distinct()
+            .Count();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarDatos();
+    }
+
+
+    // Carga alumnos y observaciones autorizadas.
+    private async Task CargarDatos()
+    {
+        _cargando =
+            true;
+
+        _error =
+            string.Empty;
+
+
+        try
+        {
+            var alumnosTask =
+                Http.GetFromJsonAsync<
+                    List<AlumnoProfesionalDto>>(
+                    "api/profesional/alumnos");
+
+
+            var observacionesTask =
+                Http.GetFromJsonAsync<
+                    List<ObservacionConductualDto>>(
+                    "api/seguimiento/observaciones");
+
+
+            await Task.WhenAll(
+                alumnosTask,
+                observacionesTask);
+
+
+            _alumnos =
+                alumnosTask.Result
+                ?? new();
+
+
+            _observaciones =
+                observacionesTask.Result
+                ?? new();
+        }
+        catch
+        {
+            _error =
+                "No fue posible cargar el seguimiento.";
+        }
+        finally
+        {
+            _cargando =
+                false;
+        }
+    }
+
+
+    private void NuevaObservacion()
+    {
+        _mensaje =
+            string.Empty;
+
+        _error =
+            string.Empty;
+
+
+        _form =
+            new FormObservacion
+            {
+                FechaTexto =
+                    FormatearFecha(
+                        DateTime.Now)
+            };
+
+
+        _mostrarFormulario =
+            true;
+    }
+
+
+    private void CambiarFecha(
+        ChangeEventArgs e)
+    {
+        _form.FechaTexto =
+            e.Value?.ToString()
+            ?? string.Empty;
+    }
+
+
+    private void CerrarFormulario()
+    {
+        _mostrarFormulario =
+            false;
+
+        _form =
+            new FormObservacion();
+    }
+
+
+    private async Task GuardarObservacion()
+    {
+        _mensaje =
+            string.Empty;
+
+        _error =
+            string.Empty;
+
+
+        if (_form.AlumnoId ==
+            Guid.Empty)
+        {
+            _error =
+                "Debes seleccionar un estudiante.";
+
+            return;
+        }
+
+
+        if (string.IsNullOrWhiteSpace(
+            _form.Contexto))
+        {
+            _error =
+                "Debes indicar el contexto de la observación.";
+
+            return;
+        }
+
+
+        if (string.IsNullOrWhiteSpace(
+            _form.Conducta))
+        {
+            _error =
+                "Debes describir la conducta observada.";
+
+            return;
+        }
+
+
+        if (!TryConvertirFecha(
+            _form.FechaTexto,
+            out var fecha))
+        {
+            _error =
+                "La fecha de observación no es válida.";
+
+            return;
+        }
+
+
+        if (fecha >
+            DateTime.Now)
+        {
+            _error =
+                "La observación no puede tener una fecha futura.";
+
+            return;
+        }
+
+
+        _guardando =
+            true;
+
+
+        try
+        {
+            var request =
+                new CrearObservacionConductualRequest
+                {
+                    AlumnoId =
+                        _form.AlumnoId,
+
+                    FechaHoraObservacion =
+                        fecha,
+
+                    Contexto =
+                        _form.Contexto.Trim(),
+
+                    Conducta =
+                        _form.Conducta.Trim(),
+
+                    Antecedente =
+                        LimpiarTexto(
+                            _form.Antecedente),
+
+                    Consecuencia =
+                        LimpiarTexto(
+                            _form.Consecuencia),
+
+                    Notas =
+                        LimpiarTexto(
+                            _form.Notas)
+                };
+
+
+            var respuesta =
+                await Http.PostAsJsonAsync(
+                    "api/seguimiento/observaciones",
+                    request);
+
+
+            if (!respuesta.IsSuccessStatusCode)
+            {
+                _error =
+                    "No fue posible registrar la observación.";
+
+                return;
+            }
+
+
+            _mensaje =
+                "Observación registrada correctamente.";
+
+
+            CerrarFormulario();
+
+            await CargarDatos();
+        }
+        catch
+        {
+            _error =
+                "No fue posible registrar la observación.";
+        }
+        finally
+        {
+            _guardando =
+                false;
+        }
+    }
+
+
+    private void CambiarFiltroAlumno(
+        ChangeEventArgs e)
+    {
+        var valor =
+            e.Value?.ToString();
+
+
+        if (string.IsNullOrWhiteSpace(
+            valor))
+        {
+            _filtroAlumnoId =
+                null;
+
+            return;
+        }
+
+
+        if (Guid.TryParse(
+            valor,
+            out var id))
+        {
+            _filtroAlumnoId =
+                id;
+        }
+    }
+
+
+    private string ObtenerValorFiltro()
+    {
+        return _filtroAlumnoId
+            ?.ToString()
+            ?? string.Empty;
+    }
+
+
+    private bool TryConvertirFecha(
+        string valor,
+        out DateTime fecha)
+    {
+        fecha =
+            default;
+
+
+        var formatos =
+            new[]
+            {
+                "yyyy-MM-ddTHH:mm",
+                "yyyy-MM-ddTHH:mm:ss"
+            };
+
+
+        if (!DateTime.TryParseExact(
+            valor,
+            formatos,
+            CultureInfo.InvariantCulture,
+            DateTimeStyles.None,
+            out var resultado))
+        {
+            return false;
+        }
+
+
+        fecha =
+            DateTime.SpecifyKind(
+                resultado,
+                DateTimeKind.Unspecified);
+
+
+        return true;
+    }
+
+
+    private string FormatearFecha(
+        DateTime fecha)
+    {
+        return fecha.ToString(
+            "yyyy-MM-ddTHH:mm",
+            CultureInfo.InvariantCulture);
+    }
+
+
+    private static string? LimpiarTexto(
+        string texto)
+    {
+        return string.IsNullOrWhiteSpace(
+            texto)
+                ? null
+                : texto.Trim();
+    }
+
+
+    private string ObtenerMesCorto(
+        DateTime fecha)
+    {
+        var meses =
+            new[]
+            {
+                "ENE",
+                "FEB",
+                "MAR",
+                "ABR",
+                "MAY",
+                "JUN",
+                "JUL",
+                "AGO",
+                "SEP",
+                "OCT",
+                "NOV",
+                "DIC"
+            };
+
+
+        return meses[
+            fecha.Month - 1];
+    }
+
+
+    private class FormObservacion
+    {
+        public Guid AlumnoId { get; set; }
+
+        public string FechaTexto { get; set; }
+            = string.Empty;
+
+        public string Contexto { get; set; }
+            = string.Empty;
+
+        public string Conducta { get; set; }
+            = string.Empty;
+
+        public string Antecedente { get; set; }
+            = string.Empty;
+
+        public string Consecuencia { get; set; }
+            = string.Empty;
+
+        public string Notas { get; set; }
+            = string.Empty;
+    }
+}

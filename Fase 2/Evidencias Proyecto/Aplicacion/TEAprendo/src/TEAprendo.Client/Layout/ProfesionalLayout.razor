@@ -11,58 +11,73 @@
 
 <div class="professional-layout">
 
-    <aside class="professional-sidebar">
+    <aside class="app-sidebar">
 
         <div class="sidebar-brand">
 
-            <div class="brand-icon">
+            <div class="brand-mark">
                 T
             </div>
 
-            <div>
+            <div class="brand-copy">
                 <strong>TEAprendo</strong>
-                <span>Espacio profesional</span>
+                <span>Portal profesional</span>
             </div>
 
         </div>
 
 
-        <nav class="professional-nav">
+        <nav class="sidebar-nav">
+
+            <span class="sidebar-section">
+                Principal
+            </span>
 
             <NavLink href="/profesional"
-                     Match="NavLinkMatch.All"
-                     class="professional-nav-link">
+                    Match="NavLinkMatch.All"
+                    class="sidebar-link">
 
-                <span class="nav-icon">⌂</span>
-
+                <span class="sidebar-icon">⌂</span>
                 <span>Inicio</span>
 
             </NavLink>
 
 
             <NavLink href="/profesional/agenda"
-                    class="professional-nav-link">
+                    class="sidebar-link">
 
-                <span class="nav-icon">◷</span>
-
+                <span class="sidebar-icon">◫</span>
                 <span>Agenda</span>
 
             </NavLink>
 
-            <NavLink href="/profesional/citas"
-                    class="professional-nav-link">
 
-                <span class="nav-icon">◷</span>
+            <NavLink href="/profesional/citas"
+                    class="sidebar-link">
+
+                <span class="sidebar-icon">◷</span>
                 <span>Citas</span>
 
             </NavLink>
 
-
-            <NavLink href="/profesional/alumnos"
+            
+            <NavLink href="/profesional/seguimiento"
                     class="professional-nav-link">
 
                 <span class="nav-icon">◎</span>
+                <span>Seguimiento</span>
 
+            </NavLink>
+
+            <span class="sidebar-section">
+                Estudiantes
+            </span>
+
+
+            <NavLink href="/profesional/alumnos"
+                    class="sidebar-link">
+
+                <span class="sidebar-icon">◎</span>
                 <span>Mis alumnos</span>
 
             </NavLink>
@@ -71,36 +86,22 @@
             @if (_esDocente)
             {
                 <NavLink href="/profesional/aulas"
-                        class="professional-nav-link">
+                        class="sidebar-link">
 
-                    <span class="nav-icon">▦</span>
-
+                    <span class="sidebar-icon">▦</span>
                     <span>Mis aulas</span>
 
                 </NavLink>
             }
 
 
-            <div class="nav-section-title">
-                Próximamente
-            </div>
+            <NavLink href="/profesional/seguimiento"
+                    class="sidebar-link">
 
+                <span class="sidebar-icon">≡</span>
+                <span>Seguimiento</span>
 
-            <div class="professional-nav-link nav-disabled">
-
-                <span class="nav-icon">✎</span>
-
-                <span>Observaciones</span>
-
-            </div>
-
-            <div class="professional-nav-link nav-disabled">
-
-                <span class="nav-icon">◫</span>
-
-                <span>Informes</span>
-
-            </div>
+            </NavLink>
 
         </nav>
 

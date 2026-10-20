@@ -113,3 +113,169 @@ code {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
     text-align: start;
 }
+
+/* =========================
+   Menú lateral TEAprendo
+   ========================= */
+
+.app-sidebar {
+    width: 250px;
+    height: 100vh;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 20px 14px;
+
+    border-right: 1px solid #e8e9ee;
+
+    background: #ffffff;
+}
+
+
+/* Logo */
+
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    padding: 7px 9px 25px;
+}
+
+.brand-mark {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background: #edf2ff;
+    color: #687ab0;
+
+    font-weight: 700;
+}
+
+.brand-copy {
+    display: flex;
+    flex-direction: column;
+}
+
+.brand-copy strong {
+    color: #3e434e;
+
+    font-size: 15px;
+}
+
+.brand-copy span {
+    color: #a0a5ae;
+
+    font-size: 9px;
+}
+
+
+/* Navegación */
+
+.sidebar-nav {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+.sidebar-section {
+    margin:
+        17px 11px
+        5px;
+
+    color: #acb0b9;
+
+    font-size: 8px;
+    font-weight: 700;
+
+    letter-spacing: 0.1em;
+
+    text-transform: uppercase;
+}
+
+
+/* Botones */
+
+.sidebar-link {
+    min-height: 44px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    padding: 0 12px;
+
+    border-radius: 12px;
+
+    color: #737a87;
+
+    font-size: 12px;
+
+    text-decoration: none;
+
+    transition:
+        background 0.15s ease,
+        color 0.15s ease,
+        transform 0.15s ease;
+}
+
+.sidebar-link:hover {
+    background: #f6f7fa;
+
+    color: #545c69;
+
+    transform: translateX(2px);
+}
+
+
+/* Página seleccionada */
+
+.sidebar-link.active {
+    background: #eaf2ff;
+
+    color: #5578ad;
+
+    font-weight: 600;
+}
+
+
+/* Icono */
+
+.sidebar-icon {
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background: rgba(255, 255, 255, 0.55);
+
+    font-size: 15px;
+}
+
+
+/* Opciones futuras */
+
+.sidebar-link.disabled {
+    opacity: 0.4;
+
+    cursor: default;
+}

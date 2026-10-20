@@ -4,9 +4,12 @@
 
 @using System.Net.Http.Json
 @using TEAprendo.Contracts.Profesional
+@using TEAprendo.Contracts.IA
+@using TEAprendo.Contracts.Crisis
 
 @inject HttpClient Http
 @inject NavigationManager Navigation
+@inject IJSRuntime JS
 
 <PageTitle>Perfil del estudiante - TEAprendo</PageTitle>
 
@@ -56,6 +59,8 @@ else if (_alumno is not null)
 
             <div class="profile-main-info">
 
+
+
                 <span class="profile-label">
                     Estudiante
                 </span>
@@ -81,7 +86,43 @@ else if (_alumno is not null)
 
             </div>
 
+                <button class="assistant-open-button"
+                        @onclick="AbrirAsistenteAlumno">
+
+                    <span aria-hidden="true">
+                        ✦
+                    </span>
+
+                    Asistente IA
+
+                </button>
+
+                <div class="profile-actions">
+
+                <button type="button"
+                        class="crisis-action-button"
+                        @onclick="AbrirModalCrisis">
+
+                    <span class="crisis-action-icon">
+                        !
+                    </span>
+
+                    Registrar crisis
+
+                </button>
+
+                @* Aquí conserva tu botón de Asistente IA
+                si ya lo tienes implementado. *@
+
+            </div>
+
         </section>
+        @if (!string.IsNullOrWhiteSpace(_mensajeCrisis))
+        {
+            <div class="crisis-success-message">
+                ✓ @_mensajeCrisis
+            </div>
+        }
 
 
         <section class="profile-grid">
@@ -138,7 +179,6 @@ else if (_alumno is not null)
 
         </section>
 
-
         <section class="profile-section">
 
             <div class="section-heading">
@@ -165,90 +205,824 @@ else if (_alumno is not null)
 
             <div class="feature-grid">
 
+
+                @* =====================================================
+                OBSERVACIONES
+                ===================================================== *@
+
                 <article class="feature-card">
 
-                    <div class="feature-icon">
-                        ✎
+                    <div class="feature-card-header">
+
+                        <div class="feature-icon">
+                            ✎
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Observaciones
+                            </h3>
+
+                            <p>
+                                Registra y consulta observaciones
+                                relacionadas con el estudiante.
+                            </p>
+
+                        </div>
+
                     </div>
 
-                    <div>
 
-                        <h3>
-                            Observaciones
-                        </h3>
+                    <div class="feature-card-body feature-scroll">
 
-                        <p>
-                            Registra y consulta observaciones
-                            relacionadas con el estudiante.
-                        </p>
+                        @* Aquí quedará el historial de observaciones
+                        cuando lo integremos dentro de esta tarjeta. *@
 
                     </div>
 
-                    <span class="coming-soon">
-                        Próximamente
-                    </span>
+
+                    <div class="feature-card-footer">
+
+                        <span class="coming-soon">
+                            Próximamente
+                        </span>
+
+                    </div>
 
                 </article>
 
 
-                <article class="feature-card">
+                @* =====================================================
+                EVENTOS DE CRISIS
+                ===================================================== *@
 
-                    <div class="feature-icon">
-                        ◌
+                <article class="feature-card crisis-feature-card">
+
+                    <div class="feature-card-header">
+
+                        <div class="feature-icon crisis-feature-icon">
+                            !
+                        </div>
+
+                        <div>
+
+                            <span class="crisis-section-label">
+                                Emergencias
+                            </span>
+
+                            <h3>
+                                Eventos de crisis
+                            </h3>
+
+                            <p>
+                                Registro de situaciones puntuales
+                                informadas por los profesionales.
+                            </p>
+
+                        </div>
+
                     </div>
 
-                    <div>
 
-                        <h3>
-                            Eventos
-                        </h3>
+                    <div class="feature-card-body feature-scroll">
 
-                        <p>
-                            Registra eventos importantes y
-                            estrategias aplicadas.
-                        </p>
+                        @if (_cargandoCrisis)
+                        {
+                            <div class="crisis-empty">
+
+                                Cargando eventos...
+
+                            </div>
+                        }
+                        else if (_eventosCrisis.Count == 0)
+                        {
+                            <div class="crisis-empty">
+
+                                <strong>
+                                    Sin eventos registrados
+                                </strong>
+
+                                <span>
+                                    No existen crisis registradas
+                                    para este estudiante.
+                                </span>
+
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="crisis-history-list">
+
+                                @foreach (var evento in _eventosCrisis)
+                                {
+                                    <article class="crisis-history-card">
+
+                                        <div class="crisis-history-top">
+
+                                            <div>
+
+                                                <span class="crisis-history-context">
+                                                    @evento.Contexto
+                                                </span>
+
+                                                <strong>
+                                                    @evento.FechaHoraEvento.ToString(
+                                                        "dd/MM/yyyy HH:mm")
+                                                </strong>
+
+                                            </div>
+
+
+                                            @if (evento.DuracionMinutos.HasValue)
+                                            {
+                                                <span class="crisis-history-duration">
+
+                                                    @evento.DuracionMinutos min
+
+                                                </span>
+                                            }
+
+                                        </div>
+
+
+                                        <p class="crisis-history-description">
+
+                                            @evento.DescripcionEvento
+
+                                        </p>
+
+
+                                        @if (!string.IsNullOrWhiteSpace(
+                                            evento.Desencadenante))
+                                        {
+                                            <div class="crisis-history-detail">
+
+                                                <span>
+                                                    Posible desencadenante
+                                                </span>
+
+                                                <p>
+                                                    @evento.Desencadenante
+                                                </p>
+
+                                            </div>
+                                        }
+
+
+                                        @if (!string.IsNullOrWhiteSpace(
+                                            evento.ApoyoInmediato))
+                                        {
+                                            <div class="crisis-history-detail">
+
+                                                <span>
+                                                    Apoyo aplicado
+                                                </span>
+
+                                                <p>
+                                                    @evento.ApoyoInmediato
+                                                </p>
+
+                                            </div>
+                                        }
+
+
+                                        @if (!string.IsNullOrWhiteSpace(
+                                            evento.Resultado))
+                                        {
+                                            <div class="crisis-history-detail">
+
+                                                <span>
+                                                    Resultado
+                                                </span>
+
+                                                <p>
+                                                    @evento.Resultado
+                                                </p>
+
+                                            </div>
+                                        }
+
+
+                                        <div class="crisis-history-footer">
+
+                                            <span>
+                                                Registrado por
+                                                @evento.CreadoPorNombre
+                                            </span>
+
+
+                                            @if (evento.SeEstabilizo == true)
+                                            {
+                                                <span class="crisis-status crisis-status-ok">
+
+                                                    Se estabilizó
+
+                                                </span>
+                                            }
+                                            else if (evento.SeEstabilizo == false)
+                                            {
+                                                <span class="crisis-status crisis-status-warning">
+
+                                                    No se estabilizó
+
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="crisis-status">
+
+                                                    Estado no informado
+
+                                                </span>
+                                            }
+
+                                        </div>
+
+                                    </article>
+                                }
+
+                            </div>
+                        }
 
                     </div>
-
-                    <span class="coming-soon">
-                        Próximamente
-                    </span>
 
                 </article>
 
 
+                @* =====================================================
+                EVENTOS / INTERVENCIONES
+                ===================================================== *@
+
                 <article class="feature-card">
 
-                    <div class="feature-icon">
-                        ◫
+                    <div class="feature-card-header">
+
+                        <div class="feature-icon">
+                            ◌
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Eventos
+                            </h3>
+
+                            <p>
+                                Registra eventos importantes y
+                                estrategias aplicadas.
+                            </p>
+
+                        </div>
+
                     </div>
 
-                    <div>
 
-                        <h3>
-                            Informes
-                        </h3>
-
-                        <p>
-                            Consulta los informes de
-                            seguimiento disponibles.
-                        </p>
+                    <div class="feature-card-body feature-scroll">
 
                     </div>
 
-                    <span class="coming-soon">
-                        Próximamente
-                    </span>
+
+                    <div class="feature-card-footer">
+
+                        <span class="coming-soon">
+                            Próximamente
+                        </span>
+
+                    </div>
 
                 </article>
+
+
+                @* =====================================================
+                INFORMES
+                ===================================================== *@
+
+                <article class="feature-card">
+
+                    <div class="feature-card-header">
+
+                        <div class="feature-icon">
+                            ◫
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Informes
+                            </h3>
+
+                            <p>
+                                Consulta los informes de
+                                seguimiento disponibles.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="feature-card-body feature-scroll">
+
+                    </div>
+
+
+                    <div class="feature-card-footer">
+
+                        <span class="coming-soon">
+                            Próximamente
+                        </span>
+
+                    </div>
+
+                </article>
+
 
             </div>
 
         </section>
+    
+
+    </div>
+
+    @if (_asistenteAlumnoAbierto)
+    {
+        <div class="assistant-backdrop"
+            @onclick="CerrarAsistenteAlumno">
+
+            <section class="assistant-panel"
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby="student-assistant-title"
+                    @onclick:stopPropagation>
+
+                <header class="assistant-header">
+
+                    <div>
+
+                        <span class="assistant-status">
+                            <i></i>
+                            @_alumno.Nombre @_alumno.Apellido
+                        </span>
+
+                        <h2 id="student-assistant-title">
+                            Asistente del estudiante
+                        </h2>
+
+                    </div>
+
+
+                    <button class="assistant-close"
+                            @onclick="CerrarAsistenteAlumno"
+                            aria-label="Cerrar asistente">
+                        &times;
+                    </button>
+
+                </header>
+
+
+                <div class="assistant-messages"
+                    aria-live="polite"
+                    @ref="_contenedorMensajesAlumno">
+
+                    @if (_mensajesAlumno.Count == 0)
+                    {
+                        <div class="assistant-welcome">
+
+                            <div class="assistant-mark">
+                                ✦
+                            </div>
+
+                            <strong>
+                                Contexto de @_alumno.Nombre
+                            </strong>
+
+                            <p>
+                                Las respuestas utilizarán únicamente
+                                antecedentes autorizados de este estudiante.
+                            </p>
+
+
+                            <div class="suggested-prompts">
+
+                                <button @onclick="SugerirResumenAlumno">
+                                    Resumir antecedentes relevantes
+                                </button>
+
+                                <button @onclick="SugerirRuidoAlumno">
+                                    Antecedentes relacionados con ruido
+                                </button>
+
+                                <button @onclick="SugerirTransicionAlumno">
+                                    Antecedentes sobre transiciones
+                                </button>
+
+                            </div>
+
+                        </div>
+                    }
+
+
+                    @foreach (var mensaje in _mensajesAlumno)
+                    {
+                        <article class="chat-message @(mensaje.EsUsuario ? "user-message" : "assistant-message")">
+
+                            <div class="message-role">
+                                @(mensaje.EsUsuario ? "Tú" : "TEAprendo")
+                            </div>
+
+
+                            <div class="message-content">
+                                @mensaje.Texto
+                            </div>
+
+
+                            @if (!mensaje.EsUsuario &&
+                                mensaje.Fuentes > 0)
+                            {
+                                <div class="message-sources">
+
+                                    @if (mensaje.Fuentes == 1)
+                                    {
+                                        <span>
+                                            1 antecedente considerado
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span>
+                                            @mensaje.Fuentes antecedentes considerados
+                                        </span>
+                                    }
+
+                                </div>
+                            }
+
+                        </article>
+                    }
+
+
+                    @if (_consultandoAlumno)
+                    {
+                        <div class="assistant-thinking">
+
+                            <span></span>
+                            <span></span>
+                            <span></span>
+
+                            <label>
+                                Revisando antecedentes del estudiante...
+                            </label>
+
+                        </div>
+                    }
+
+                </div>
+
+
+                @if (!string.IsNullOrWhiteSpace(
+                    _errorAsistenteAlumno))
+                {
+                    <div class="assistant-error">
+                        @_errorAsistenteAlumno
+                    </div>
+                }
+
+
+                <form class="assistant-composer"
+                    @onsubmit="EnviarPreguntaAlumno"
+                    @onsubmit:preventDefault>
+
+                    <label for="student-assistant-question">
+                        Pregunta sobre @_alumno.Nombre
+                    </label>
+
+
+                    <div class="composer-row">
+
+                        <textarea id="student-assistant-question"
+                                rows="2"
+                                maxlength="1000"
+                                placeholder="Consulta antecedentes, situaciones o estrategias..."
+                                @bind="_preguntaAlumno"
+                                @bind:event="oninput"
+                                disabled="@_consultandoAlumno">
+                        </textarea>
+
+
+                        <button type="submit"
+                                disabled="@(_consultandoAlumno || string.IsNullOrWhiteSpace(_preguntaAlumno))"
+                                aria-label="Enviar pregunta">
+
+                            <span aria-hidden="true">
+                                ↑
+                            </span>
+
+                        </button>
+
+                    </div>
+
+
+                    <small>
+                        Orientación educativa basada en antecedentes;
+                        no constituye diagnóstico.
+                    </small>
+
+                </form>
+
+            </section>
+
+        </div>
+    }
+}
+@if (_mostrarModalCrisis && _alumno is not null)
+{
+    <div class="crisis-modal-backdrop">
+
+        <div class="crisis-modal"
+             role="dialog"
+             aria-modal="true"
+             aria-labelledby="titulo-modal-crisis">
+
+            <div class="crisis-modal-header">
+
+                <div>
+
+                    <span class="crisis-modal-label">
+                        Registro rápido
+                    </span>
+
+                    <h2 id="titulo-modal-crisis">
+                        Registrar evento de crisis
+                    </h2>
+
+                    <p>
+                        @_alumno.Nombre @_alumno.Apellido
+                    </p>
+
+                </div>
+
+                <button type="button"
+                        class="crisis-modal-close"
+                        disabled="@_guardandoCrisis"
+                        @onclick="CerrarModalCrisis">
+                    ×
+                </button>
+
+            </div>
+
+
+            @if (!string.IsNullOrWhiteSpace(_errorCrisis))
+            {
+                <div class="crisis-modal-error">
+                    @_errorCrisis
+                </div>
+            }
+
+
+            <div class="crisis-form">
+
+                <div class="crisis-form-row">
+
+                    <div class="crisis-field">
+
+                        <label>
+                            Fecha y hora *
+                        </label>
+
+                        <input type="datetime-local"
+                               @bind="_fechaHoraCrisis"
+                               @bind:format="yyyy-MM-ddTHH:mm" />
+
+                    </div>
+
+
+                    <div class="crisis-field">
+
+                        <label>
+                            Duración aproximada
+                        </label>
+
+                        <div class="crisis-duration">
+
+                            <input type="number"
+                                   min="1"
+                                   max="1440"
+                                   placeholder="Ej: 10"
+                                   @bind="_nuevoEventoCrisis.DuracionMinutos" />
+
+                            <span>
+                                min
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="crisis-field">
+
+                    <label>
+                        Contexto *
+                    </label>
+
+                    <select @bind="_nuevoEventoCrisis.Contexto">
+
+                        <option value="">
+                            Seleccionar contexto
+                        </option>
+
+                        <option value="Clase">
+                            Clase
+                        </option>
+
+                        <option value="Recreo">
+                            Recreo
+                        </option>
+
+                        <option value="Transición">
+                            Transición
+                        </option>
+
+                        <option value="Actividad">
+                            Actividad
+                        </option>
+
+                        <option value="Terapia">
+                            Terapia
+                        </option>
+
+                        <option value="Otro">
+                            Otro
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="crisis-field">
+
+                    <label>
+                        ¿Qué ocurrió? *
+                    </label>
+
+                    <textarea rows="3"
+                              maxlength="1500"
+                              placeholder="Describe brevemente lo ocurrido..."
+                              @bind="_nuevoEventoCrisis.DescripcionEvento">
+                    </textarea>
+
+                </div>
+
+
+                <div class="crisis-field">
+
+                    <label>
+                        Posible desencadenante
+                    </label>
+
+                    <textarea rows="2"
+                              maxlength="1000"
+                              placeholder="Ej: ruido, cambio de actividad, espera..."
+                              @bind="_nuevoEventoCrisis.Desencadenante">
+                    </textarea>
+
+                </div>
+
+
+                <div class="crisis-field">
+
+                    <label>
+                        Apoyo inmediato aplicado
+                    </label>
+
+                    <textarea rows="2"
+                              maxlength="1500"
+                              placeholder="¿Qué hizo el profesional?"
+                              @bind="_nuevoEventoCrisis.ApoyoInmediato">
+                    </textarea>
+
+                </div>
+
+
+                <div class="crisis-field">
+
+                    <label>
+                        Resultado / estado posterior
+                    </label>
+
+                    <textarea rows="2"
+                              maxlength="1500"
+                              placeholder="Describe brevemente cómo finalizó la situación..."
+                              @bind="_nuevoEventoCrisis.Resultado">
+                    </textarea>
+
+                </div>
+
+
+                <div class="crisis-form-row">
+
+                    <div class="crisis-field">
+
+                        <label>
+                            ¿Se estabilizó?
+                        </label>
+
+                        <select @bind="_estadoEstabilizacion">
+
+                            <option value="">
+                                No informado
+                            </option>
+
+                            <option value="si">
+                                Sí
+                            </option>
+
+                            <option value="no">
+                                No
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="crisis-checkbox-field">
+
+                        <label>
+
+                            <input type="checkbox"
+                                   @bind="_nuevoEventoCrisis.RequirioApoyoAdicional" />
+
+                            <span>
+                                Requirió apoyo adicional
+                            </span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <div class="crisis-field">
+
+                    <label>
+                        Notas adicionales
+                    </label>
+
+                    <textarea rows="2"
+                              maxlength="1000"
+                              placeholder="Información adicional opcional..."
+                              @bind="_nuevoEventoCrisis.Notas">
+                    </textarea>
+
+                </div>
+
+            </div>
+
+
+            <div class="crisis-modal-footer">
+
+                <button type="button"
+                        class="crisis-cancel-button"
+                        disabled="@_guardandoCrisis"
+                        @onclick="CerrarModalCrisis">
+
+                    Cancelar
+
+                </button>
+
+
+                <button type="button"
+                        class="crisis-save-button"
+                        disabled="@_guardandoCrisis"
+                        @onclick="GuardarEventoCrisis">
+
+                    @if (_guardandoCrisis)
+                    {
+                        <span>
+                            Registrando...
+                        </span>
+                    }
+                    else
+                    {
+                        <span>
+                            Registrar evento
+                        </span>
+                    }
+
+                </button>
+
+            </div>
+
+        </div>
 
     </div>
 }
-
 
 @code
 {
@@ -263,10 +1037,15 @@ else if (_alumno is not null)
     private string _error = string.Empty;
 
 
-    protected override async Task OnParametersSetAsync()
+protected override async Task OnParametersSetAsync()
+{
+    await CargarAlumno();
+
+    if (_alumno is not null)
     {
-        await CargarAlumno();
+        await CargarEventosCrisis();
     }
+}
 
 
     // Obtiene el perfil únicamente si existe autorización.
@@ -323,7 +1102,467 @@ else if (_alumno is not null)
         }
     }
 
+    //Modal de registro rápido de crisis
+    private bool _mostrarModalCrisis;
 
+    private bool _guardandoCrisis;
+
+    private string _errorCrisis =
+        string.Empty;
+
+    private string _mensajeCrisis =
+        string.Empty;
+
+private DateTime _fechaHoraCrisis =
+    DateTime.Now;
+
+    private string _estadoEstabilizacion =
+        string.Empty;
+
+    private CrearEventoCrisisRequest
+        _nuevoEventoCrisis =
+            new();
+
+    // Abre el registro rápido de crisis.
+    private void AbrirModalCrisis()
+    {
+        _errorCrisis =
+            string.Empty;
+
+        _mensajeCrisis =
+            string.Empty;
+
+        _estadoEstabilizacion =
+            string.Empty;
+
+
+        _fechaHoraCrisis =
+            DateTime.Now;
+
+
+        _nuevoEventoCrisis =
+            new CrearEventoCrisisRequest
+            {
+                AlumnoId =
+                    AlumnoId
+            };
+
+
+        _mostrarModalCrisis =
+            true;
+    }
+
+    private void CerrarModalCrisis()
+    {
+        if (_guardandoCrisis)
+        {
+            return;
+        }
+
+
+        _mostrarModalCrisis =
+            false;
+
+        _errorCrisis =
+            string.Empty;
+    }
+
+private List<EventoCrisisDto> _eventosCrisis =
+    new();
+
+private bool _cargandoCrisis;
+
+// Obtiene los eventos de crisis registrados para el alumno.
+private async Task CargarEventosCrisis()
+{
+    _cargandoCrisis =
+        true;
+
+    try
+    {
+        var respuesta =
+            await Http.GetAsync(
+                $"api/eventos-crisis/alumno/{AlumnoId}");
+
+
+        if (!respuesta.IsSuccessStatusCode)
+        {
+            return;
+        }
+
+
+        _eventosCrisis =
+            await respuesta.Content
+                .ReadFromJsonAsync<
+                    List<EventoCrisisDto>>()
+            ?? new();
+    }
+    catch
+    {
+        _eventosCrisis =
+            new();
+    }
+    finally
+    {
+        _cargandoCrisis =
+            false;
+    }
+}
+
+// Registra el evento utilizando la API protegida.
+private async Task GuardarEventoCrisis()
+{
+    _errorCrisis =
+        string.Empty;
+
+    _mensajeCrisis =
+        string.Empty;
+
+
+    if (string.IsNullOrWhiteSpace(
+        _nuevoEventoCrisis.Contexto))
+    {
+        _errorCrisis =
+            "Selecciona el contexto del evento.";
+
+        return;
+    }
+
+
+    if (string.IsNullOrWhiteSpace(
+        _nuevoEventoCrisis.DescripcionEvento))
+    {
+        _errorCrisis =
+            "Describe brevemente lo ocurrido.";
+
+        return;
+    }
+
+
+    if (_fechaHoraCrisis ==
+        default)
+    {
+        _errorCrisis =
+            "La fecha y hora no son válidas.";
+
+        return;
+    }
+
+
+    // Conserva la fecha como hora local.
+    var fechaEvento =
+        DateTime.SpecifyKind(
+            _fechaHoraCrisis,
+            DateTimeKind.Unspecified);
+
+
+    _nuevoEventoCrisis.AlumnoId =
+        AlumnoId;
+
+    _nuevoEventoCrisis.FechaHoraEvento =
+        fechaEvento;
+
+
+    _nuevoEventoCrisis.SeEstabilizo =
+        _estadoEstabilizacion switch
+        {
+            "si" => true,
+            "no" => false,
+            _ => null
+        };
+
+
+    _guardandoCrisis =
+        true;
+
+
+    try
+    {
+        var respuesta =
+            await Http.PostAsJsonAsync(
+                "api/eventos-crisis",
+                _nuevoEventoCrisis);
+
+
+        if (respuesta.StatusCode ==
+            System.Net.HttpStatusCode.Forbidden)
+        {
+            _errorCrisis =
+                "No tienes autorización para registrar eventos de este estudiante.";
+
+            return;
+        }
+
+
+        if (respuesta.StatusCode ==
+            System.Net.HttpStatusCode.Unauthorized)
+        {
+            _errorCrisis =
+                "Tu sesión ya no es válida. Inicia sesión nuevamente.";
+
+            return;
+        }
+
+
+        if (!respuesta.IsSuccessStatusCode)
+        {
+            _errorCrisis =
+                "No fue posible registrar el evento.";
+
+            return;
+        }
+
+
+        var evento =
+            await respuesta.Content
+                .ReadFromJsonAsync<
+                    EventoCrisisDto>();
+
+
+        if (evento is null)
+        {
+            _errorCrisis =
+                "El evento fue registrado, pero no fue posible recuperar su información.";
+
+            return;
+        }
+
+
+        _mostrarModalCrisis =
+            false;
+
+        _mensajeCrisis =
+            "Evento de crisis registrado correctamente.";
+
+        await CargarEventosCrisis();
+    }
+    catch
+    {
+        _errorCrisis =
+            "No fue posible conectar con el servidor.";
+    }
+    finally
+    {
+        _guardandoCrisis =
+            false;
+    }
+}
+
+    // =========================
+    // ASISTENTE IA DEL ALUMNO
+    // =========================
+
+    private readonly List<MensajeChatAlumno>
+        _mensajesAlumno = [];
+
+    private bool
+        _asistenteAlumnoAbierto;
+
+    private bool
+        _consultandoAlumno;
+
+    private string
+        _preguntaAlumno =
+            string.Empty;
+
+    private string
+        _errorAsistenteAlumno =
+            string.Empty;
+
+    private ElementReference
+        _contenedorMensajesAlumno;
+
+    private bool
+        _desplazarChatAlumno;
+
+    private void AbrirAsistenteAlumno()
+    {
+        _asistenteAlumnoAbierto =
+            true;
+
+        _errorAsistenteAlumno =
+            string.Empty;
+    }
+
+    private void SugerirResumenAlumno()
+    {
+        _preguntaAlumno =
+            "¿Qué antecedentes relevantes existen sobre este estudiante?";
+    }
+
+
+    private void SugerirRuidoAlumno()
+    {
+        _preguntaAlumno =
+            "¿Qué antecedentes existen relacionados con ruido y qué debería considerar?";
+    }
+
+
+    private void SugerirTransicionAlumno()
+    {
+        _preguntaAlumno =
+            "¿Qué antecedentes existen relacionados con cambios de actividad o transiciones?";
+    }
+
+    private void CerrarAsistenteAlumno()
+    {
+        if (!_consultandoAlumno)
+        {
+            _asistenteAlumnoAbierto =
+                false;
+        }
+    }
+
+    // Envía una consulta utilizando únicamente
+// el contexto del alumno actual.
+private async Task EnviarPreguntaAlumno()
+{
+    var pregunta =
+        _preguntaAlumno.Trim();
+
+
+    if (_consultandoAlumno ||
+        string.IsNullOrWhiteSpace(
+            pregunta))
+    {
+        return;
+    }
+
+
+    _consultandoAlumno =
+        true;
+
+    _errorAsistenteAlumno =
+        string.Empty;
+
+    _preguntaAlumno =
+        string.Empty;
+
+
+    var historial =
+        _mensajesAlumno
+            .TakeLast(6)
+            .Select(x =>
+                new MensajeHistorialIaDto
+                {
+                    EsUsuario =
+                        x.EsUsuario,
+
+                    Texto =
+                        x.Texto.Length <= 4000
+                            ? x.Texto
+                            : x.Texto[..4000]
+                })
+            .ToList();
+
+
+    _mensajesAlumno.Add(
+        new MensajeChatAlumno(
+            true,
+            pregunta));
+
+
+    _desplazarChatAlumno =
+        true;
+
+
+    try
+    {
+        var respuesta =
+            await Http.PostAsJsonAsync(
+                "api/ia/contexto/chat/alumno",
+                new SolicitudContextoAlumnoRequest
+                {
+                    AlumnoId =
+                        AlumnoId,
+
+                    Pregunta =
+                        pregunta,
+
+                    MaxObservaciones =
+                        20,
+
+                    Historial =
+                        historial
+                });
+
+
+        if (!respuesta.IsSuccessStatusCode)
+        {
+            _errorAsistenteAlumno =
+                respuesta.StatusCode ==
+                System.Net.HttpStatusCode
+                    .ServiceUnavailable
+
+                    ? "El asistente local no está disponible. Comprueba TEAprendo.AI y Ollama."
+
+                    : respuesta.StatusCode ==
+                      System.Net.HttpStatusCode
+                          .Forbidden
+
+                        ? "No tienes autorización para consultar este estudiante."
+
+                        : "No fue posible responder la consulta.";
+
+            return;
+        }
+
+
+        var resultado =
+            await respuesta.Content
+                .ReadFromJsonAsync<
+                    RespuestaAsistenteIaDto>();
+
+
+        if (resultado is null ||
+            string.IsNullOrWhiteSpace(
+                resultado.Respuesta))
+        {
+            _errorAsistenteAlumno =
+                "El asistente devolvió una respuesta vacía.";
+
+            return;
+        }
+
+
+        _mensajesAlumno.Add(
+            new MensajeChatAlumno(
+                false,
+                resultado.Respuesta,
+                resultado
+                    .ObservacionesFuente
+                    .Count));
+
+
+        _desplazarChatAlumno =
+            true;
+    }
+    catch
+    {
+        _errorAsistenteAlumno =
+            "No fue posible conectar con el asistente local.";
+    }
+    finally
+    {
+        _consultandoAlumno =
+            false;
+    }
+}
+
+protected override async Task
+    OnAfterRenderAsync(
+        bool firstRender)
+{
+    if (_desplazarChatAlumno)
+    {
+        _desplazarChatAlumno =
+            false;
+
+        await JS.InvokeVoidAsync(
+            "teaprendoChat.scrollToEnd",
+            _contenedorMensajesAlumno);
+    }
+}
     private void Volver()
     {
         Navigation.NavigateTo(
@@ -360,4 +1599,9 @@ else if (_alumno is not null)
 
         return edad;
     }
+
+    private sealed record MensajeChatAlumno(
+    bool EsUsuario,
+    string Texto,
+    int Fuentes = 0);
 }

@@ -46,6 +46,9 @@ public class ApplicationDbContext :
     public DbSet<BehavioralObservation> BehavioralObservations =>
     Set<BehavioralObservation>();
 
+    public DbSet<CrisisEvent> CrisisEvents =>
+    Set<CrisisEvent>();
+
     public DbSet<Intervention> Interventions =>
         Set<Intervention>();
 
@@ -695,6 +698,95 @@ public class ApplicationDbContext :
                     x.CreatedByUserId)
                 .OnDelete(
                     DeleteBehavior.Restrict);
+        });
+
+        // =========================
+        // Eventos de crisis
+        // =========================
+
+        modelBuilder.Entity<CrisisEvent>(entity =>
+        {
+            entity.ToTable("eventos_crisis");
+
+            entity.HasKey(x => x.Id);
+
+
+            entity.Property(x => x.Id)
+                .HasColumnName("id");
+
+
+            entity.Property(x => x.StudentId)
+                .HasColumnName("alumno_id");
+
+
+            entity.Property(x => x.CreatedByUserId)
+                .HasColumnName("creado_por_usuario_id");
+
+
+            // Fecha y hora local en que ocurrió el evento.
+            entity.Property(x => x.EventDateTime)
+                .HasColumnName("fecha_hora_evento")
+                .HasColumnType("timestamp without time zone");
+
+
+            entity.Property(x => x.DurationMinutes)
+                .HasColumnName("duracion_minutos");
+
+
+            entity.Property(x => x.Context)
+                .HasColumnName("contexto")
+                .HasMaxLength(100)
+                .IsRequired();
+
+
+            entity.Property(x => x.EventDescription)
+                .HasColumnName("descripcion_evento")
+                .HasMaxLength(1500)
+                .IsRequired();
+
+
+            entity.Property(x => x.Trigger)
+                .HasColumnName("desencadenante")
+                .HasMaxLength(1000);
+
+
+            entity.Property(x => x.ImmediateSupport)
+                .HasColumnName("apoyo_inmediato")
+                .HasMaxLength(1500);
+
+
+            entity.Property(x => x.Outcome)
+                .HasColumnName("resultado")
+                .HasMaxLength(1500);
+
+
+            entity.Property(x => x.WasStabilized)
+                .HasColumnName("se_estabilizo");
+
+
+            entity.Property(x => x.RequiredAdditionalSupport)
+                .HasColumnName("requirio_apoyo_adicional")
+                .HasDefaultValue(false)
+                .IsRequired();
+
+
+            entity.Property(x => x.Notes)
+                .HasColumnName("notas")
+                .HasMaxLength(1000);
+
+
+            // Fecha técnica almacenada en UTC.
+            entity.Property(x => x.CreatedAtUtc)
+                .HasColumnName("fecha_creacion_utc")
+                .HasColumnType("timestamp with time zone")
+                .IsRequired();
+
+
+            // Un evento pertenece a un alumno.
+            entity.HasOne(x => x.Student)
+                .WithMany(x => x.CrisisEvents)
+                .HasForeignKey(x => x.StudentId)
+                .OnDelete(DeleteBehavior.Restrict);
         });
 
         // =========================
