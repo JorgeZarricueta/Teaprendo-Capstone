@@ -279,6 +279,465 @@ public class SeguimientoController : ControllerBase
 
 
     // =========================================================
+    // INTERVENCIONES
+    // =========================================================
+
+
+    // Obtiene intervenciones y resultados de un alumno.
+    [HttpGet("alumnos/{alumnoId:guid}/intervenciones")]
+    public async Task<ActionResult<List<IntervencionDto>>>
+        ObtenerIntervencionesAlumno(
+            Guid alumnoId)
+    {
+        var usuario =
+            await _userManager.GetUserAsync(
+                User);
+
+
+        if (usuario is null)
+        {
+            return Unauthorized();
+        }
+
+
+        if (!await PuedeAccederAlumnoAsync(
+            usuario,
+            alumnoId))
+        {
+            return Forbid();
+        }
+
+
+        var intervenciones =
+            await _context.Interventions
+                .AsNoTracking()
+                .Where(x =>
+                    x.BehavioralObservation.StudentId ==
+                        alumnoId)
+                .OrderByDescending(x =>
+                    x.InterventionDateTime)
+                .Select(x =>
+                    new IntervencionDto
+                    {
+                        Id =
+                            x.Id,
+
+                        ObservacionId =
+                            x.BehavioralObservationId,
+
+                        AlumnoId =
+                            x.BehavioralObservation.StudentId,
+
+                        CreadoPorUsuarioId =
+                            x.CreatedByUserId,
+
+                        FechaHoraIntervencion =
+                            x.InterventionDateTime,
+
+                        Estrategia =
+                            x.Strategy,
+
+                        Objetivo =
+                            x.Objective,
+
+                        FechaCreacionUtc =
+                            x.CreatedAtUtc,
+
+                        Resultados =
+                            x.Results
+                                .OrderByDescending(r =>
+                                    r.ResultDateTime)
+                                .Select(r =>
+                                    new ResultadoIntervencionDto
+                                    {
+                                        Id =
+                                            r.Id,
+
+                                        IntervencionId =
+                                            r.InterventionId,
+
+                                        CreadoPorUsuarioId =
+                                            r.CreatedByUserId,
+
+                                        FechaHoraResultado =
+                                            r.ResultDateTime,
+
+                                        Resultado =
+                                            r.Outcome,
+
+                                        Efectividad =
+                                            r.Effectiveness,
+
+                                        Notas =
+                                            r.Notes,
+
+                                        FechaCreacionUtc =
+                                            r.CreatedAtUtc
+                                    })
+                                .ToList()
+                    })
+                .ToListAsync();
+
+
+        return Ok(
+            intervenciones);
+    }
+
+
+    // Registra una estrategia aplicada
+    // a partir de una observación.
+    [HttpPost("intervenciones")]
+    public async Task<ActionResult<IntervencionDto>>
+        CrearIntervencion(
+            CrearIntervencionRequest request)
+    {
+        var usuario =
+            await _userManager.GetUserAsync(
+                User);
+
+
+        if (usuario is null)
+        {
+            return Unauthorized();
+        }
+
+
+        if (request.ObservacionId ==
+            Guid.Empty)
+        {
+            return BadRequest(new
+            {
+                mensaje =
+                    "Debes seleccionar una observación."
+            });
+        }
+
+
+        if (string.IsNullOrWhiteSpace(
+            request.Estrategia))
+        {
+            return BadRequest(new
+            {
+                mensaje =
+                    "Debes indicar la estrategia aplicada."
+            });
+        }
+
+
+        if (request.Estrategia.Trim().Length >
+            1500)
+        {
+            return BadRequest(new
+            {
+                mensaje =
+                    "La estrategia admite hasta 1500 caracteres."
+            });
+        }
+
+
+        if (request.Objetivo?.Trim().Length >
+            1000)
+        {
+            return BadRequest(new
+            {
+                mensaje =
+                    "El objetivo admite hasta 1000 caracteres."
+            });
+        }
+
+
+        var observacion =
+            await _context.BehavioralObservations
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x =>
+                    x.Id ==
+                        request.ObservacionId);
+
+
+        if (observacion is null)
+        {
+            return NotFound(new
+            {
+                mensaje =
+                    "Observación no encontrada."
+            });
+        }
+
+
+        if (!await PuedeAccederAlumnoAsync(
+            usuario,
+            observacion.StudentId))
+        {
+            return Forbid();
+        }
+
+
+        var fecha =
+            DateTime.SpecifyKind(
+                request.FechaHoraIntervencion,
+                DateTimeKind.Unspecified);
+
+
+        if (fecha > DateTime.Now)
+        {
+            return BadRequest(new
+            {
+                mensaje =
+                    "La intervención no puede tener una fecha futura."
+            });
+        }
+
+
+        var intervencion =
+            new Intervention
+            {
+                Id =
+                    Guid.NewGuid(),
+
+                BehavioralObservationId =
+                    observacion.Id,
+
+                CreatedByUserId =
+                    usuario.Id,
+
+                Strategy =
+                    request.Estrategia.Trim(),
+
+                Objective =
+                    LimpiarTexto(
+                        request.Objetivo),
+
+                InterventionDateTime =
+                    fecha,
+
+                CreatedAtUtc =
+                    DateTime.UtcNow
+            };
+
+
+        _context.Interventions.Add(
+            intervencion);
+
+
+        await _context.SaveChangesAsync();
+
+
+        return Ok(
+            new IntervencionDto
+            {
+                Id =
+                    intervencion.Id,
+
+                ObservacionId =
+                    intervencion.BehavioralObservationId,
+
+                AlumnoId =
+                    observacion.StudentId,
+
+                CreadoPorUsuarioId =
+                    intervencion.CreatedByUserId,
+
+                FechaHoraIntervencion =
+                    intervencion.InterventionDateTime,
+
+                Estrategia =
+                    intervencion.Strategy,
+
+                Objetivo =
+                    intervencion.Objective,
+
+                FechaCreacionUtc =
+                    intervencion.CreatedAtUtc
+            });
+    }
+
+
+    // =========================================================
+    // RESULTADOS DE INTERVENCIÓN
+    // =========================================================
+
+
+    // Registra el resultado posterior
+    // de una intervención.
+    [HttpPost("resultados-intervencion")]
+    public async Task<ActionResult<ResultadoIntervencionDto>>
+        CrearResultadoIntervencion(
+            CrearResultadoIntervencionRequest request)
+    {
+        var usuario =
+            await _userManager.GetUserAsync(
+                User);
+
+
+        if (usuario is null)
+        {
+            return Unauthorized();
+        }
+
+
+        if (request.IntervencionId ==
+            Guid.Empty)
+        {
+            return BadRequest(new
+            {
+                mensaje =
+                    "Debes seleccionar una intervención."
+            });
+        }
+
+
+        if (string.IsNullOrWhiteSpace(
+            request.Resultado))
+        {
+            return BadRequest(new
+            {
+                mensaje =
+                    "Debes registrar el resultado."
+            });
+        }
+
+
+        if (string.IsNullOrWhiteSpace(
+            request.Efectividad))
+        {
+            return BadRequest(new
+            {
+                mensaje =
+                    "Debes indicar la efectividad."
+            });
+        }
+
+
+        var intervencion =
+            await _context.Interventions
+                .AsNoTracking()
+                .Where(x =>
+                    x.Id ==
+                        request.IntervencionId)
+                .Select(x => new
+                {
+                    x.Id,
+
+                    x.InterventionDateTime,
+
+                    AlumnoId =
+                        x.BehavioralObservation.StudentId
+                })
+                .FirstOrDefaultAsync();
+
+
+        if (intervencion is null)
+        {
+            return NotFound(new
+            {
+                mensaje =
+                    "Intervención no encontrada."
+            });
+        }
+
+
+        if (!await PuedeAccederAlumnoAsync(
+            usuario,
+            intervencion.AlumnoId))
+        {
+            return Forbid();
+        }
+
+
+        var fecha =
+            DateTime.SpecifyKind(
+                request.FechaHoraResultado,
+                DateTimeKind.Unspecified);
+
+
+        if (fecha > DateTime.Now)
+        {
+            return BadRequest(new
+            {
+                mensaje =
+                    "El resultado no puede tener una fecha futura."
+            });
+        }
+
+
+        if (fecha <
+            intervencion.InterventionDateTime)
+        {
+            return BadRequest(new
+            {
+                mensaje =
+                    "El resultado no puede ser anterior a la intervención."
+            });
+        }
+
+
+        var resultado =
+            new InterventionResult
+            {
+                Id =
+                    Guid.NewGuid(),
+
+                InterventionId =
+                    intervencion.Id,
+
+                CreatedByUserId =
+                    usuario.Id,
+
+                ResultDateTime =
+                    fecha,
+
+                Outcome =
+                    request.Resultado.Trim(),
+
+                Effectiveness =
+                    request.Efectividad.Trim(),
+
+                Notes =
+                    LimpiarTexto(
+                        request.Notas),
+
+                CreatedAtUtc =
+                    DateTime.UtcNow
+            };
+
+
+        _context.InterventionResults.Add(
+            resultado);
+
+
+        await _context.SaveChangesAsync();
+
+
+        return Ok(
+            new ResultadoIntervencionDto
+            {
+                Id =
+                    resultado.Id,
+
+                IntervencionId =
+                    resultado.InterventionId,
+
+                CreadoPorUsuarioId =
+                    resultado.CreatedByUserId,
+
+                FechaHoraResultado =
+                    resultado.ResultDateTime,
+
+                Resultado =
+                    resultado.Outcome,
+
+                Efectividad =
+                    resultado.Effectiveness,
+
+                Notas =
+                    resultado.Notes,
+
+                FechaCreacionUtc =
+                    resultado.CreatedAtUtc
+            });
+    }
+
+    // =========================================================
     // SEGURIDAD
     // =========================================================
 

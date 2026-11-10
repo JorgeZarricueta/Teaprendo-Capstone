@@ -1,287 +1,843 @@
-.professional-layout {
+/* =========================================================
+   TEAPRENDO
+   ========================================================= */
+
+.professional-shell {
     min-height: 100vh;
-    display: flex;
-    background: #f6f7fb;
+
+    background:
+        #f7f1e7;
+
+    color: #3e433d;
 }
 
 
-/* Sidebar */
+/* =========================================================
+   HEADER
+   ========================================================= */
 
-.professional-sidebar {
-    width: 255px;
-    min-height: 100vh;
-    position: fixed;
-    inset: 0 auto 0 0;
-    display: flex;
-    flex-direction: column;
-    background: #ffffff;
-    border-right: 1px solid #e9ebf0;
-    padding: 22px 16px;
-    z-index: 20;
+.app-header {
+    position: sticky;
+
+    top: 0;
+
+    z-index: 50;
+
+    border-bottom:
+        1px solid #ded9ce;
+
+    background:
+        rgba(
+            250,
+            246,
+            237,
+            0.96
+        );
+
+    backdrop-filter:
+        blur(12px);
 }
 
-.sidebar-brand {
+
+/* =========================================================
+   TOPBAR
+   ========================================================= */
+
+.app-topbar {
+    width: 100%;
+    max-width: 1500px;
+
+    min-height: 72px;
+
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 4px 8px 24px;
+    justify-content: space-between;
+
+    gap: 24px;
+
+    margin: 0 auto;
+
+    padding:
+        0 30px;
 }
 
-.brand-icon {
-    width: 42px;
-    height: 42px;
-    border-radius: 13px;
+
+/* =========================================================
+   MARCA
+   ========================================================= */
+
+.app-brand {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+.brand-mark {
+    width: 43px;
+    height: 43px;
+
+    flex-shrink: 0;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(
-        135deg,
-        #7b83c9,
-        #9c8ec7
-    );
-    color: white;
-    font-size: 21px;
-    font-weight: 700;
+
+    border:
+        1px solid #b8caaa;
+
+    border-radius:
+        13px 13px 15px 15px;
+
+    background:
+        #dfe9d4;
+
+    color:
+        #55754f;
+
+    font-size: 17px;
+    font-weight: 800;
 }
 
-.sidebar-brand div:last-child {
+
+.brand-copy {
     display: flex;
     flex-direction: column;
 }
 
-.sidebar-brand strong {
+
+.brand-copy strong {
+    color:
+        #324839;
+
     font-size: 18px;
+    font-weight: 750;
+
+    letter-spacing:
+        -0.02em;
 }
 
-.sidebar-brand span {
-    color: #9398a3;
-    font-size: 11px;
+
+.brand-copy span {
+    margin-top: 1px;
+
+    color:
+        #94938b;
+
+    font-size: 9px;
+
+    letter-spacing:
+        0.04em;
+
+    text-transform:
+        uppercase;
 }
 
 
-/* Navegación */
+/* =========================================================
+   USUARIO
+   ========================================================= */
 
-.professional-nav {
+.topbar-right {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+}
+
+
+.user-area {
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+}
+
+
+.user-copy {
     display: flex;
     flex-direction: column;
-    gap: 5px;
-    flex: 1;
-}
 
-.professional-nav-link {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    min-height: 44px;
-    padding: 10px 12px;
-    border-radius: 11px;
-    text-decoration: none;
-    color: #606674;
-    transition: 0.15s;
-}
-
-.professional-nav-link:hover {
-    color: #4f5884;
-    background: #f5f5fb;
-}
-
-.professional-nav-link.active {
-    color: #565f98;
-    background: #eeeefa;
-    font-weight: 600;
-}
-
-.nav-icon {
-    width: 24px;
-    text-align: center;
-    font-size: 18px;
-}
-
-.nav-section-title {
-    margin: 22px 12px 7px;
-    color: #a3a7b0;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-}
-
-.nav-disabled {
-    opacity: 0.48;
-    cursor: default;
-}
-
-.nav-disabled:hover {
-    background: transparent;
-    color: #606674;
+    text-align: right;
 }
 
 
-/* Logout */
+.user-copy strong {
+    max-width: 210px;
 
-.sidebar-bottom {
-    padding-top: 15px;
-    border-top: 1px solid #eff0f3;
-}
+    overflow: hidden;
 
-.logout-button {
-    width: 100%;
-    border: 0;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 11px 12px;
-    border-radius: 11px;
-    background: transparent;
-    color: #767c88;
-    text-align: left;
-}
+    color:
+        #464b45;
 
-.logout-button:hover {
-    background: #faf0f1;
-    color: #a05762;
+    font-size: 12px;
+    font-weight: 650;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 
-/* Principal */
+.user-copy span {
+    margin-top: 1px;
 
-.professional-main {
-    flex: 1;
-    min-width: 0;
-    margin-left: 255px;
+    color:
+        #989890;
+
+    font-size: 9px;
 }
 
-.professional-topbar {
-    height: 76px;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 32px;
-    background: rgba(255, 255, 255, 0.94);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid #ebecef;
-}
-
-.topbar-context {
-    color: #727885;
-    font-size: 14px;
-}
-
-.professional-user {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.user-text {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-}
-
-.user-text strong {
-    font-size: 13px;
-}
-
-.user-text span {
-    color: #969ba5;
-    font-size: 11px;
-}
 
 .user-avatar {
     width: 39px;
     height: 39px;
-    border-radius: 50%;
+
+    flex-shrink: 0;
+
     display: flex;
-    justify-content: center;
     align-items: center;
-    background: #ececf8;
-    color: #626a9f;
-    font-weight: 700;
+    justify-content: center;
+
+    border:
+        1px solid #cbd8c2;
+
+    border-radius: 50%;
+
+    background:
+        #e4eddc;
+
+    color:
+        #587454;
+
+    font-size: 12px;
+    font-weight: 800;
 }
+
+
+.logout-button {
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border:
+        1px solid transparent;
+
+    border-radius: 11px;
+
+    background:
+        transparent;
+
+    color:
+        #91918a;
+
+    font-size: 17px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        color 0.15s ease;
+}
+
+
+.logout-button:hover {
+    background:
+        #f3e2e2;
+
+    color:
+        #96696c;
+}
+
+
+/* =========================================================
+   BARRA DE MARCADORES
+   ========================================================= */
+
+.role-tabs-wrapper {
+    width: 100%;
+
+    border-top:
+        1px solid #e2dccf;
+
+    background:
+        #fbf7ef;
+}
+
+
+.role-tabs {
+    width: 100%;
+    max-width: 1500px;
+
+    display: flex;
+    align-items: flex-start;
+
+    gap: 7px;
+
+    margin: 0 auto;
+
+    padding:
+        10px 30px
+        17px;
+
+    overflow-x: auto;
+    overflow-y: visible;
+
+    scrollbar-width: none;
+}
+
+
+.role-tabs::-webkit-scrollbar {
+    display: none;
+}
+
+
+/* =========================================================
+   NAVLINK
+   ::deep es necesario por CSS Isolation
+   ========================================================= */
+
+::deep .role-tab {
+    min-width: 118px;
+    height: 64px;
+
+    position: relative;
+
+    flex-shrink: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 4px;
+
+    padding:
+        7px 16px
+        10px;
+
+    border:
+        1px solid #ded6e3;
+
+    border-radius:
+        13px 13px 8px 8px;
+
+    background:
+        #eee4f1;
+
+    color:
+        #615d65;
+
+    font-size: 11px;
+    font-weight: 600;
+
+    line-height: 1;
+
+    text-decoration: none !important;
+
+    cursor: pointer;
+
+    box-sizing: border-box;
+
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease,
+        background 0.15s ease,
+        color 0.15s ease,
+        border-color 0.15s ease;
+}
+
+
+/* Quita comportamiento visual de hipervínculo */
+
+::deep .role-tab:link,
+::deep .role-tab:visited,
+::deep .role-tab:hover,
+::deep .role-tab:active {
+    text-decoration: none !important;
+}
+
+
+/* =========================================================
+   COLORES PASTEL
+   ========================================================= */
+
+::deep .role-tab:nth-child(1) {
+    background:
+        #e6edda;
+
+    border-color:
+        #d6dfc8;
+}
+
+
+::deep .role-tab:nth-child(2) {
+    background:
+        #eee3f2;
+
+    border-color:
+        #dfd3e5;
+}
+
+
+::deep .role-tab:nth-child(3) {
+    background:
+        #f2e1e7;
+
+    border-color:
+        #e6d3da;
+}
+
+
+::deep .role-tab:nth-child(4) {
+    background:
+        #e6edda;
+
+    border-color:
+        #d6dfc8;
+}
+
+
+::deep .role-tab:nth-child(5) {
+    background:
+        #eee3f2;
+
+    border-color:
+        #dfd3e5;
+}
+
+
+::deep .role-tab:nth-child(6) {
+    background:
+        #f2e1e7;
+
+    border-color:
+        #e6d3da;
+}
+
+
+/* =========================================================
+   ICONO
+   ========================================================= */
+
+::deep .role-tab .tab-icon {
+    display: block;
+
+    color:
+        #69616f;
+
+    font-size: 19px;
+
+    line-height: 1;
+}
+
+
+/* =========================================================
+   HOVER
+   ========================================================= */
+
+::deep .role-tab:hover {
+    transform:
+        translateY(-2px);
+
+    color:
+        #454d46;
+
+    border-color:
+        #c8c2b7;
+
+    box-shadow:
+        0 7px 17px
+        rgba(
+            66,
+            61,
+            57,
+            0.07
+        );
+}
+
+
+/* =========================================================
+   MARCADOR ACTIVO
+   ========================================================= */
+
+::deep .role-tab.active {
+    height: 72px;
+
+    margin-bottom:
+        -8px;
+
+    transform:
+        translateY(-1px);
+
+    border-color:
+        #75956b;
+
+    border-radius:
+        13px 13px 4px 4px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #96b78a 0%,
+            #86a979 100%
+        );
+
+    color:
+        #ffffff;
+
+    font-weight:
+        700;
+
+    box-shadow:
+        0 8px 18px
+        rgba(
+            91,
+            125,
+            80,
+            0.18
+        );
+}
+
+
+/* Punta inferior tipo marcador */
+
+::deep .role-tab.active::after {
+    content: "";
+
+    width: 0;
+    height: 0;
+
+    position: absolute;
+
+    left: 50%;
+    bottom: -13px;
+
+    transform:
+        translateX(-50%);
+
+    border-left:
+        14px solid transparent;
+
+    border-right:
+        14px solid transparent;
+
+    border-top:
+        14px solid #86a979;
+}
+
+
+/* Icono activo */
+
+::deep .role-tab.active .tab-icon {
+    color:
+        #ffffff;
+
+    transform:
+        scale(1.06);
+}
+
+
+/* =========================================================
+   INTERVENCIONES
+   Aún no posee ruta propia
+   ========================================================= */
+
+.role-tab-info {
+    min-width: 118px;
+    height: 64px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    gap: 4px;
+
+    padding:
+        7px 16px
+        10px;
+
+    border:
+        1px solid #d6dfc8;
+
+    border-radius:
+        13px 13px 8px 8px;
+
+    background:
+        #e6edda;
+
+    color:
+        #757b70;
+
+    font-size: 11px;
+    font-weight: 600;
+
+    opacity: 0.65;
+
+    cursor: default;
+
+    box-sizing: border-box;
+}
+
+
+.role-tab-info .tab-icon {
+    font-size: 19px;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .role-tabs {
+        gap: 6px;
+
+        padding:
+            9px 20px
+            16px;
+    }
+
+
+    ::deep .role-tab,
+    .role-tab-info {
+        min-width: 104px;
+    }
+}
+
+
+/* =========================================================
+   MÓVIL
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .role-tabs {
+        gap: 5px;
+
+        padding:
+            8px 14px
+            15px;
+    }
+
+
+    ::deep .role-tab,
+    .role-tab-info {
+        min-width: 88px;
+        height: 56px;
+
+        padding:
+            6px 10px
+            8px;
+
+        font-size: 9px;
+    }
+
+
+    ::deep .role-tab.active {
+        height: 63px;
+    }
+
+
+    ::deep .role-tab .tab-icon,
+    .role-tab-info .tab-icon {
+        font-size: 17px;
+    }
+}
+
+
+/* =========================================================
+   CONTENIDO
+   ========================================================= */
+
+.professional-main {
+    width: 100%;
+
+    max-width: 1500px;
+
+    margin: 0 auto;
+
+    padding:
+        18px 30px
+        38px;
+}
+
+
+.page-context {
+    margin-bottom: 14px;
+}
+
+
+.page-context span {
+    color:
+        #898c84;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    letter-spacing:
+        0.1em;
+
+    text-transform:
+        uppercase;
+}
+
 
 .professional-content {
-    padding: 32px;
+    width: 100%;
 }
 
 
-/* Responsive */
+/* =========================================================
+   TABLET
+   ========================================================= */
 
-@media (max-width: 850px) {
+@media (max-width: 900px) {
 
-    .professional-sidebar {
-        width: 76px;
-        padding: 20px 10px;
+    .app-topbar {
+        min-height: 66px;
+
+        padding:
+            0 20px;
     }
 
-    .sidebar-brand div:last-child,
-    .professional-nav-link span:last-child,
-    .nav-section-title,
-    .logout-button {
-        font-size: 0;
+
+    .role-tabs {
+        padding:
+            8px 20px
+            14px;
     }
 
-    .sidebar-brand {
-        justify-content: center;
-        padding-left: 0;
-        padding-right: 0;
+
+    .role-tab {
+        min-width: 96px;
     }
 
-    .professional-nav-link {
-        justify-content: center;
-    }
-
-    .nav-icon {
-        width: auto;
-        font-size: 20px;
-    }
-
-    .logout-button {
-        justify-content: center;
-    }
-
-    .logout-button span {
-        font-size: 20px;
-    }
 
     .professional-main {
-        margin-left: 76px;
-    }
-
-    .professional-topbar {
-        padding: 0 18px;
-    }
-
-    .professional-content {
-        padding: 20px;
+        padding:
+            18px 20px
+            30px;
     }
 }
 
 
-@media (max-width: 520px) {
+/* =========================================================
+   MÓVIL
+   ========================================================= */
 
-    .professional-sidebar {
-        width: 64px;
+@media (max-width: 600px) {
+
+    .app-header {
+        position: sticky;
     }
 
-    .professional-main {
-        margin-left: 64px;
+
+    .app-topbar {
+        min-height: 61px;
+
+        padding:
+            0 14px;
     }
 
-    .user-text {
+
+    .brand-mark {
+        width: 37px;
+        height: 37px;
+
+        border-radius: 11px;
+
+        font-size: 14px;
+    }
+
+
+    .brand-copy strong {
+        font-size: 15px;
+    }
+
+
+    .brand-copy span {
         display: none;
     }
 
-    .professional-content {
-        padding: 16px;
-    }
-}
 
-.topbar-actions {
-    display: flex;
-    align-items: center;
-    gap: 14px;
+    .user-copy {
+        display: none;
+    }
+
+
+    .topbar-right {
+        gap: 8px;
+    }
+
+
+    .user-avatar {
+        width: 35px;
+        height: 35px;
+
+        font-size: 11px;
+    }
+
+
+    .logout-button {
+        width: 33px;
+        height: 33px;
+    }
+
+
+    /*
+       En móvil conservamos los marcadores
+       y permitimos desplazarlos horizontalmente.
+    */
+
+    .role-tabs {
+        gap: 4px;
+
+        padding:
+            7px 14px
+            13px;
+    }
+
+
+    .role-tab {
+        min-width: 82px;
+        min-height: 52px;
+
+        padding:
+            6px 10px
+            9px;
+
+        font-size: 9px;
+    }
+
+
+    .role-tab.active {
+        min-height: 58px;
+    }
+
+
+    .tab-icon {
+        font-size: 16px;
+    }
+
+
+    .professional-main {
+        padding:
+            15px 14px
+            27px;
+    }
+
+
+    .page-context {
+        margin-bottom: 11px;
+    }
 }

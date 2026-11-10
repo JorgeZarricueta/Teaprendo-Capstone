@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using TEAprendo.Contracts.IA;
 using TEAprendo.Infrastructure.Identity;
 using TEAprendo.Infrastructure.Persistence;
+using TEAprendo.Api.Services;
 
 
 namespace TEAprendo.Api.Controllers;
@@ -108,12 +109,14 @@ public class ContextoIaController : ControllerBase
 
     private readonly HttpClient
         _clienteIa;
-
+    private readonly AnaliticaSeguimientoService
+        _analiticaSeguimiento;
 
     public ContextoIaController(
         ApplicationDbContext context,
         UserManager<ApplicationUser> userManager,
-        IHttpClientFactory httpClientFactory)
+        IHttpClientFactory httpClientFactory,
+        AnaliticaSeguimientoService analiticaSeguimiento)
     {
         _context =
             context;
@@ -121,9 +124,11 @@ public class ContextoIaController : ControllerBase
         _userManager =
             userManager;
 
-            _clienteIa =
-        httpClientFactory.CreateClient(
+        _clienteIa =
+            httpClientFactory.CreateClient(
             "TEAprendoIA");
+        _analiticaSeguimiento =
+            analiticaSeguimiento;
     }
 
 
@@ -330,6 +335,31 @@ public class ContextoIaController : ControllerBase
             ObtenerTerminos(
                 consultaRecuperacion);
 
+        var preguntaNormalizada =
+            Normalizar(
+                request.Pregunta);
+
+
+        var solicitaResumenGeneral =
+            preguntaNormalizada.Contains(
+                "resumen") ||
+            preguntaNormalizada.Contains(
+                "antecedentes") ||
+            preguntaNormalizada.Contains(
+                "historial") ||
+            preguntaNormalizada.Contains(
+                "seguimiento general") ||
+            preguntaNormalizada.Contains(
+                "todos los registros");
+
+
+        if (solicitaResumenGeneral)
+        {
+            // Una consulta general no debe filtrar
+            // los antecedentes por palabras concretas.
+            terminos.Clear();
+        }
+
 
         // Calcula qué observaciones tienen mayor
         // relación con la pregunta actual.
@@ -441,6 +471,16 @@ public class ContextoIaController : ControllerBase
                             })
                         .ToList()
             };
+
+        // Agrega indicadores calculados por TEAprendo
+        // a cada alumno incluido en el contexto del aula.
+        foreach (var alumnoContexto in respuesta.Alumnos)
+        {
+            alumnoContexto.IndicadoresSeguimiento =
+                await _analiticaSeguimiento
+                    .ObtenerIndicadoresAsync(
+                        alumnoContexto.AlumnoId);
+        }
 
 
         return respuesta;
@@ -764,6 +804,7 @@ public class ContextoIaController : ControllerBase
                     x.Notes
                 })
                 .ToListAsync();
+
         // Recupera los eventos de crisis únicamente
         // del alumno consultado.
         var eventosCrisis =
@@ -787,7 +828,66 @@ public class ContextoIaController : ControllerBase
                     x.Notes
                 })
                 .ToListAsync();
+        // Recupera intervenciones aplicadas
+        // al alumno consultado.
+        var intervenciones =
+            await _context
+                .Interventions
+                .AsNoTracking()
+                .Where(x =>
+                    x.BehavioralObservation.StudentId ==
+                        alumno.AlumnoId)
+                .Select(x => new
+                {
+                    x.Id,
 
+                    x.BehavioralObservationId,
+
+                    x.InterventionDateTime,
+
+                    x.Strategy,
+
+                    x.Objective,
+
+                    ContextoObservacion =
+                        x.BehavioralObservation.Context,
+
+                    ConductaObservada =
+                        x.BehavioralObservation.Behavior
+                })
+                .ToListAsync();
+
+                var idsIntervenciones =
+                intervenciones
+                    .Select(x =>
+                        x.Id)
+                    .ToList();
+
+
+            // Recupera resultados vinculados
+            // únicamente a esas intervenciones.
+            var resultadosIntervencion =
+                await _context
+                    .InterventionResults
+                    .AsNoTracking()
+                    .Where(x =>
+                        idsIntervenciones.Contains(
+                            x.InterventionId))
+                    .Select(x => new
+                    {
+                        x.Id,
+
+                        x.InterventionId,
+
+                        x.ResultDateTime,
+
+                        x.Outcome,
+
+                        x.Effectiveness,
+
+                        x.Notes
+                    })
+                    .ToListAsync();
 
         // Usa las preguntas recientes del usuario
         // para conservar contexto conversacional.
@@ -807,6 +907,23 @@ public class ContextoIaController : ControllerBase
             ObtenerTerminos(
                 consultaRecuperacion);
 
+        var solicitaIntervenciones =
+            terminos.Overlaps(
+            [
+                "estrategia",
+                "estrategias",
+                "intervencion",
+                "intervenciones",
+                "resultado",
+                "resultados",
+                "efectividad",
+                "efectiva",
+                "efectivo",
+                "funciono",
+                "funcionaron",
+                "apoyo",
+                "apoyos"
+            ]);
 
         var seleccionadas =
             observaciones
@@ -865,6 +982,72 @@ public class ContextoIaController : ControllerBase
                     request.MaxObservaciones)
                 .ToList();
 
+        // Selecciona intervenciones relacionadas
+        // con la consulta actual.
+        var intervencionesSeleccionadas =
+            intervenciones
+                .Select(x =>
+                {
+                    var resultados =
+                        resultadosIntervencion
+                            .Where(r =>
+                                r.InterventionId ==
+                                    x.Id)
+                            .ToList();
+
+
+                    var textoResultados =
+                        string.Join(
+                            ' ',
+                            resultados.Select(r =>
+                                $"{r.Outcome} " +
+                                $"{r.Effectiveness} " +
+                                $"{r.Notes}"));
+
+
+                    var relevancia =
+                        CalcularRelevancia(
+                            terminos,
+                            x.ContextoObservacion,
+                            x.Strategy,
+                            x.Objective,
+                            textoResultados,
+                            x.ConductaObservada);
+
+
+                    return new
+                    {
+                        Intervencion =
+                            x,
+
+                        Resultados =
+                            resultados,
+
+                        Relevancia =
+                            relevancia
+                    };
+                })
+                .Where(x =>
+                    solicitaIntervenciones ||
+                    terminos.Count == 0 ||
+                    x.Relevancia > 0)
+                .OrderByDescending(x =>
+                    x.Relevancia)
+                .ThenByDescending(x =>
+                    x.Intervencion
+                        .InterventionDateTime)
+                .Take(
+                    request.MaxObservaciones)
+                .ToList();
+
+        // Calcula indicadores objetivos del alumno
+        // antes de enviar el contexto al modelo local.
+        var indicadoresSeguimiento =
+            await _analiticaSeguimiento
+                .ObtenerIndicadoresAsync(
+                    alumno.AlumnoId);
+
+
         var contexto =
             new ContextoAulaIaDto
             {
@@ -895,6 +1078,9 @@ public class ContextoIaController : ControllerBase
 
                         Nombre =
                             alumno.Nombre,
+
+                        IndicadoresSeguimiento =
+                            indicadoresSeguimiento,
 
                         Observaciones =
                             seleccionadas
@@ -965,6 +1151,63 @@ public class ContextoIaController : ControllerBase
 
                                         Relevancia =
                                             x.Relevancia
+                                    })
+                                .ToList(),
+
+                        Intervenciones =
+                            intervencionesSeleccionadas
+                                .Select(x =>
+                                    new IntervencionContextoIaDto
+                                    {
+                                        IntervencionId =
+                                            x.Intervencion.Id,
+
+                                        ObservacionId =
+                                            x.Intervencion
+                                                .BehavioralObservationId,
+
+                                        Fecha =
+                                            x.Intervencion
+                                                .InterventionDateTime,
+
+                                        Estrategia =
+                                            x.Intervencion.Strategy,
+
+                                        Objetivo =
+                                            x.Intervencion.Objective,
+
+                                        ContextoObservacion =
+                                            x.Intervencion
+                                                .ContextoObservacion,
+
+                                        ConductaObservada =
+                                            x.Intervencion
+                                                .ConductaObservada,
+
+                                        Relevancia =
+                                            x.Relevancia,
+
+                                        Resultados =
+                                            x.Resultados
+                                                .Select(r =>
+                                                    new ResultadoIntervencionContextoIaDto
+                                                    {
+                                                        ResultadoId =
+                                                            r.Id,
+
+                                                        Fecha =
+                                                            r.ResultDateTime,
+
+                                                        Resultado =
+                                                            r.Outcome,
+
+                                                        Efectividad =
+                                                            r.Effectiveness,
+
+                                                        Notas =
+                                                            r.Notes
+                                                    })
+                                                .ToList()
                                     })
                                 .ToList()
                     }

@@ -8,129 +8,206 @@
 @inject NavigationManager Navigation
 @inject SedeContextoService SedeContexto
 
-<div class="crm-layout">
 
-    <aside class="sidebar">
+<div class="director-shell">
 
-        <div class="sidebar-brand">
-            <h2>TEAprendo</h2>
-        </div>
+    <header class="app-header">
 
-        <nav class="sidebar-nav">
+        <div class="app-topbar">
 
-            <span class="sidebar-section-title">
-                Principal
-            </span>
+            <div class="app-brand">
 
-            <NavLink href="/dashboard"
-                    Match="NavLinkMatch.All"
-                    class="nav-item">
+                <div class="brand-mark">
+                    T
+                </div>
 
-                
-                Dashboard
+                <div class="brand-copy">
 
-            </NavLink>
-
-
-            <span class="sidebar-section-title">
-                Gestión académica
-            </span>
-
-            <NavLink href="/aulas"
-                    class="nav-item">
-
-                
-                Aulas
-
-            </NavLink>
-
-
-            <NavLink href="/alumnos"
-                    class="nav-item">
-
-                
-                Alumnos
-
-            </NavLink>
-
-
-            <span class="sidebar-section-title">
-                Administración
-            </span>
-
-            <NavLink href="/usuarios"
-                    class="nav-item">
-
-                
-                Usuarios
-
-            </NavLink>
-
-        </nav>
-
-        <div class="sidebar-footer">
-
-            <button class="logout-button"
-                    @onclick="CerrarSesion">
-                Cerrar sesión
-            </button>
-
-        </div>
-
-    </aside>
-
-
-    <div class="crm-main">
-
-        <header class="topbar">
-
-            <div class="sede-actual">
-
-                @if (SedeContexto.SedeActual is not null)
-                {
                     <strong>
-                        @SedeContexto.SedeActual.Nombre
+                        TEAprendo
                     </strong>
 
                     <span>
-                        @SedeContexto.SedeActual.InstitucionNombre
+                        Gestión institucional
                     </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="topbar-center">
+
+                @if (SedeContexto.SedeActual is not null)
+                {
+                    <div class="site-context">
+
+                        <span>
+                            Sede actual
+                        </span>
+
+                        <strong>
+                            @SedeContexto.SedeActual.Nombre
+                        </strong>
+
+                        <small>
+                            @SedeContexto.SedeActual.InstitucionNombre
+                        </small>
+
+                    </div>
                 }
 
             </div>
 
 
-            <div class="usuario-actual">
+            <div class="topbar-right">
 
                 @if (_usuario is not null)
                 {
-                    <div>
-                        <strong>
-                            @_usuario.Nombre @_usuario.Apellido
-                        </strong>
+                    <div class="user-area">
 
-                        <span>
-                            @ObtenerRol()
-                        </span>
-                    </div>
+                        <div class="user-copy">
 
-                    <div class="avatar">
-                        @ObtenerInicial()
+                            <strong>
+                                @_usuario.Nombre
+                                @_usuario.Apellido
+                            </strong>
+
+                            <span>
+                                @ObtenerRol()
+                            </span>
+
+                        </div>
+
+
+                        <div class="user-avatar">
+                            @ObtenerInicial()
+                        </div>
+
                     </div>
                 }
 
+
+                <button type="button"
+                        class="logout-button"
+                        title="Cerrar sesión"
+                        @onclick="CerrarSesion">
+
+                    ↪
+
+                </button>
+
             </div>
 
-        </header>
+        </div>
 
 
-        <main class="crm-content">
+        @* =========================
+           Marcadores
+           ========================= *@
+
+        <div class="role-tabs-wrapper">
+
+            <nav class="role-tabs">
+
+
+                <NavLink href="/dashboard"
+                         Match="NavLinkMatch.All"
+                         class="role-tab">
+
+                    <span class="tab-icon">
+                        ⌂
+                    </span>
+
+                    <span>
+                        Inicio
+                    </span>
+
+                </NavLink>
+
+
+                <NavLink href="/aulas"
+                         class="role-tab">
+
+                    <span class="tab-icon">
+                        ▦
+                    </span>
+
+                    <span>
+                        Aulas
+                    </span>
+
+                </NavLink>
+
+
+                <NavLink href="/alumnos"
+                         class="role-tab">
+
+                    <span class="tab-icon">
+                        ◎
+                    </span>
+
+                    <span>
+                        Alumnos
+                    </span>
+
+                </NavLink>
+
+
+                <NavLink href="/usuarios"
+                         class="role-tab">
+
+                    <span class="tab-icon">
+                        ♙
+                    </span>
+
+                    <span>
+                        Usuarios
+                    </span>
+
+                </NavLink>
+
+
+                <div class="role-tab role-tab-info">
+
+                    <span class="tab-icon">
+                        ◇
+                    </span>
+
+                    <span>
+                        Asignaciones
+                    </span>
+
+                </div>
+
+            </nav>
+
+        </div>
+
+    </header>
+
+
+    <main class="director-main">
+
+        <div class="page-context">
+
+            <span>
+                Panel del Director
+            </span>
+
+        </div>
+
+
+        <section class="director-content">
+
             @Body
-        </main>
 
-    </div>
+        </section>
+
+    </main>
 
 </div>
+
 
 @code
 {
@@ -143,23 +220,23 @@
     }
 
 
-    // Obtiene el usuario autenticado.
     private async Task CargarUsuario()
     {
         try
         {
             _usuario =
-                await Http.GetFromJsonAsync<UsuarioActualDto>(
+                await Http.GetFromJsonAsync<
+                    UsuarioActualDto>(
                     "api/autenticacion/usuario-actual");
         }
         catch
         {
-            Navigation.NavigateTo("/login");
+            Navigation.NavigateTo(
+                "/login");
         }
     }
 
 
-    // Devuelve el rol principal.
     private string ObtenerRol()
     {
         if (_usuario is null ||
@@ -168,24 +245,29 @@
             return string.Empty;
         }
 
-        return _usuario.Roles[0];
+        var rol =
+            _usuario.Roles[0];
+
+        return rol == "Administrador"
+            ? "Director"
+            : rol;
     }
 
 
-    // Obtiene la inicial del usuario.
     private string ObtenerInicial()
     {
         if (_usuario is null ||
-            string.IsNullOrWhiteSpace(_usuario.Nombre))
+            string.IsNullOrWhiteSpace(
+                _usuario.Nombre))
         {
             return "?";
         }
 
-        return _usuario.Nombre[..1].ToUpper();
+        return _usuario.Nombre[..1]
+            .ToUpper();
     }
 
 
-    // Cierra la sesión actual.
     private async Task CerrarSesion()
     {
         await Http.PostAsync(
@@ -194,6 +276,7 @@
 
         SedeContexto.Limpiar();
 
-        Navigation.NavigateTo("/login");
+        Navigation.NavigateTo(
+            "/login");
     }
 }

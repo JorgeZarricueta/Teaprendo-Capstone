@@ -1,15 +1,15 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Application\\TEAprendo.Application.csproj": {}
+    "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Application\\TEAprendo.application.csproj": {}
   },
   "projects": {
-    "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Application\\TEAprendo.Application.csproj": {
+    "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Application\\TEAprendo.application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Application\\TEAprendo.Application.csproj",
-        "projectName": "TEAprendo.Application",
-        "projectPath": "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Application\\TEAprendo.Application.csproj",
+        "projectUniqueName": "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Application\\TEAprendo.application.csproj",
+        "projectName": "TEAprendo.application",
+        "projectPath": "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Application\\TEAprendo.application.csproj",
         "packagesPath": "C:\\Users\\kokee\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\kokee\\OneDrive\\Escritorio\\Proyectos\\TEAprendo\\src\\TEAprendo.Application\\obj\\",
         "projectStyle": "PackageReference",

@@ -9,170 +9,216 @@
 @inject SedeContextoService SedeContexto
 
 
-<div class="professional-layout">
+<div class="professional-shell">
 
-    <aside class="app-sidebar">
+    <header class="app-header">
 
-        <div class="sidebar-brand">
+        @* =========================
+           Barra superior
+           ========================= *@
 
-            <div class="brand-mark">
-                T
-            </div>
+        <div class="app-topbar">
 
-            <div class="brand-copy">
-                <strong>TEAprendo</strong>
-                <span>Portal profesional</span>
-            </div>
+            <div class="app-brand">
 
-        </div>
-
-
-        <nav class="sidebar-nav">
-
-            <span class="sidebar-section">
-                Principal
-            </span>
-
-            <NavLink href="/profesional"
-                    Match="NavLinkMatch.All"
-                    class="sidebar-link">
-
-                <span class="sidebar-icon">⌂</span>
-                <span>Inicio</span>
-
-            </NavLink>
-
-
-            <NavLink href="/profesional/agenda"
-                    class="sidebar-link">
-
-                <span class="sidebar-icon">◫</span>
-                <span>Agenda</span>
-
-            </NavLink>
-
-
-            <NavLink href="/profesional/citas"
-                    class="sidebar-link">
-
-                <span class="sidebar-icon">◷</span>
-                <span>Citas</span>
-
-            </NavLink>
-
-            
-            <NavLink href="/profesional/seguimiento"
-                    class="professional-nav-link">
-
-                <span class="nav-icon">◎</span>
-                <span>Seguimiento</span>
-
-            </NavLink>
-
-            <span class="sidebar-section">
-                Estudiantes
-            </span>
-
-
-            <NavLink href="/profesional/alumnos"
-                    class="sidebar-link">
-
-                <span class="sidebar-icon">◎</span>
-                <span>Mis alumnos</span>
-
-            </NavLink>
-
-
-            @if (_esDocente)
-            {
-                <NavLink href="/profesional/aulas"
-                        class="sidebar-link">
-
-                    <span class="sidebar-icon">▦</span>
-                    <span>Mis aulas</span>
-
-                </NavLink>
-            }
-
-
-            <NavLink href="/profesional/seguimiento"
-                    class="sidebar-link">
-
-                <span class="sidebar-icon">≡</span>
-                <span>Seguimiento</span>
-
-            </NavLink>
-
-        </nav>
-
-
-        <div class="sidebar-bottom">
-
-            <button class="logout-button"
-                    @onclick="CerrarSesion">
-
-                <span>↪</span>
-
-                Cerrar sesión
-
-            </button>
-
-        </div>
-
-    </aside>
-
-
-    <main class="professional-main">
-
-        <header class="professional-topbar">
-
-            <div>
-
-                <span class="topbar-context">
-                    @ObtenerTituloRol()
-                </span>
-
-            </div>
-
-
-            <div class="professional-user">
-
-                <div class="topbar-actions">
-
-                    <CampanaNotificaciones />
-
-
-                    <div class="professional-user">
-
-                        @* Tu contenido actual *@
-
-                    </div>
-
+                <div class="brand-mark">
+                    T
                 </div>
 
-                <div class="user-text">
+                <div class="brand-copy">
 
                     <strong>
-                        @_nombreUsuario
+                        TEAprendo
                     </strong>
 
                     <span>
-                        @_rolUsuario
+                        @ObtenerSubtituloPortal()
                     </span>
 
                 </div>
 
-                <div class="user-avatar">
-                    @_inicial
+            </div>
+
+
+            <div class="topbar-right">
+
+                <CampanaNotificaciones />
+
+
+                <div class="user-area">
+
+                    <div class="user-copy">
+
+                        <strong>
+                            @_nombreUsuario
+                        </strong>
+
+                        <span>
+                            @_rolUsuario
+                        </span>
+
+                    </div>
+
+
+                    <div class="user-avatar">
+                        @_inicial
+                    </div>
+
                 </div>
+
+
+                <button type="button"
+                        class="logout-button"
+                        title="Cerrar sesión"
+                        @onclick="CerrarSesion">
+
+                    ↪
+
+                </button>
 
             </div>
 
-        </header>
+        </div>
+
+
+        @* =========================
+           Marcadores de navegación
+           ========================= *@
+
+        <div class="role-tabs-wrapper">
+
+            <nav class="role-tabs">
+
+
+                <NavLink href="/profesional"
+                         Match="NavLinkMatch.All"
+                         class="role-tab">
+
+                    <span class="tab-icon">
+                        ⌂
+                    </span>
+
+                    <span>
+                        Inicio
+                    </span>
+
+                </NavLink>
+
+
+                <NavLink href="/profesional/alumnos"
+                         class="role-tab">
+
+                    <span class="tab-icon">
+                        ◎
+                    </span>
+
+                    <span>
+                        Estudiantes
+                    </span>
+
+                </NavLink>
+
+
+                @if (_esDocente)
+                {
+                    <NavLink href="/profesional/aulas"
+                             class="role-tab">
+
+                        <span class="tab-icon">
+                            ▦
+                        </span>
+
+                        <span>
+                            Aulas
+                        </span>
+
+                    </NavLink>
+                }
+
+
+                <NavLink href="/profesional/agenda"
+                         class="role-tab">
+
+                    <span class="tab-icon">
+                        ◫
+                    </span>
+
+                    <span>
+                        Agenda
+                    </span>
+
+                </NavLink>
+
+
+                <NavLink href="/profesional/citas"
+                         class="role-tab">
+
+                    <span class="tab-icon">
+                        ◷
+                    </span>
+
+                    <span>
+                        Citas
+                    </span>
+
+                </NavLink>
+
+
+                <NavLink href="/profesional/seguimiento"
+                         class="role-tab">
+
+                    <span class="tab-icon">
+                        ✎
+                    </span>
+
+                    <span>
+                        Seguimiento
+                    </span>
+
+                </NavLink>
+
+
+                @if (!_esDocente)
+                {
+                    <div class="role-tab role-tab-info">
+
+                        <span class="tab-icon">
+                            ◇
+                        </span>
+
+                        <span>
+                            Intervenciones
+                        </span>
+
+                    </div>
+                }
+
+            </nav>
+
+        </div>
+
+    </header>
+
+
+    @* =========================
+       Contenido
+       ========================= *@
+
+    <main class="professional-main">
+
+        <div class="page-context">
+
+            <span>
+                @ObtenerTituloRol()
+            </span>
+
+        </div>
 
 
         <section class="professional-content">
+
             @Body
+
         </section>
 
     </main>
@@ -197,8 +243,9 @@
     protected override async Task OnInitializedAsync()
     {
         var usuario =
-            Sesion.UsuarioActual ??
-            await Sesion.CargarAsync();
+            Sesion.UsuarioActual
+            ?? await Sesion.CargarAsync();
+
 
         if (usuario is null)
         {
@@ -209,11 +256,15 @@
             return;
         }
 
+
         var esDocente =
-            usuario.Roles.Contains("Docente");
+            usuario.Roles.Contains(
+                "Docente");
 
         var esTerapeuta =
-            usuario.Roles.Contains("Terapeuta");
+            usuario.Roles.Contains(
+                "Terapeuta");
+
 
         if (!esDocente &&
             !esTerapeuta)
@@ -224,15 +275,20 @@
             return;
         }
 
-        _esDocente = esDocente;
+
+        _esDocente =
+            esDocente;
+
 
         _rolUsuario =
             esDocente
                 ? "Docente"
                 : "Terapeuta";
 
+
         _nombreUsuario =
             $"{usuario.Nombre} {usuario.Apellido}";
+
 
         if (!string.IsNullOrWhiteSpace(
             usuario.Nombre))
@@ -248,7 +304,15 @@
     {
         return _esDocente
             ? "Panel del Educador"
-            : "Panel Profesional";
+            : "Panel del Terapeuta";
+    }
+
+
+    private string ObtenerSubtituloPortal()
+    {
+        return _esDocente
+            ? "Espacio educativo"
+            : "Espacio profesional";
     }
 
 
@@ -265,9 +329,11 @@
             // La sesión local se limpia igualmente.
         }
 
+
         Sesion.Limpiar();
 
         SedeContexto.Limpiar();
+
 
         Navigation.NavigateTo(
             "/login",

@@ -535,6 +535,126 @@
                             }
 
                         </div>
+                        @{
+                            var intervenciones =
+                                IntervencionesDeObservacion(
+                                    observacion.Id);
+                        }
+
+                        @if (intervenciones.Count > 0)
+                        {
+                            <div class="interventions-section">
+
+                                <span class="interventions-title">
+                                    Intervenciones registradas
+                                </span>
+
+                                @foreach (var intervencion in intervenciones)
+                                {
+                                    <div class="intervention-card">
+
+                                        <div class="intervention-header">
+
+                                            <div>
+                                                <strong>
+                                                    @intervencion.Estrategia
+                                                </strong>
+
+                                                <small>
+                                                    @intervencion.FechaHoraIntervencion
+                                                        .ToString("dd/MM/yyyy · HH:mm")
+                                                </small>
+                                            </div>
+
+                                            <button type="button"
+                                                    class="btn-result"
+                                                    @onclick="() => AbrirResultado(intervencion)">
+
+                                                + Registrar resultado
+
+                                            </button>
+
+                                        </div>
+
+
+                                        @if (!string.IsNullOrWhiteSpace(
+                                            intervencion.Objetivo))
+                                        {
+                                            <div class="intervention-objective">
+
+                                                <span>
+                                                    Objetivo
+                                                </span>
+
+                                                <p>
+                                                    @intervencion.Objetivo
+                                                </p>
+
+                                            </div>
+                                        }
+
+
+                                        @if (intervencion.Resultados.Count > 0)
+                                        {
+                                            <div class="results-list">
+
+                                                @foreach (var resultado
+                                                    in intervencion.Resultados)
+                                                {
+                                                    <div class="result-card">
+
+                                                        <div class="result-header">
+
+                                                            <strong>
+                                                                Resultado
+                                                            </strong>
+
+                                                            <span class="effectiveness-badge">
+                                                                @resultado.Efectividad
+                                                            </span>
+
+                                                        </div>
+
+                                                        <p>
+                                                            @resultado.Resultado
+                                                        </p>
+
+                                                        @if (!string.IsNullOrWhiteSpace(
+                                                            resultado.Notas))
+                                                        {
+                                                            <small>
+                                                                @resultado.Notas
+                                                            </small>
+                                                        }
+
+                                                        <time>
+                                                            @resultado.FechaHoraResultado
+                                                                .ToString(
+                                                                    "dd/MM/yyyy · HH:mm")
+                                                        </time>
+
+                                                    </div>
+                                                }
+
+                                            </div>
+                                        }
+
+                                    </div>
+                                }
+
+                            </div>
+                        }
+                        <div class="observation-actions">
+
+                            <button type="button"
+                                    class="btn-intervention"
+                                    @onclick="() => AbrirIntervencion(observacion)">
+
+                                + Registrar intervención
+
+                            </button>
+
+                        </div>
 
                     </article>
                 }
@@ -545,7 +665,321 @@
     </section>
 
 </div>
+@if (_mostrarIntervencion &&
+    _observacionSeleccionada is not null)
+{
+    <div class="modal-overlay">
 
+        <div class="intervention-modal">
+
+            <div class="modal-header-custom">
+
+                <div>
+                    <span class="page-eyebrow">
+                        Seguimiento
+                    </span>
+
+                    <h2>
+                        Registrar intervención
+                    </h2>
+
+                    <p>
+                        @_observacionSeleccionada.AlumnoNombre
+                    </p>
+                </div>
+
+                <button type="button"
+                        class="close-button"
+                        @onclick="CerrarIntervencion">
+                    ×
+                </button>
+
+            </div>
+
+
+            <div class="observation-reference">
+
+                <span>
+                    Observación asociada
+                </span>
+
+                <strong>
+                    @_observacionSeleccionada.Contexto
+                </strong>
+
+                <p>
+                    @_observacionSeleccionada.Conducta
+                </p>
+
+            </div>
+
+
+            <div class="form-grid">
+
+                <div class="form-field form-full">
+
+                    <label>
+                        Estrategia aplicada
+                    </label>
+
+                    <textarea class="form-control"
+                              rows="4"
+                              maxlength="1500"
+                              placeholder="Ej: Se anticipó visualmente el cambio de actividad..."
+                              @bind="_intervencionForm.Estrategia">
+                    </textarea>
+
+                </div>
+
+
+                <div class="form-field form-full">
+
+                    <label>
+                        Objetivo
+                        <span>(opcional)</span>
+                    </label>
+
+                    <textarea class="form-control"
+                              rows="3"
+                              maxlength="1000"
+                              placeholder="Ej: Facilitar la transición entre actividades..."
+                              @bind="_intervencionForm.Objetivo">
+                    </textarea>
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label>
+                        Fecha y hora
+                    </label>
+
+                    <input type="datetime-local"
+                           class="form-control"
+                           @bind="_fechaIntervencion"
+                           @bind:format="yyyy-MM-ddTHH:mm" />
+
+                </div>
+
+            </div>
+
+
+            @if (!string.IsNullOrWhiteSpace(
+                _errorIntervencion))
+            {
+                <div class="alert alert-danger mt-3">
+                    @_errorIntervencion
+                </div>
+            }
+
+
+            <div class="form-actions">
+
+                <button type="button"
+                        class="btn-cancel"
+                        @onclick="CerrarIntervencion">
+
+                    Cancelar
+
+                </button>
+
+
+                <button type="button"
+                        class="btn-save"
+                        disabled="@_guardandoIntervencion"
+                        @onclick="GuardarIntervencion">
+
+                    @(_guardandoIntervencion
+                        ? "Registrando..."
+                        : "Registrar intervención")
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+}
+
+@if (_mostrarResultado &&
+    _intervencionSeleccionada is not null)
+{
+    <div class="modal-overlay">
+
+        <div class="intervention-modal">
+
+            <div class="modal-header-custom">
+
+                <div>
+
+                    <span class="page-eyebrow">
+                        Seguimiento
+                    </span>
+
+                    <h2>
+                        Registrar resultado
+                    </h2>
+
+                    <p>
+                        Evalúa el resultado de la estrategia aplicada.
+                    </p>
+
+                </div>
+
+
+                <button type="button"
+                        class="close-button"
+                        @onclick="CerrarResultado">
+
+                    ×
+
+                </button>
+
+            </div>
+
+
+            <div class="observation-reference">
+
+                <span>
+                    Estrategia aplicada
+                </span>
+
+                <strong>
+                    @_intervencionSeleccionada.Estrategia
+                </strong>
+
+                @if (!string.IsNullOrWhiteSpace(
+                    _intervencionSeleccionada.Objetivo))
+                {
+                    <p>
+                        Objetivo:
+                        @_intervencionSeleccionada.Objetivo
+                    </p>
+                }
+
+            </div>
+
+
+            <div class="form-grid">
+
+                <div class="form-field form-full">
+
+                    <label>
+                        Resultado observado
+                    </label>
+
+                    <textarea class="form-control"
+                              rows="4"
+                              maxlength="1500"
+                              placeholder="Describe qué ocurrió después de aplicar la estrategia..."
+                              @bind="_resultadoForm.Resultado">
+                    </textarea>
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label>
+                        Efectividad
+                    </label>
+
+                    <select class="form-select"
+                            @bind="_resultadoForm.Efectividad">
+
+                        <option value="">
+                            Selecciona
+                        </option>
+
+                        <option value="Baja">
+                            Baja
+                        </option>
+
+                        <option value="Media">
+                            Media
+                        </option>
+
+                        <option value="Alta">
+                            Alta
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label>
+                        Fecha y hora
+                    </label>
+
+                    <input type="datetime-local"
+                           class="form-control"
+                           @bind="_fechaResultado"
+                           @bind:format="yyyy-MM-ddTHH:mm" />
+
+                </div>
+
+
+                <div class="form-field form-full">
+
+                    <label>
+                        Notas
+                        <span>(opcional)</span>
+                    </label>
+
+                    <textarea class="form-control"
+                              rows="3"
+                              maxlength="1000"
+                              placeholder="Información adicional..."
+                              @bind="_resultadoForm.Notas">
+                    </textarea>
+
+                </div>
+
+            </div>
+
+
+            @if (!string.IsNullOrWhiteSpace(
+                _errorResultado))
+            {
+                <div class="alert alert-danger mt-3">
+                    @_errorResultado
+                </div>
+            }
+
+
+            <div class="form-actions">
+
+                <button type="button"
+                        class="btn-cancel"
+                        @onclick="CerrarResultado">
+
+                    Cancelar
+
+                </button>
+
+
+                <button type="button"
+                        class="btn-save"
+                        disabled="@_guardandoResultado"
+                        @onclick="GuardarResultado">
+
+                    @(_guardandoResultado
+                        ? "Registrando..."
+                        : "Registrar resultado")
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+}
 
 @code
 {
@@ -555,6 +989,8 @@
     private List<ObservacionConductualDto> _observaciones =
         new();
 
+    private List<IntervencionDto> _intervenciones =
+    new();
 
     private FormObservacion _form =
         new();
@@ -607,12 +1043,361 @@
             .Distinct()
             .Count();
 
+    private ObservacionConductualDto?
+    _observacionSeleccionada;
+
+    private CrearIntervencionRequest
+        _intervencionForm =
+            new();
+
+    private DateTime _fechaIntervencion =
+        DateTime.Now;
+
+    private bool _mostrarIntervencion;
+
+    private bool _guardandoIntervencion;
+
+    private string _errorIntervencion =
+        string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
         await CargarDatos();
     }
 
+    private void AbrirIntervencion(
+    ObservacionConductualDto observacion)
+    {
+        _observacionSeleccionada =
+            observacion;
+
+        _intervencionForm =
+            new CrearIntervencionRequest
+            {
+                ObservacionId =
+                    observacion.Id
+            };
+
+        _fechaIntervencion =
+            DateTime.Now;
+
+        _errorIntervencion =
+            string.Empty;
+
+        _mostrarIntervencion =
+            true;
+    }
+
+    private void CerrarIntervencion()
+    {
+        _mostrarIntervencion =
+            false;
+
+        _observacionSeleccionada =
+            null;
+
+        _intervencionForm =
+            new();
+
+        _errorIntervencion =
+            string.Empty;
+    }
+
+    private async Task GuardarIntervencion()
+{
+    _errorIntervencion =
+        string.Empty;
+
+
+    if (_observacionSeleccionada is null)
+    {
+        return;
+    }
+
+
+    if (string.IsNullOrWhiteSpace(
+        _intervencionForm.Estrategia))
+    {
+        _errorIntervencion =
+            "Debes indicar la estrategia aplicada.";
+
+        return;
+    }
+
+
+    if (_fechaIntervencion == default)
+    {
+        _errorIntervencion =
+            "La fecha y hora no son válidas.";
+
+        return;
+    }
+
+
+    if (_fechaIntervencion >
+        DateTime.Now)
+    {
+        _errorIntervencion =
+            "La intervención no puede tener una fecha futura.";
+
+        return;
+    }
+
+
+    _guardandoIntervencion =
+        true;
+
+
+    try
+    {
+        var request =
+            new CrearIntervencionRequest
+            {
+                ObservacionId =
+                    _observacionSeleccionada.Id,
+
+                FechaHoraIntervencion =
+                    DateTime.SpecifyKind(
+                        _fechaIntervencion,
+                        DateTimeKind.Unspecified),
+
+                Estrategia =
+                    _intervencionForm
+                        .Estrategia
+                        .Trim(),
+
+                Objetivo =
+                    LimpiarTexto(
+                        _intervencionForm
+                            .Objetivo)
+            };
+
+
+        var respuesta =
+            await Http.PostAsJsonAsync(
+                "api/seguimiento/intervenciones",
+                request);
+
+
+        if (!respuesta.IsSuccessStatusCode)
+        {
+            var detalle =
+                await respuesta.Content
+                    .ReadAsStringAsync();
+
+            _errorIntervencion =
+                $"No fue posible registrar la intervención. {detalle}";
+
+            return;
+        }
+
+
+        _mensaje =
+            "Intervención registrada correctamente.";
+
+
+        CerrarIntervencion();
+        await CargarDatos();
+    }
+    catch
+    {
+        _errorIntervencion =
+            "No fue posible registrar la intervención.";
+    }
+    finally
+    {
+        _guardandoIntervencion =
+            false;
+    }
+}
+
+    private IntervencionDto?
+    _intervencionSeleccionada;
+
+    private CrearResultadoIntervencionRequest
+        _resultadoForm =
+            new();
+
+    private DateTime _fechaResultado =
+        DateTime.Now;
+
+    private bool _mostrarResultado;
+
+    private bool _guardandoResultado;
+
+    private string _errorResultado =
+        string.Empty;
+
+    private void AbrirResultado(
+    IntervencionDto intervencion)
+{
+    _intervencionSeleccionada =
+        intervencion;
+
+    _resultadoForm =
+        new CrearResultadoIntervencionRequest
+        {
+            IntervencionId =
+                intervencion.Id
+        };
+
+    _fechaResultado =
+        DateTime.Now;
+
+    _errorResultado =
+        string.Empty;
+
+    _mostrarResultado =
+        true;
+}
+private void CerrarResultado()
+{
+    _mostrarResultado =
+        false;
+
+    _intervencionSeleccionada =
+        null;
+
+    _resultadoForm =
+        new();
+
+    _errorResultado =
+        string.Empty;
+}
+
+private async Task GuardarResultado()
+{
+    _errorResultado =
+        string.Empty;
+
+
+    if (_intervencionSeleccionada is null)
+    {
+        return;
+    }
+
+
+    if (string.IsNullOrWhiteSpace(
+        _resultadoForm.Resultado))
+    {
+        _errorResultado =
+            "Debes describir el resultado observado.";
+
+        return;
+    }
+
+
+    if (string.IsNullOrWhiteSpace(
+        _resultadoForm.Efectividad))
+    {
+        _errorResultado =
+            "Debes indicar la efectividad.";
+
+        return;
+    }
+
+
+    if (_fechaResultado == default)
+    {
+        _errorResultado =
+            "La fecha y hora no son válidas.";
+
+        return;
+    }
+
+
+    if (_fechaResultado >
+        DateTime.Now)
+    {
+        _errorResultado =
+            "El resultado no puede tener una fecha futura.";
+
+        return;
+    }
+
+
+    if (_fechaResultado <
+        _intervencionSeleccionada
+            .FechaHoraIntervencion)
+    {
+        _errorResultado =
+            "El resultado no puede ser anterior a la intervención.";
+
+        return;
+    }
+
+
+    _guardandoResultado =
+        true;
+
+
+    try
+    {
+        var request =
+            new CrearResultadoIntervencionRequest
+            {
+                IntervencionId =
+                    _intervencionSeleccionada.Id,
+
+                FechaHoraResultado =
+                    DateTime.SpecifyKind(
+                        _fechaResultado,
+                        DateTimeKind.Unspecified),
+
+                Resultado =
+                    _resultadoForm
+                        .Resultado
+                        .Trim(),
+
+                Efectividad =
+                    _resultadoForm
+                        .Efectividad
+                        .Trim(),
+
+                Notas =
+                    LimpiarTexto(
+                        _resultadoForm.Notas)
+            };
+
+
+        var respuesta =
+            await Http.PostAsJsonAsync(
+                "api/seguimiento/resultados-intervencion",
+                request);
+
+
+        if (!respuesta.IsSuccessStatusCode)
+        {
+            var detalle =
+                await respuesta.Content
+                    .ReadAsStringAsync();
+
+            _errorResultado =
+                $"No fue posible registrar el resultado. {detalle}";
+
+            return;
+        }
+
+
+        _mensaje =
+            "Resultado registrado correctamente.";
+
+
+        CerrarResultado();
+
+        await CargarDatos();
+    }
+    catch
+    {
+        _errorResultado =
+            "No fue posible registrar el resultado.";
+    }
+    finally
+    {
+        _guardandoResultado =
+            false;
+    }
+}
 
     // Carga alumnos y observaciones autorizadas.
     private async Task CargarDatos()
@@ -651,6 +1436,36 @@
             _observaciones =
                 observacionesTask.Result
                 ?? new();
+
+            var alumnoIds =
+                _observaciones
+                    .Select(x =>
+                        x.AlumnoId)
+                    .Distinct()
+                    .ToList();
+
+
+            var tareasIntervenciones =
+                alumnoIds
+                    .Select(id =>
+                        Http.GetFromJsonAsync<
+                            List<IntervencionDto>>(
+                            $"api/seguimiento/alumnos/{id}/intervenciones"))
+                    .ToList();
+
+
+            var respuestasIntervenciones =
+                await Task.WhenAll(
+                    tareasIntervenciones);
+
+
+            _intervenciones =
+                respuestasIntervenciones
+                    .Where(x =>
+                        x is not null)
+                    .SelectMany(x =>
+                        x!)
+                    .ToList();
         }
         catch
         {
@@ -664,7 +1479,18 @@
         }
     }
 
-
+    private List<IntervencionDto>
+        IntervencionesDeObservacion(
+            Guid observacionId)
+    {
+        return _intervenciones
+            .Where(x =>
+                x.ObservacionId ==
+                    observacionId)
+            .OrderByDescending(x =>
+                x.FechaHoraIntervencion)
+            .ToList();
+    }
     private void NuevaObservacion()
     {
         _mensaje =
@@ -920,7 +1746,7 @@
 
 
     private static string? LimpiarTexto(
-        string texto)
+        string? texto)
     {
         return string.IsNullOrWhiteSpace(
             texto)

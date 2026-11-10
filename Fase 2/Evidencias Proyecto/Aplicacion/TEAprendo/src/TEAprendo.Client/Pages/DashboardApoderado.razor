@@ -8,73 +8,247 @@
 @inject HttpClient Http
 @inject NavigationManager Navigation
 
-<PageTitle>Portal Apoderado - TEAprendo</PageTitle>
+<PageTitle>Panel del Apoderado - TEAprendo</PageTitle>
 
 
 <div class="guardian-dashboard">
 
-    <section class="welcome-panel">
+    <section class="hero-panel">
 
-        <span>
-            Portal familiar
-        </span>
+        <div>
 
-        <h1>
-            Bienvenido a TEAprendo
-        </h1>
+            <span class="eyebrow">
+                Panel del Apoderado
+            </span>
 
-        <p>
-            Consulta la información de tus estudiantes
-            y comunícate con sus profesionales.
-        </p>
+            <h1>
+                Acompaña su proceso
+            </h1>
+
+            <p>
+                Encuentra en un solo lugar la información
+                principal de tus estudiantes y sus citas.
+            </p>
+
+        </div>
+
+
+        <div class="hero-heart">
+            ♡
+        </div>
 
     </section>
 
 
-    <div class="dashboard-grid">
+    @if (_alumnos.Count == 0)
+    {
+        <div class="empty-state">
 
-        <article class="dashboard-card">
+            <strong>
+                No hay estudiantes asociados.
+            </strong>
 
-            <div class="dashboard-icon">
-                ◎
-            </div>
-
-            <div>
-                <span>Mis estudiantes</span>
-
-                <strong>
-                    @_alumnos.Count
-                </strong>
-            </div>
-
-        </article>
-
-
-        <button class="dashboard-action"
-                @onclick="AbrirCitas">
-
-            <div class="dashboard-icon">
-                ◷
-            </div>
-
-            <div>
-                <strong>
-                    Citas
-                </strong>
-
-                <span>
-                    Solicita o revisa citas con
-                    los profesionales.
-                </span>
-            </div>
-
-            <span class="dashboard-arrow">
-                ›
+            <span>
+                Cuando exista una relación activa,
+                aparecerá aquí.
             </span>
 
-        </button>
+        </div>
+    }
+    else
+    {
+        <section class="student-section">
 
-    </div>
+            <div class="section-header">
+
+                <div>
+                    <span class="eyebrow">
+                        Mi familia
+                    </span>
+
+                    <h2>
+                        @(_alumnos.Count == 1
+                            ? "Mi estudiante"
+                            : "Mis estudiantes")
+                    </h2>
+                </div>
+
+            </div>
+
+
+            <div class="students-grid">
+
+                @foreach (var alumno in _alumnos)
+                {
+                    <article class="student-profile-card">
+
+                        <div class="student-avatar">
+                            @ObtenerInicial(alumno.Nombre)
+                        </div>
+
+
+                        <div class="student-info">
+
+                            <span>
+                                Estudiante
+                            </span>
+
+                            <h3>
+                                @alumno.Nombre
+                                @alumno.Apellido
+                            </h3>
+
+                            <p>
+                                @alumno.AulaNombre
+                            </p>
+
+                        </div>
+
+
+                        <div class="student-tag">
+                            TEAprendo
+                        </div>
+
+                    </article>
+                }
+
+            </div>
+
+        </section>
+    }
+
+
+    <section class="today-panel">
+
+        <div class="today-header">
+
+            <div>
+                <span class="eyebrow">
+                    Resumen
+                </span>
+
+                <h2>
+                    Accesos principales
+                </h2>
+            </div>
+
+        </div>
+
+
+        <div class="actions-grid">
+
+            <button type="button"
+                    class="action-card green"
+                    @onclick="AbrirCitas">
+
+                <span class="action-icon">
+                    ◷
+                </span>
+
+                <div>
+                    <strong>
+                        Citas
+                    </strong>
+
+                    <span>
+                        Solicita o revisa
+                        próximas atenciones.
+                    </span>
+                </div>
+
+                <span class="action-arrow">
+                    ›
+                </span>
+
+            </button>
+
+
+            <article class="action-card lavender">
+
+                <span class="action-icon">
+                    ◎
+                </span>
+
+                <div>
+                    <strong>
+                        Mis estudiantes
+                    </strong>
+
+                    <span>
+                        @_alumnos.Count
+                        vinculados a tu cuenta.
+                    </span>
+                </div>
+
+            </article>
+
+
+            <article class="action-card pink">
+
+                <span class="action-icon">
+                    ◫
+                </span>
+
+                <div>
+                    <strong>
+                        Comunicados
+                    </strong>
+
+                    <span>
+                        Próximamente disponible.
+                    </span>
+                </div>
+
+            </article>
+
+
+            <article class="action-card cream">
+
+                <span class="action-icon">
+                    ◇
+                </span>
+
+                <div>
+                    <strong>
+                        Mensajes
+                    </strong>
+
+                    <span>
+                        Próximamente disponible.
+                    </span>
+                </div>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <section class="support-panel">
+
+        <div class="support-icon">
+            ♡
+        </div>
+
+        <div>
+
+            <span class="eyebrow">
+                TEAprendo
+            </span>
+
+            <h3>
+                Acompañamiento en un solo espacio
+            </h3>
+
+            <p>
+                La información disponible se organiza
+                según tu relación con cada estudiante.
+            </p>
+
+        </div>
+
+    </section>
 
 </div>
 
@@ -100,6 +274,15 @@
             _alumnos =
                 new();
         }
+    }
+
+
+    private string ObtenerInicial(
+        string nombre)
+    {
+        return string.IsNullOrWhiteSpace(nombre)
+            ? "?"
+            : nombre[..1].ToUpper();
     }
 
 

@@ -9,115 +9,41 @@
 @inject SedeContextoService SedeContexto
 
 
-<div class="guardian-layout">
+<div class="guardian-shell">
 
-    <aside class="guardian-sidebar">
+    <header class="app-header">
 
-        <div class="sidebar-brand">
+        <div class="app-topbar">
 
-            <div class="brand-icon">
-                T
-            </div>
+            <div class="app-brand">
 
-            <div class="brand-text">
-                <strong>TEAprendo</strong>
-                <span>Portal Apoderado</span>
-            </div>
+                <div class="brand-mark">
+                    T
+                </div>
 
-        </div>
+                <div class="brand-copy">
 
+                    <strong>
+                        TEAprendo
+                    </strong>
 
-        <nav class="guardian-nav">
+                    <span>
+                        Portal familiar
+                    </span>
 
-            <NavLink href="/apoderado"
-                     Match="NavLinkMatch.All"
-                     class="guardian-nav-link">
-
-                <span class="nav-icon">⌂</span>
-                <span>Inicio</span>
-
-            </NavLink>
-
-
-            <div class="nav-section-title">
-                Mi familia
-            </div>
-
-
-            <NavLink href="/apoderado/citas"
-                     class="guardian-nav-link">
-
-                <span class="nav-icon">◷</span>
-                <span>Citas</span>
-
-            </NavLink>
-
-
-            <div class="guardian-nav-link nav-disabled">
-
-                <span class="nav-icon">◎</span>
-                <span>Mis estudiantes</span>
+                </div>
 
             </div>
 
 
-            <div class="nav-section-title">
-                Comunicación
-            </div>
-
-
-            <div class="guardian-nav-link nav-disabled">
-
-                <span class="nav-icon">◫</span>
-                <span>Comunicados</span>
-
-            </div>
-
-
-            <div class="guardian-nav-link nav-disabled">
-
-                <span class="nav-icon">◇</span>
-                <span>Mensajes</span>
-
-            </div>
-
-        </nav>
-
-
-        <div class="sidebar-bottom">
-
-            <button class="logout-button"
-                    @onclick="CerrarSesion">
-
-                <span>↪</span>
-                <span>Cerrar sesión</span>
-
-            </button>
-
-        </div>
-
-    </aside>
-
-
-    <main class="guardian-main">
-
-        <header class="guardian-topbar">
-
-            <div>
-                <span class="topbar-context">
-                    Portal familiar
-                </span>
-            </div>
-
-
-            <div class="topbar-actions">
+            <div class="topbar-right">
 
                 <CampanaNotificaciones />
 
 
-                <div class="guardian-user">
+                <div class="user-area">
 
-                    <div class="user-text">
+                    <div class="user-copy">
 
                         <strong>
                             @_nombreUsuario
@@ -136,9 +62,113 @@
 
                 </div>
 
+
+                <button type="button"
+                        class="logout-button"
+                        title="Cerrar sesión"
+                        @onclick="CerrarSesion">
+
+                    ↪
+
+                </button>
+
             </div>
 
-        </header>
+        </div>
+
+
+        @* =========================
+           Marcadores
+           ========================= *@
+
+        <div class="role-tabs-wrapper">
+
+            <nav class="role-tabs">
+
+
+                <NavLink href="/apoderado"
+                         Match="NavLinkMatch.All"
+                         class="role-tab">
+
+                    <span class="tab-icon">
+                        ⌂
+                    </span>
+
+                    <span>
+                        Inicio
+                    </span>
+
+                </NavLink>
+
+
+                <div class="role-tab role-tab-info">
+
+                    <span class="tab-icon">
+                        ◎
+                    </span>
+
+                    <span>
+                        Mi estudiante
+                    </span>
+
+                </div>
+
+
+                <NavLink href="/apoderado/citas"
+                         class="role-tab">
+
+                    <span class="tab-icon">
+                        ◷
+                    </span>
+
+                    <span>
+                        Citas
+                    </span>
+
+                </NavLink>
+
+
+                <div class="role-tab role-tab-info">
+
+                    <span class="tab-icon">
+                        ◫
+                    </span>
+
+                    <span>
+                        Comunicados
+                    </span>
+
+                </div>
+
+
+                <div class="role-tab role-tab-info">
+
+                    <span class="tab-icon">
+                        ◇
+                    </span>
+
+                    <span>
+                        Mensajes
+                    </span>
+
+                </div>
+
+            </nav>
+
+        </div>
+
+    </header>
+
+
+    <main class="guardian-main">
+
+        <div class="page-context">
+
+            <span>
+                Panel del Apoderado
+            </span>
+
+        </div>
 
 
         <section class="guardian-content">

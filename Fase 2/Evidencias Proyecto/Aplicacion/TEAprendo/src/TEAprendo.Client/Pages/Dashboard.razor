@@ -10,107 +10,320 @@
 @inject NavigationManager Navigation
 @inject SedeContextoService SedeContexto
 
-<PageTitle>Dashboard - TEAprendo</PageTitle>
+<PageTitle>Panel del Director - TEAprendo</PageTitle>
 
-<div class="dashboard">
+<div class="director-dashboard">
 
-    <div class="dashboard-header">
-        <h1>Dashboard</h1>
+    <section class="hero-panel">
 
-        <p>
-            Resumen general de la sede.
-        </p>
-    </div>
-
-
-    <div class="dashboard-cards">
-
-        <div class="dashboard-card">
-
-            <span class="dashboard-icon">
-                🏫
+        <div>
+            <span class="eyebrow">
+                Panel del Director
             </span>
 
-            <div>
+            <h1>
+                Gestión de @_nombreSede
+            </h1>
+
+            <p>
+                Supervisa estudiantes, aulas y usuarios
+                de la sede desde un mismo espacio.
+            </p>
+        </div>
+
+        <div class="hero-illustration">
+            <span>⌂</span>
+        </div>
+
+    </section>
+
+
+    <section class="summary-panel">
+
+        <div class="section-title">
+            <span>Resumen institucional</span>
+        </div>
+
+        <div class="summary-grid">
+
+            <article class="summary-card green">
+
+                <div class="summary-icon">
+                    ◎
+                </div>
+
+                <div>
+                    <strong>
+                        @_cantidadAlumnos
+                    </strong>
+
+                    <span>
+                        Estudiantes
+                    </span>
+                </div>
+
+            </article>
+
+
+            <article class="summary-card lavender">
+
+                <div class="summary-icon">
+                    ▦
+                </div>
+
+                <div>
+                    <strong>
+                        @_aulas.Count
+                    </strong>
+
+                    <span>
+                        Aulas
+                    </span>
+                </div>
+
+            </article>
+
+
+            <article class="summary-card pink">
+
+                <div class="summary-icon">
+                    ♙
+                </div>
+
+                <div>
+                    <strong>
+                        @_cantidadUsuarios
+                    </strong>
+
+                    <span>
+                        Usuarios
+                    </span>
+                </div>
+
+            </article>
+
+
+            <article class="summary-card cream">
+
+                <div class="summary-icon">
+                    ✓
+                </div>
+
+                <div>
+                    <strong>
+                        @_aulasActivas
+                    </strong>
+
+                    <span>
+                        Aulas activas
+                    </span>
+                </div>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <section class="management-grid">
+
+        <article class="management-card">
+
+            <div class="management-header">
+
+                <div>
+                    <span class="eyebrow">
+                        Gestión
+                    </span>
+
+                    <h2>
+                        Gestión académica
+                    </h2>
+                </div>
+
+                <span class="management-icon">
+                    ▦
+                </span>
+
+            </div>
+
+
+            <button type="button"
+                    class="management-row"
+                    @onclick="AbrirAulas">
+
                 <span>Aulas</span>
-                <strong>@_aulas.Count</strong>
+
+                <div>
+                    <strong>@_aulas.Count</strong>
+                    <span>›</span>
+                </div>
+
+            </button>
+
+
+            <button type="button"
+                    class="management-row"
+                    @onclick="AbrirAlumnos">
+
+                <span>Estudiantes</span>
+
+                <div>
+                    <strong>@_cantidadAlumnos</strong>
+                    <span>›</span>
+                </div>
+
+            </button>
+
+        </article>
+
+
+        <article class="management-card">
+
+            <div class="management-header">
+
+                <div>
+                    <span class="eyebrow">
+                        Comunidad
+                    </span>
+
+                    <h2>
+                        Gestión de usuarios
+                    </h2>
+                </div>
+
+                <span class="management-icon lavender-icon">
+                    ♙
+                </span>
+
             </div>
 
-        </div>
+
+            <button type="button"
+                    class="management-row"
+                    @onclick="AbrirUsuarios">
+
+                <span>Usuarios de la sede</span>
+
+                <div>
+                    <strong>@_cantidadUsuarios</strong>
+                    <span>›</span>
+                </div>
+
+            </button>
 
 
-        <div class="dashboard-card">
+            <div class="management-row static-row">
 
-            <span class="dashboard-icon">
-                🎓
-            </span>
+                <span>Estado general</span>
 
-            <div>
-                <span>Alumnos</span>
-                <strong>@_cantidadAlumnos</strong>
+                <div>
+                    <strong class="status-text">
+                        Activo
+                    </strong>
+                </div>
+
             </div>
 
-        </div>
+        </article>
 
-
-        <div class="dashboard-card">
-
-            <span class="dashboard-icon">
-                👥
-            </span>
-
-            <div>
-                <span>Usuarios</span>
-                <strong>@_cantidadUsuarios</strong>
-            </div>
-
-        </div>
-
-    </div>
+    </section>
 
 
     <section class="dashboard-section">
 
-        <h2>Aulas de la sede</h2>
+        <div class="section-header">
+
+            <div>
+                <span class="eyebrow">
+                    Organización
+                </span>
+
+                <h2>
+                    Aulas de la sede
+                </h2>
+
+                <p>
+                    Revisa las aulas actualmente registradas.
+                </p>
+            </div>
+
+            <button type="button"
+                    class="section-action"
+                    @onclick="AbrirAulas">
+
+                Ver todas ›
+
+            </button>
+
+        </div>
+
 
         @if (_cargando)
         {
-            <p>Cargando aulas...</p>
+            <div class="empty-state">
+                Cargando aulas...
+            </div>
         }
         else if (_aulas.Count == 0)
         {
-            <p>
+            <div class="empty-state">
                 No hay aulas registradas.
-            </p>
+            </div>
         }
         else
         {
-            <div class="aulas-grid">
+            <div class="classrooms-grid">
 
-                @foreach (var aula in _aulas)
+                @foreach (var aula in _aulas.Take(6))
                 {
-                    <div class="aula-card">
+                    <article class="classroom-card">
 
-                        <div class="aula-header">
+                        <div class="classroom-top">
 
-                            <h3>
-                                @aula.Nombre
-                            </h3>
+                            <div class="classroom-icon">
+                                ▦
+                            </div>
 
-                            <span class="estado-aula">
+                            <span class="classroom-status
+                                @(aula.Activa ? "active" : "inactive")">
+
                                 @(aula.Activa
                                     ? "Activa"
                                     : "Inactiva")
+
                             </span>
 
                         </div>
 
+
+                        <span class="card-label">
+                            Aula
+                        </span>
+
+                        <h3>
+                            @aula.Nombre
+                        </h3>
+
                         <p>
-                            Año académico
-                            @aula.AnioAcademico
+                            @aula.SedeNombre
                         </p>
 
-                    </div>
+
+                        <div class="classroom-footer">
+
+                            <span>
+                                Año académico
+                            </span>
+
+                            <strong>
+                                @aula.AnioAcademico
+                            </strong>
+
+                        </div>
+
+                    </article>
                 }
 
             </div>
@@ -120,20 +333,29 @@
 
 </div>
 
+
 @code
 {
     private List<AulaDto> _aulas = new();
-    
+
     private int _cantidadAlumnos;
+
+    private int _cantidadUsuarios;
 
     private bool _cargando = true;
 
-    private int _cantidadUsuarios;
+
+    private string _nombreSede =>
+        SedeContexto.SedeActual?.Nombre
+        ?? "la sede";
+
+
+    private int _aulasActivas =>
+        _aulas.Count(x => x.Activa);
 
 
     protected override async Task OnInitializedAsync()
     {
-        // Obliga a seleccionar una sede.
         if (SedeContexto.SedeActual is null)
         {
             Navigation.NavigateTo(
@@ -142,13 +364,13 @@
             return;
         }
 
-        await CargarAulas();
-        await CargarAlumnos();
-        await CargarUsuarios();
+        await Task.WhenAll(
+            CargarAulas(),
+            CargarAlumnos(),
+            CargarUsuarios());
     }
-    
 
-    // Obtiene las aulas de la sede actual.
+
     private async Task CargarAulas()
     {
         try
@@ -156,11 +378,11 @@
             var sedeId =
                 SedeContexto.SedeActual!.Id;
 
-            var aulas =
-                await Http.GetFromJsonAsync<List<AulaDto>>(
-                    $"api/aulas/sede/{sedeId}");
-
-            _aulas = aulas ?? new();
+            _aulas =
+                await Http.GetFromJsonAsync<
+                    List<AulaDto>>(
+                    $"api/aulas/sede/{sedeId}")
+                ?? new();
         }
         finally
         {
@@ -168,32 +390,51 @@
         }
     }
 
-    // Obtiene la cantidad de alumnos de la sede.
+
     private async Task CargarAlumnos()
     {
         var sedeId =
             SedeContexto.SedeActual!.Id;
 
         var alumnos =
-            await Http.GetFromJsonAsync<List<AlumnoDto>>(
+            await Http.GetFromJsonAsync<
+                List<AlumnoDto>>(
                 $"api/alumnos/sede/{sedeId}");
 
         _cantidadAlumnos =
             alumnos?.Count ?? 0;
     }
 
-    // Obtiene la cantidad de usuarios de la sede.
-private async Task CargarUsuarios()
-{
-    var sedeId =
-        SedeContexto.SedeActual!.Id;
 
-    var usuarios =
-        await Http.GetFromJsonAsync<List<UsuarioSedeDto>>(
-            $"api/usuarios/sede/{sedeId}");
+    private async Task CargarUsuarios()
+    {
+        var sedeId =
+            SedeContexto.SedeActual!.Id;
 
-    _cantidadUsuarios =
-        usuarios?.Count ?? 0;
-}
-    
+        var usuarios =
+            await Http.GetFromJsonAsync<
+                List<UsuarioSedeDto>>(
+                $"api/usuarios/sede/{sedeId}");
+
+        _cantidadUsuarios =
+            usuarios?.Count ?? 0;
+    }
+
+
+    private void AbrirAulas()
+    {
+        Navigation.NavigateTo("/aulas");
+    }
+
+
+    private void AbrirAlumnos()
+    {
+        Navigation.NavigateTo("/alumnos");
+    }
+
+
+    private void AbrirUsuarios()
+    {
+        Navigation.NavigateTo("/usuarios");
+    }
 }

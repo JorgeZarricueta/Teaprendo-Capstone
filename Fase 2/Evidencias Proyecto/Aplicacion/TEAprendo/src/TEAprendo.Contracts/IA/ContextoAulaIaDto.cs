@@ -1,4 +1,5 @@
 namespace TEAprendo.Contracts.IA;
+using TEAprendo.Contracts.Analitica;
 
 
 // Contexto autorizado que la API prepara para la IA.
@@ -38,6 +39,15 @@ public class AlumnoContextoIaDto
     // Eventos de crisis relevantes del alumno.
     public List<EventoCrisisContextoIaDto> EventosCrisis { get; set; }
         = [];
+
+    // Intervenciones aplicadas al alumno.
+    public List<IntervencionContextoIaDto> Intervenciones { get; set; }
+        = [];
+
+    // Indicadores calculados por TEAprendo.
+    // No dependen de la interpretación del modelo.
+    public IndicadoresSeguimientoDto?
+        IndicadoresSeguimiento { get; set; }
 }
 
 
@@ -89,4 +99,47 @@ public class EventoCrisisContextoIaDto
     public string? Notas { get; set; }
 
     public int Relevancia { get; set; }
+}
+
+// Estrategia aplicada a partir de una observación.
+public class IntervencionContextoIaDto
+{
+    public Guid IntervencionId { get; set; }
+
+    public Guid ObservacionId { get; set; }
+
+    public DateTime Fecha { get; set; }
+
+    public string Estrategia { get; set; }
+        = string.Empty;
+
+    public string? Objetivo { get; set; }
+
+    public string ContextoObservacion { get; set; }
+        = string.Empty;
+
+    public string ConductaObservada { get; set; }
+        = string.Empty;
+
+    public int Relevancia { get; set; }
+
+    public List<ResultadoIntervencionContextoIaDto> Resultados { get; set; }
+        = [];
+}
+
+
+// Resultado asociado a una intervención.
+public class ResultadoIntervencionContextoIaDto
+{
+    public Guid ResultadoId { get; set; }
+
+    public DateTime Fecha { get; set; }
+
+    public string Resultado { get; set; }
+        = string.Empty;
+
+    public string Efectividad { get; set; }
+        = string.Empty;
+
+    public string? Notas { get; set; }
 }

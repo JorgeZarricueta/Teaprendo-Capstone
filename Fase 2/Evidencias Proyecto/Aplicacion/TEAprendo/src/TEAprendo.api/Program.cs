@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TEAprendo.Infrastructure.Identity;
 using TEAprendo.Infrastructure.Persistence;
+using TEAprendo.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -57,6 +58,9 @@ builder.Services.AddCors(options =>
             .AllowCredentials();
     });
 });
+
+builder.Services.AddScoped<
+    AnaliticaSeguimientoService>();
 
 // OpenAPI para desarrollo.
 builder.Services.AddOpenApi();

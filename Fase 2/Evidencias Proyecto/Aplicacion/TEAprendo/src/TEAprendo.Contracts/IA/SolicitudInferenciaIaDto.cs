@@ -27,6 +27,15 @@ public class RespuestaAsistenteIaDto
     public List<Guid> ObservacionesFuente { get; set; }
         = [];
 
+    public List<Guid> EventosCrisisFuente { get; set; }
+    = [];
+
+    public List<Guid> IntervencionesFuente { get; set; }
+        = [];
+
+    public List<Guid> ResultadosIntervencionFuente { get; set; }
+        = [];
+        
     public string Advertencia { get; set; }
         =
             "Orientación educativa basada en antecedentes registrados; no constituye diagnóstico.";

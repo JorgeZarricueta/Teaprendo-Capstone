@@ -421,3 +421,228 @@ textarea.form-control {
         grid-template-columns: 1fr;
     }
 }
+
+.observation-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid #eeeeef;
+}
+
+.btn-intervention {
+    padding: 9px 14px;
+    border: 1px solid #d9dbe2;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #555963;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-intervention:hover {
+    background: #f7f7f9;
+}
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(30, 32, 38, 0.48);
+}
+
+.intervention-modal {
+    width: min(680px, 100%);
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 26px;
+    border-radius: 20px;
+    background: #ffffff;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+}
+
+.modal-header-custom {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.modal-header-custom h2 {
+    margin: 3px 0 0;
+    font-size: 21px;
+    color: #3f434c;
+}
+
+.modal-header-custom p {
+    margin: 5px 0 0;
+    color: #8e929c;
+    font-size: 13px;
+}
+
+.observation-reference {
+    margin-bottom: 22px;
+    padding: 15px 17px;
+    border-radius: 14px;
+    background: #f7f7f9;
+}
+
+.observation-reference span {
+    display: block;
+    margin-bottom: 5px;
+    color: #999da6;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.observation-reference strong {
+    display: block;
+    color: #565a63;
+    font-size: 13px;
+}
+
+.observation-reference p {
+    margin: 6px 0 0;
+    color: #777b84;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.interventions-section {
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid #eeeeef;
+}
+
+.interventions-title {
+    display: block;
+    margin-bottom: 10px;
+    color: #858a94;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+}
+
+.intervention-card {
+    margin-bottom: 12px;
+    padding: 16px;
+    border: 1px solid #e6e7eb;
+    border-radius: 14px;
+    background: #fafafb;
+}
+
+.intervention-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.intervention-header strong {
+    display: block;
+    color: #51555e;
+    font-size: 13px;
+}
+
+.intervention-header small {
+    display: block;
+    margin-top: 4px;
+    color: #989ca5;
+    font-size: 10px;
+}
+
+.btn-result {
+    flex-shrink: 0;
+    padding: 7px 11px;
+    border: 1px solid #d8dae1;
+    border-radius: 9px;
+    background: #ffffff;
+    color: #60646d;
+    font-size: 10px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-result:hover {
+    background: #f1f2f5;
+}
+
+.intervention-objective {
+    margin-top: 12px;
+}
+
+.intervention-objective span {
+    color: #999da5;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.intervention-objective p {
+    margin: 4px 0 0;
+    color: #6d717a;
+    font-size: 12px;
+}
+
+.results-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.result-card {
+    padding: 12px 14px;
+    border-radius: 11px;
+    background: #ffffff;
+    border: 1px solid #ececef;
+}
+
+.result-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.result-header strong {
+    color: #686c75;
+    font-size: 10px;
+    text-transform: uppercase;
+}
+
+.effectiveness-badge {
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: #f0f1f4;
+    color: #686c75;
+    font-size: 9px;
+    font-weight: 700;
+}
+
+.result-card p {
+    margin: 8px 0 0;
+    color: #595d66;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.result-card small {
+    display: block;
+    margin-top: 6px;
+    color: #8c9099;
+    font-size: 10px;
+}
+
+.result-card time {
+    display: block;
+    margin-top: 7px;
+    color: #a2a5ad;
+    font-size: 9px;
+}

@@ -1,6 +1,5 @@
 @page "/profesional"
 
-
 @layout TEAprendo.Client.Layout.ProfesionalLayout
 
 @using System.Net.Http.Json
@@ -8,6 +7,7 @@
 
 @inject HttpClient Http
 @inject NavigationManager Navigation
+
 <PageTitle>Mi espacio - TEAprendo</PageTitle>
 
 
@@ -23,7 +23,8 @@
 
     </div>
 }
-else if (!string.IsNullOrWhiteSpace(_error))
+else if (!string.IsNullOrWhiteSpace(
+    _error))
 {
     <div class="error-panel">
 
@@ -35,7 +36,8 @@ else if (!string.IsNullOrWhiteSpace(_error))
             @_error
         </span>
 
-        <button class="btn btn-outline-secondary"
+        <button type="button"
+                class="retry-button"
                 @onclick="CargarResumen">
 
             Reintentar
@@ -46,18 +48,18 @@ else if (!string.IsNullOrWhiteSpace(_error))
 }
 else if (_resumen is not null)
 {
-    <div class="professional-dashboard">
+    <div class="professional-dashboard @ObtenerClaseTema()">
 
 
-        @* =========================
-           Bienvenida
-           ========================= *@
+        @* =================================================
+           BIENVENIDA
+           ================================================= *@
 
-        <section class="welcome-card">
+        <section class="professional-hero">
 
-            <div class="welcome-content">
+            <div class="hero-content">
 
-                <span class="welcome-role">
+                <span class="eyebrow">
                     @ObtenerNombreRol()
                 </span>
 
@@ -72,14 +74,16 @@ else if (_resumen is not null)
             </div>
 
 
-            <div class="welcome-visual">
+            <div class="hero-decoration">
 
-                <div class="visual-circle visual-circle-one"></div>
+                <div class="hero-shape shape-one"></div>
 
-                <div class="visual-circle visual-circle-two"></div>
+                <div class="hero-shape shape-two"></div>
 
-                <div class="welcome-symbol">
-                    ✦
+                <div class="hero-symbol">
+                    @(_resumen.Rol == "Docente"
+                        ? "✦"
+                        : "◇")
                 </div>
 
             </div>
@@ -87,9 +91,9 @@ else if (_resumen is not null)
         </section>
 
 
-        @* =========================
-           Resumen
-           ========================= *@
+        @* =================================================
+           RESUMEN
+           ================================================= *@
 
         <section class="stats-grid">
 
@@ -97,7 +101,7 @@ else if (_resumen is not null)
             {
                 <article class="stat-card">
 
-                    <div class="stat-icon aulas-icon">
+                    <div class="stat-icon stat-primary">
                         ▦
                     </div>
 
@@ -123,14 +127,14 @@ else if (_resumen is not null)
 
             <article class="stat-card">
 
-                <div class="stat-icon alumnos-icon">
+                <div class="stat-icon stat-secondary">
                     ◎
                 </div>
 
                 <div class="stat-content">
 
                     <span>
-                        Mis alumnos
+                        Mis estudiantes
                     </span>
 
                     <strong>
@@ -148,7 +152,7 @@ else if (_resumen is not null)
 
             <article class="stat-card">
 
-                <div class="stat-icon seguimiento-icon">
+                <div class="stat-icon stat-third">
                     ✓
                 </div>
 
@@ -158,24 +162,179 @@ else if (_resumen is not null)
                         Seguimiento
                     </span>
 
-                    <strong class="estado-normal">
+                    <strong class="text-stat">
                         Disponible
                     </strong>
 
                     <small>
-                        Espacio profesional activo
+                        Registros y observaciones
                     </small>
 
                 </div>
 
             </article>
 
+
+            @if (_resumen.Rol != "Docente")
+            {
+                <article class="stat-card">
+
+                    <div class="stat-icon stat-fourth">
+                        ◇
+                    </div>
+
+                    <div class="stat-content">
+
+                        <span>
+                            Espacio profesional
+                        </span>
+
+                        <strong class="text-stat">
+                            Activo
+                        </strong>
+
+                        <small>
+                            Seguimiento individual
+                        </small>
+
+                    </div>
+
+                </article>
+            }
+
         </section>
 
 
-        @* =========================
-           Aulas del Docente
-           ========================= *@
+        @* =================================================
+           ACCESOS RÁPIDOS
+           ================================================= *@
+
+        <section class="quick-actions">
+
+            <button type="button"
+                    class="quick-action quick-primary"
+                    @onclick="AbrirAlumnos">
+
+                <div class="quick-icon">
+                    ◎
+                </div>
+
+                <div>
+
+                    <strong>
+                        Mis estudiantes
+                    </strong>
+
+                    <span>
+                        Consulta perfiles y antecedentes.
+                    </span>
+
+                </div>
+
+            </button>
+
+
+            @if (_resumen.Rol == "Docente")
+            {
+                <button type="button"
+                        class="quick-action quick-secondary"
+                        @onclick="AbrirAulas">
+
+                    <div class="quick-icon">
+                        ▦
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Mis aulas
+                        </strong>
+
+                        <span>
+                            Revisa tus cursos asignados.
+                        </span>
+
+                    </div>
+
+                </button>
+            }
+            else
+            {
+                <button type="button"
+                        class="quick-action quick-secondary"
+                        @onclick="AbrirSeguimiento">
+
+                    <div class="quick-icon">
+                        ✎
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Seguimiento
+                        </strong>
+
+                        <span>
+                            Observaciones e intervenciones.
+                        </span>
+
+                    </div>
+
+                </button>
+            }
+
+
+            <button type="button"
+                    class="quick-action quick-third"
+                    @onclick="AbrirAgenda">
+
+                <div class="quick-icon">
+                    ◫
+                </div>
+
+                <div>
+
+                    <strong>
+                        Agenda
+                    </strong>
+
+                    <span>
+                        Revisa tus próximas actividades.
+                    </span>
+
+                </div>
+
+            </button>
+
+
+            <button type="button"
+                    class="quick-action quick-fourth"
+                    @onclick="AbrirCitas">
+
+                <div class="quick-icon">
+                    ◷
+                </div>
+
+                <div>
+
+                    <strong>
+                        Citas
+                    </strong>
+
+                    <span>
+                        Gestiona tus encuentros.
+                    </span>
+
+                </div>
+
+            </button>
+
+        </section>
+
+
+        @* =================================================
+           AULAS DEL DOCENTE
+           ================================================= *@
 
         @if (_resumen.Rol == "Docente")
         {
@@ -185,7 +344,7 @@ else if (_resumen is not null)
 
                     <div>
 
-                        <span class="section-eyebrow">
+                        <span class="eyebrow">
                             Organización
                         </span>
 
@@ -194,10 +353,12 @@ else if (_resumen is not null)
                         </h2>
 
                         <p>
-                            Aulas que el Director te ha asignado.
+                            Cursos que actualmente
+                            tienes asignados.
                         </p>
 
                     </div>
+
 
                     <span class="section-count">
                         @_resumen.CantidadAulas
@@ -219,53 +380,63 @@ else if (_resumen is not null)
                         </strong>
 
                         <p>
-                            Cuando el Director te asigne un aula,
-                            aparecerá automáticamente aquí.
+                            Las aulas aparecerán cuando
+                            el Director realice una asignación.
                         </p>
 
                     </div>
                 }
                 else
                 {
-                    <div class="aulas-grid">
+                    <div class="classrooms-grid">
 
                         @foreach (var aula in _resumen.Aulas)
                         {
-                            <button class="aula-card"
-                                @onclick="() => AbrirAula(aula.Id)">
+                            <button type="button"
+                                    class="classroom-card"
+                                    @onclick="() => AbrirAula(aula.Id)">
 
-                                <div class="aula-top">
+                                <div class="classroom-top">
 
-                                    <div class="aula-icon">
+                                    <div class="classroom-icon">
                                         ▦
                                     </div>
 
-                                    <span class="aula-year">
+                                    <span class="classroom-year">
                                         @aula.AnioAcademico
                                     </span>
 
                                 </div>
 
 
-                                <div class="aula-info">
+                                <div class="classroom-content">
+
+                                    <span class="card-label">
+                                        Aula
+                                    </span>
 
                                     <h3>
                                         @aula.Nombre
                                     </h3>
 
-                                    <span>
+                                    <p>
                                         @aula.SedeNombre
-                                    </span>
+                                    </p>
 
                                 </div>
 
 
-                                <div class="aula-footer">
+                                <div class="classroom-footer">
 
                                     <span>
-                                        @ObtenerCantidadAlumnosAula(aula.Id)
+                                        @ObtenerCantidadAlumnosAula(
+                                            aula.Id)
                                         estudiantes
                                     </span>
+
+                                    <strong>
+                                        ›
+                                    </strong>
 
                                 </div>
 
@@ -279,9 +450,9 @@ else if (_resumen is not null)
         }
 
 
-        @* =========================
-           Alumnos
-           ========================= *@
+        @* =================================================
+           ESTUDIANTES
+           ================================================= *@
 
         <section class="dashboard-section">
 
@@ -289,12 +460,14 @@ else if (_resumen is not null)
 
                 <div>
 
-                    <span class="section-eyebrow">
-                        Seguimiento
+                    <span class="eyebrow">
+                        @(_resumen.Rol == "Docente"
+                            ? "Seguimiento"
+                            : "Estudiantes asignados")
                     </span>
 
                     <h2>
-                        Mis alumnos
+                        Mis estudiantes
                     </h2>
 
                     <p>
@@ -302,6 +475,7 @@ else if (_resumen is not null)
                     </p>
 
                 </div>
+
 
                 <span class="section-count">
                     @_resumen.CantidadAlumnos
@@ -319,7 +493,7 @@ else if (_resumen is not null)
                     </div>
 
                     <strong>
-                        No tienes alumnos disponibles
+                        No tienes estudiantes disponibles
                     </strong>
 
                     <p>
@@ -330,25 +504,31 @@ else if (_resumen is not null)
             }
             else
             {
-                <div class="alumnos-grid">
+                <div class="students-grid">
 
-                    @foreach (var alumno in _resumen.Alumnos)
+                    @foreach (var alumno
+                        in _resumen.Alumnos)
                     {
-                        <article class="alumno-card">
+                        <article class="student-card">
 
-                            <div class="alumno-avatar">
-                                @ObtenerInicial(alumno.Nombre)
+                            <div class="student-avatar">
+                                @ObtenerInicial(
+                                    alumno.Nombre)
                             </div>
 
 
-                            <div class="alumno-info">
+                            <div class="student-info">
+
+                                <span class="card-label">
+                                    Estudiante
+                                </span>
 
                                 <h3>
                                     @alumno.Nombre
                                     @alumno.Apellido
                                 </h3>
 
-                                <span class="alumno-aula">
+                                <span class="student-class">
                                     @alumno.AulaNombre
                                 </span>
 
@@ -359,12 +539,14 @@ else if (_resumen is not null)
                             </div>
 
 
-                           <button class="alumno-arrow"
-                                @onclick="() => AbrirAlumno(alumno.Id)"
-                                title="Abrir perfil">
-                            ›
+                            <button type="button"
+                                    class="student-open"
+                                    title="Abrir perfil"
+                                    @onclick="() => AbrirAlumno(alumno.Id)">
 
-                        </button>
+                                ›
+
+                            </button>
 
                         </article>
                     }
@@ -375,9 +557,9 @@ else if (_resumen is not null)
         </section>
 
 
-        @* =========================
-           Funciones próximas
-           ========================= *@
+        @* =================================================
+           HERRAMIENTAS
+           ================================================= *@
 
         <section class="dashboard-section">
 
@@ -385,17 +567,19 @@ else if (_resumen is not null)
 
                 <div>
 
-                    <span class="section-eyebrow">
+                    <span class="eyebrow">
                         Herramientas
                     </span>
 
                     <h2>
-                        Seguimiento del estudiante
+                        @(_resumen.Rol == "Docente"
+                            ? "Gestión educativa"
+                            : "Seguimiento profesional")
                     </h2>
 
                     <p>
-                        Funciones que estarán disponibles
-                        desde el perfil de cada alumno.
+                        Funciones disponibles para
+                        acompañar a tus estudiantes.
                     </p>
 
                 </div>
@@ -412,36 +596,67 @@ else if (_resumen is not null)
                     </div>
 
                     <div>
+
                         <strong>
                             Observaciones
                         </strong>
 
                         <span>
-                            Registrar información relevante
+                            Registra antecedentes relevantes
                             del estudiante.
                         </span>
+
                     </div>
 
                 </article>
 
 
-                <article class="tool-card">
+                @if (_resumen.Rol == "Docente")
+                {
+                    <article class="tool-card">
 
-                    <div class="tool-icon">
-                        ◫
-                    </div>
+                        <div class="tool-icon">
+                            ◫
+                        </div>
 
-                    <div>
-                        <strong>
-                            Informes
-                        </strong>
+                        <div>
 
-                        <span>
-                            Consultar y generar seguimientos.
-                        </span>
-                    </div>
+                            <strong>
+                                Aula
+                            </strong>
 
-                </article>
+                            <span>
+                                Revisa estudiantes y
+                                organización del curso.
+                            </span>
+
+                        </div>
+
+                    </article>
+                }
+                else
+                {
+                    <article class="tool-card">
+
+                        <div class="tool-icon">
+                            ◇
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Intervenciones
+                            </strong>
+
+                            <span>
+                                Registra estrategias
+                                y sus resultados.
+                            </span>
+
+                        </div>
+
+                    </article>
+                }
 
 
                 <article class="tool-card">
@@ -451,13 +666,16 @@ else if (_resumen is not null)
                     </div>
 
                     <div>
+
                         <strong>
-                            Eventos
+                            Asistente IA
                         </strong>
 
                         <span>
-                            Registrar situaciones importantes.
+                            Consulta antecedentes desde
+                            el perfil del estudiante.
                         </span>
+
                     </div>
 
                 </article>
@@ -474,9 +692,11 @@ else if (_resumen is not null)
 {
     private ResumenProfesionalDto? _resumen;
 
-    private bool _cargando = true;
+    private bool _cargando =
+        true;
 
-    private string _error = string.Empty;
+    private string _error =
+        string.Empty;
 
 
     protected override async Task OnInitializedAsync()
@@ -485,17 +705,23 @@ else if (_resumen is not null)
     }
 
 
-    // Obtiene la información autorizada del profesional.
+    // Carga el resumen autorizado.
     private async Task CargarResumen()
     {
-        _cargando = true;
-        _error = string.Empty;
+        _cargando =
+            true;
+
+        _error =
+            string.Empty;
+
 
         try
         {
             _resumen =
-                await Http.GetFromJsonAsync<ResumenProfesionalDto>(
+                await Http.GetFromJsonAsync<
+                    ResumenProfesionalDto>(
                     "api/profesional/resumen");
+
 
             if (_resumen is null)
             {
@@ -510,16 +736,25 @@ else if (_resumen is not null)
         }
         finally
         {
-            _cargando = false;
+            _cargando =
+                false;
         }
+    }
+
+
+    private string ObtenerClaseTema()
+    {
+        return _resumen?.Rol == "Docente"
+            ? "theme-docente"
+            : "theme-terapeuta";
     }
 
 
     private string ObtenerNombreRol()
     {
         return _resumen?.Rol == "Docente"
-            ? "Educador"
-            : "Profesional";
+            ? "Panel del Educador"
+            : "Panel del Terapeuta";
     }
 
 
@@ -528,11 +763,11 @@ else if (_resumen is not null)
         if (_resumen?.Rol == "Docente")
         {
             return
-                "Revisa tus aulas y los estudiantes que tienes a cargo.";
+                "Organiza tus aulas, revisa tus estudiantes y accede rápidamente a sus herramientas de seguimiento.";
         }
 
         return
-            "Revisa los estudiantes que tienes asignados y accede a su seguimiento.";
+            "Revisa tus estudiantes asignados, registra seguimiento y consulta sus antecedentes profesionales.";
     }
 
 
@@ -541,11 +776,11 @@ else if (_resumen is not null)
         if (_resumen?.Rol == "Docente")
         {
             return
-                "Estudiantes matriculados actualmente en tus aulas.";
+                "Estudiantes matriculados actualmente en las aulas que tienes asignadas.";
         }
 
         return
-            "Estudiantes que han sido asignados directamente a tu perfil profesional.";
+            "Estudiantes asignados directamente a tu perfil profesional.";
     }
 
 
@@ -554,7 +789,7 @@ else if (_resumen is not null)
         if (_resumen?.Rol == "Docente")
         {
             return
-                "Los alumnos aparecerán cuando tengas aulas asignadas con matrículas activas.";
+                "Los estudiantes aparecerán cuando tengas aulas con matrículas activas.";
         }
 
         return
@@ -566,43 +801,86 @@ else if (_resumen is not null)
     {
         if (_resumen?.CantidadAlumnos == 1)
         {
-            return "Estudiante disponible";
+            return
+                "Estudiante disponible";
         }
 
-        return "Estudiantes disponibles";
+        return
+            "Estudiantes disponibles";
     }
 
 
     private int ObtenerCantidadAlumnosAula(
         Guid aulaId)
     {
-        return _resumen?.Alumnos.Count(x =>
-            x.AulaId == aulaId) ?? 0;
+        return _resumen?.Alumnos
+            .Count(x =>
+                x.AulaId == aulaId)
+            ?? 0;
     }
 
 
     private string ObtenerInicial(
         string nombre)
     {
-        if (string.IsNullOrWhiteSpace(nombre))
+        if (string.IsNullOrWhiteSpace(
+            nombre))
         {
             return "?";
         }
 
-        return nombre[..1].ToUpper();
+        return nombre[..1]
+            .ToUpper();
     }
 
-    // Abre el perfil autorizado del alumno.
-    private void AbrirAlumno(Guid alumnoId)
+
+    private void AbrirAlumno(
+        Guid alumnoId)
     {
         Navigation.NavigateTo(
             $"/profesional/alumnos/{alumnoId}");
     }
 
-    // Abre un aula asignada al Docente.
-    private void AbrirAula(Guid aulaId)
+
+    private void AbrirAula(
+        Guid aulaId)
     {
         Navigation.NavigateTo(
             $"/profesional/aulas/{aulaId}");
+    }
+
+
+    private void AbrirAlumnos()
+    {
+        Navigation.NavigateTo(
+            "/profesional/alumnos");
+    }
+
+
+    private void AbrirAulas()
+    {
+        Navigation.NavigateTo(
+            "/profesional/aulas");
+    }
+
+
+    private void AbrirAgenda()
+    {
+        Navigation.NavigateTo(
+            "/profesional/agenda");
+    }
+
+
+    private void AbrirCitas()
+    {
+        Navigation.NavigateTo(
+            "/profesional/citas");
+    }
+
+
+    private void AbrirSeguimiento()
+    {
+        Navigation.NavigateTo(
+            "/profesional/seguimiento");
     }
 }
